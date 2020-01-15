@@ -1,1 +1,5 @@
-/* some css here */
+* {
+  font-family: 'Raleway', sans-serif;
+  background-image: linear-gradient(to bottom, 
+  #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+}
