@@ -1,5 +1,5 @@
 //some other stuff here
-window.onload = init;
+// window.onload = init;
 
 function init() {
   const maxNum = 100;
@@ -83,4 +83,22 @@ class GuessBot {
 
   checkGuess = (guess: number): number =>
     guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
+}
+
+function startGameSaveInput()
+{
+  let playerName = document.getElementById("playerName") as HTMLInputElement;
+    if (playerName !== null) {
+    playerName.value;  
+    console.log(playerName);
+    }
+  }
+
+function playGameSaveInput()
+{
+  let playerGuess = document.getElementById("playerGuess") as HTMLInputElement;
+  if (playerGuess !== null) {
+  playerGuess.value;
+  console.log(playerGuess);
+}
 }

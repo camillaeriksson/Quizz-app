@@ -1,5 +1,4 @@
 "use strict";
-window.onload = init;
 function init() {
     const maxNum = 100;
     const gameText = {
