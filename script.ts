@@ -23,7 +23,6 @@ let gamePlaying = false
 const maxNum = 100;
 let nGuesses: number = 0;
 const guessBot = new GuessBot(maxNum);
-let robotClues: string = "";
 let playerName = "ghost"
 
 
@@ -53,16 +52,15 @@ function getPlayerInput() {
 
       switch (sign) {
         case -1:
-          robotClues = robotInstructions(gameText.lower, true, ".robotClues");
+          robotInstructions(gameText.lower, true, ".robotClues");
           break;
         case 1:
-          robotClues = robotInstructions(gameText.higher, true, ".robotClues");
+          robotInstructions(gameText.higher, true, ".robotClues");
           break;
         default:
           let winText = gameText.correct + " " + nGuesses + " guesses.";
-          robotInstructions(winText, false, ".robotClues")
-          // gameOver = true;
-          robotClues = "";
+          robotInstructions(winText, false, ".robotEndMessage")
+          window.location.href = "./end_page.html"
       }
     }
   }
@@ -91,6 +89,3 @@ function robotInstructions(gameText: string, trim: boolean, nameOfClass: string)
   }
   return gameText
 }
-
-
-
