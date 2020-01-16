@@ -1,6 +1,6 @@
 //some other stuff here
 window.onload = init;
-let gameStart:boolean = false
+let playerInput: any
 
 function init() {
   const maxNum = 100;
@@ -14,63 +14,73 @@ function init() {
     correct: `Victory!!! You outsmarted the guess robot and guessed the correct number in `,
     playAgain: `Play again? Y/N?`
   };
-  robotInstructions(gameText.welcome, false,".robotInstructions");
-  robotInstructions(gameText.guess, false,".robotClues");
-  const guessBot = new GuessBot(maxNum);
 
+  robotInstructions(gameText.welcome, false, ".robotInstructions");
+  robotInstructions(gameText.guess, false, ".robotClues");
+  const guessBot = new GuessBot(maxNum);
+}
+
+function getPlayerInput() {
+  let playerInput
+  let playerInputField = document.querySelector(".playerInput") as HTMLInputElement
+  if (playerInputField !== null) {
+    playerInput = playerInputField.value
+  }
+  return console.log(playerInput)
+}
+
+function welcomePlayer() {
+  // let greetPlayer:string = "Greetings" + getPlayerInput()
+  robotInstructions("hey", false, ".title_game")
+  window.location.href = "./game.html"
+  console.log("check")
 }
 
 function gameLoop(guessBot: GuessBot, gameText: any) {
   let nGuesses: number = 0;
   let gameOver: boolean = false;
   let input: string = "";
-  
 
+  while (true) {
+    if (gameOver) {
+      robotInstructions(gameText.playAgain, true, ".robotClues")
+      const answer: any = getPlayerInput();
+      if (answer === "y" || answer === "yes") {
+        gameOver = false;
+        guessBot.pickANumber();
+        nGuesses = 0;
+        continue;
+      } else if (answer === "n" || answer === "no") break;
+      continue;
+    }
 
-  // while (true) {
-  //   if (gameOver) {
-  //     const answer = promptUser(gameText.playAgain);
-  //     if (answer === "y" || answer === "yes") {
-  //       gameOver = false;
-  //       guessBot.pickANumber();
-  //       nGuesses = 0;
-  //       continue;
-  //     } else if (answer === "n" || answer === "no") break;
-  //     continue;
-  //   }
+    if (!input) input = robotInstructions(gameText.guess, true, ".robotClues");
 
-  //   if (!input) input = promptUser(gameText.guess);
+    const guess = input.length ? Number(input) : NaN;
+    if (!isNaN(guess)) {
+      nGuesses++;
+      const sign = guessBot.checkGuess(guess);
 
-  //   const guess = input.length ? Number(input) : NaN;
-  //   if (!isNaN(guess)) {
-  //     nGuesses++;
-  //     const sign = guessBot.checkGuess(guess);
-
-  //     switch (sign) {
-  //       case -1:
-  //         input = promptUser(gameText.lower);
-  //         break;
-  //       case 1:
-  //         input = promptUser(gameText.higher);
-  //         break;
-  //       default:
-  //         alert(gameText.correct + " " + nGuesses + " guesses.");
-  //         gameOver = true;
-  //         input = "";
-  //     }
-  //   } else {
-  //     input = promptUser(gameText.invalidGuess);
-  //   }
-  // }
+      switch (sign) {
+        case -1:
+          input = robotInstructions(gameText.lower, true, ".robotClues");
+          break;
+        case 1:
+          input = robotInstructions(gameText.higher, true, ".robotClues");
+          break;
+        default:
+          let winText = gameText.correct + " " + nGuesses + " guesses.";
+          robotInstructions(winText, false, ".robotClues")
+          gameOver = true;
+          input = "";
+      }
+    } else {
+      input = robotInstructions(gameText.invalidGuess, false, ".robotClues");
+    }
+  }
 }
 
-// function promptUser(gameText: string) {
-//   const rawInput = prompt(gameText) || "";
-//   const transformedInput = rawInput.toLowerCase().trim();
-//   return transformedInput;
-// }
-
-function robotInstructions(gameText: string, trim: boolean,nameOfClass:string) {
+function robotInstructions(gameText: string, trim: boolean, nameOfClass: string) {
   const gameTextSelector = document.querySelector(nameOfClass)
   if (gameTextSelector !== null) {
     if (trim) {
@@ -80,7 +90,9 @@ function robotInstructions(gameText: string, trim: boolean,nameOfClass:string) {
       gameTextSelector.innerHTML = gameText
     }
   }
+  return gameText
 }
+
 
 class GuessBot {
   private maxNumber: number;
