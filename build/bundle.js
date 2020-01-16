@@ -1,4 +1,6 @@
 "use strict";
+window.onload = init;
+let gameStart = false;
 function init() {
     const maxNum = 100;
     const gameText = {
@@ -10,70 +12,24 @@ function init() {
         correct: `Victory!!! You outsmarted the guess robot and guessed the correct number in `,
         playAgain: `Play again? Y/N?`
     };
+    robotInstructions(gameText.welcome, false, ".robotInstructions");
+    robotInstructions(gameText.guess, false, ".robotClues");
     const guessBot = new GuessBot(maxNum);
-    gameLoop(guessBot, gameText);
-    let button = document.createElement("button");
-    button.innerHTML = "Do Something";
-    let body = document.getElementsByTagName("body")[0];
-    body.appendChild(button);
-    button.addEventListener("click", function () {
-        robotInstructions('hey', true);
-    });
 }
 function gameLoop(guessBot, gameText) {
     let nGuesses = 0;
     let gameOver = false;
     let input = "";
-    robotInstructions(gameText.welcome, false);
-    while (true) {
-        if (gameOver) {
-            const answer = promptUser(gameText.playAgain);
-            if (answer === "y" || answer === "yes") {
-                gameOver = false;
-                guessBot.pickANumber();
-                nGuesses = 0;
-                continue;
-            }
-            else if (answer === "n" || answer === "no")
-                break;
-            continue;
-        }
-        if (!input)
-            input = promptUser(gameText.guess);
-        const guess = input.length ? Number(input) : NaN;
-        if (!isNaN(guess)) {
-            nGuesses++;
-            const sign = guessBot.checkGuess(guess);
-            switch (sign) {
-                case -1:
-                    input = promptUser(gameText.lower);
-                    break;
-                case 1:
-                    input = promptUser(gameText.higher);
-                    break;
-                default:
-                    alert(gameText.correct + " " + nGuesses + " guesses.");
-                    gameOver = true;
-                    input = "";
-            }
+}
+function robotInstructions(gameText, trim, nameOfClass) {
+    const gameTextSelector = document.querySelector(nameOfClass);
+    if (gameTextSelector !== null) {
+        if (trim) {
+            gameTextSelector.innerHTML = gameText.toLowerCase().trim();
         }
         else {
-            input = promptUser(gameText.invalidGuess);
+            gameTextSelector.innerHTML = gameText;
         }
-    }
-}
-function promptUser(gameText) {
-    const rawInput = prompt(gameText) || "";
-    const transformedInput = rawInput.toLowerCase().trim();
-    return transformedInput;
-}
-function robotInstructions(gameText, trim) {
-    const gameTextSelector = document.querySelector(".robotInstructions");
-    if (trim) {
-        gameTextSelector.innerHTML = gameText.toLowerCase().trim();
-    }
-    else {
-        gameTextSelector.innerHTML = gameText;
     }
 }
 class GuessBot {
