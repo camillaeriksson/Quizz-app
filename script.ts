@@ -7,7 +7,7 @@ function init() {
     welcome: `Welcome to the fantastic Guess The Number game. The objective is to guess what number the guess robot is thinking of.`,
     guess: `The guess robot is thinking of a number between 0 and ${maxNum}. What's your guess?`,
     higher: `The robot is thinking of a higher number than your guess. Guess again.`,
-    lower: `The robit is thinking of a lower number than your guess. Guess again`,
+    lower: `The robot is thinking of a lower number than your guess. Guess again`,
     invalidGuess: `Your guess is invalid, enter a number between 0 and ${maxNum}.`,
     correct: `Victory!!! You outsmarted the guess robot and guessed the correct number in `,
     playAgain: `Play again? Y/N?`
@@ -15,6 +15,15 @@ function init() {
   const guessBot = new GuessBot(maxNum);
 
   gameLoop(guessBot, gameText);
+
+  let button = document.createElement("button") as HTMLButtonElement
+  button.innerHTML = "Do Something";
+  let body = document.getElementsByTagName("body")[0];
+  body.appendChild(button);
+  button.addEventListener ("click", function() {
+    robotInstructions('hey', true)
+  });
+
 }
 
 function gameLoop(guessBot: GuessBot, gameText: any) {
@@ -22,7 +31,7 @@ function gameLoop(guessBot: GuessBot, gameText: any) {
   let gameOver: boolean = false;
   let input: string = "";
 
-  alert(gameText.welcome);
+  robotInstructions(gameText.welcome, false);
 
   while (true) {
     if (gameOver) {
@@ -66,6 +75,18 @@ function promptUser(gameText: string) {
   const transformedInput = rawInput.toLowerCase().trim();
   return transformedInput;
 }
+
+function robotInstructions(gameText: string, trim: boolean) {
+  const gameTextSelector = document.querySelector(".robotInstructions") as HTMLDivElement
+  if (trim) {
+    gameTextSelector.innerHTML = gameText.toLowerCase().trim();
+  }
+  else {
+    gameTextSelector.innerHTML = gameText
+  }
+}
+
+
 
 class GuessBot {
   private maxNumber: number;
