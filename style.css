@@ -1,5 +1,50 @@
-* {
-  font-family: 'Raleway', sans-serif;
-  background-image: linear-gradient(to bottom, 
-  #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+
+html {
+    font-family: 'Raleway', sans-serif;
+    background-image: linear-gradient(180deg, 
+    #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+   }
+.robots{
+    display: flex;
+    justify-content: center;
+}
+.robotImages{
+    justify-content: center;
+    text-align: center;
+    padding: 0 1rem;
+    
+}
+.images{
+    border-radius: 50%;
+    border: 1px solid #333;
+    width: 8rem;
+    
+    
+}
+.gameName{
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 3rem 0;
+}
+.chooseDificulty{
+    text-align: center;
+    padding-bottom: 3rem;
+}
+.description{
+    text-align: center;
+    width: 50%;
+    position: absolute;
+    left: 25%;
+    /* border: 1px solid #333; */
+}
+.userName{
+    margin-top: 2rem;
+    
+}
+.startGame{
+    font-size: 1.5rem;
 }
