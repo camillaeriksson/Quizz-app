@@ -72,11 +72,6 @@ function gameLoop(guessBot, gameText) {
         }
     }
 }
-function helpPlayer(gameText) {
-    const rawInput = prompt(gameText) || "";
-    const transformedInput = rawInput.toLowerCase().trim();
-    return transformedInput;
-}
 function robotInstructions(gameText, trim, nameOfClass) {
     const gameTextSelector = document.querySelector(nameOfClass);
     if (gameTextSelector !== null) {
