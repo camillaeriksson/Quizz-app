@@ -1,5 +1,5 @@
 //some other stuff here
-window.onload = init;
+// window.onload = init;
 
 function init() {
   const maxNum = 100;
