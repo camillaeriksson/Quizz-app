@@ -107,21 +107,3 @@ function playGameSaveInput()
   console.log(playerGuess);
 }
 }
-
-function startGameSaveInput()
-{
-  let playerName = document.getElementById("playerName") as HTMLInputElement;
-    if (playerName !== null) {
-    playerName.value;  
-    console.log(playerName);
-    }
-  }
-
-function playGameSaveInput()
-{
-  let playerGuess = document.getElementById("playerGuess") as HTMLInputElement;
-  if (playerGuess !== null) {
-  playerGuess.value;
-  console.log(playerGuess);
-}
-}
