@@ -29,6 +29,11 @@ const gameText = {
 function init() {
     robotInstructions(gameText.welcome, false, ".robotInstructions");
     robotInstructions(gameText.guess, false, ".robotClues");
+    playerName = localStorage.getItem("playerName") || "";
+    robotInstructions("Greetings " + playerName + "!", false, ".robotGreetings");
+    let NoOfGuesses = localStorage.getItem("NoOfGuesses") || "1";
+    let winText = gameText.correct + " " + NoOfGuesses + " guesses.";
+    robotInstructions(winText, false, ".robotEndMessage");
 }
 function getPlayerInput() {
     let playerInputField = document.querySelector(".playerInput");
@@ -45,10 +50,12 @@ function getPlayerInput() {
                     robotInstructions(gameText.higher, true, ".robotClues");
                     break;
                 default:
-                    let winText = gameText.correct + " " + nGuesses + " guesses.";
-                    robotInstructions(winText, false, ".robotEndMessage");
+                    localStorage.setItem("NoOfGuesses", (nGuesses.toString()));
                     window.location.href = "./end_page.html";
             }
+        }
+        else if (isNaN(guess)) {
+            robotInstructions(gameText.invalidGuess, true, ".robotClues");
         }
     }
     console.log(guess);
@@ -59,6 +66,10 @@ function welcomePlayer() {
         playerName = playerNameField.value;
     }
     console.log(playerName);
+    localStorage.setItem("playerName", playerName);
+    runGame();
+}
+function runGame() {
     window.location.href = "./game.html";
 }
 function robotInstructions(gameText, trim, nameOfClass) {
