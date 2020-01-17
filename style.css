@@ -28,6 +28,7 @@ body {
 .title {
     font-size: 4rem;
     padding-bottom: 3rem;
+    text-align: center;
 }
 .title_game{
     Font-size: 2rem;
@@ -66,6 +67,7 @@ body {
     border-radius: 50%;
     border: 1px solid #000;
     width: 5rem; 
+    margin-right: 4px;
 
 }
 
@@ -124,4 +126,64 @@ a{
 }
 H3{
     font-style: italic;
+}
+@media screen and (max-width: 320px) {
+    
+    html {
+        height: 100%;
+    }
+    .main_wraper {
+        height: 100%;
+        grid-template-rows: auto;
+        grid-area: 2/2;
+    }
+    .player_input {
+        padding-bottom: 0;
+    }
+    .startGame {
+        padding: 3px 0;
+    }
+    .playerName {
+        margin: 20px 0;
+    }
+    .title {
+        position: absolute;
+        top: 4px;
+        font-size: 24px;
+        margin-top: 0;
+    }
+    h2 {
+        margin: 9px 0;
+    }
+    
+}
+@media screen and (max-width: 414px) {
+    
+    html {
+        height: 100%;
+    }
+    .main_wraper {
+        height: 100%;
+        grid-template-rows: auto;
+        grid-area: 2/2;
+    }
+    .player_input {
+        padding-bottom: 0;
+    }
+    .startGame {
+        padding: 3px 0;
+    }
+    .playerName {
+        margin: 20px 0;
+    }
+    .title {
+        position: absolute;
+        top: 4px;
+        font-size: 45px;
+        
+    }
+    h2 {
+        margin: 9px 0;
+    }
+    
 }
