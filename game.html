@@ -8,8 +8,6 @@
     <script src="./build/bundle.js"></script>
   <link rel="stylesheet" href="./style.css">
   <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
 
@@ -20,11 +18,9 @@
             <img src="./assets/images/hard.png" alt="" class="images_game">
       </div>
   </div>
-  
   <div class="player_input">
-    <div class="robotClues"></div>
-    <input class="playerInput" type="text" placeholder="enter your guess">
-    <button class="playGame" onclick="getPlayerInput()"><h2>PLAY</h2></button>
+    <input id="playerGuess" type="text" placeholder="enter your guess">
+    <button onclick="playGameSaveInput()" id="player_input"><a href="./end_page.html"><h2>PLAY</h2></button>
   </div>
 </div>
     
