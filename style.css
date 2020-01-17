@@ -127,36 +127,6 @@ a{
 H3{
     font-style: italic;
 }
-@media screen and (max-width: 320px) {
-    
-    html {
-        height: 100%;
-    }
-    .main_wraper {
-        height: 100%;
-        grid-template-rows: auto;
-        grid-area: 2/2;
-    }
-    .player_input {
-        padding-bottom: 0;
-    }
-    .startGame {
-        padding: 3px 0;
-    }
-    .playerName {
-        margin: 20px 0;
-    }
-    .title {
-        position: absolute;
-        top: 4px;
-        font-size: 24px;
-        margin-top: 0;
-    }
-    h2 {
-        margin: 9px 0;
-    }
-    
-}
 @media screen and (max-width: 414px) {
     
     html {
@@ -179,8 +149,39 @@ H3{
     .title {
         position: absolute;
         top: 4px;
-        font-size: 45px;
+        font-size: 42px;
+        margin-top: 15px;
         
+    }
+    h2 {
+        margin: 9px 0;
+    }
+    
+}
+
+@media screen and (max-width: 322px) {
+    
+    html {
+        height: 100%;
+    }
+    .main_wraper {
+        height: 100%;
+        grid-template-rows: auto;
+        grid-area: 2/2;
+    }
+    .player_input {
+        padding-bottom: 0;
+    }
+    .startGame {
+        padding: 3px 0;
+    }
+    .playerName {
+        margin: 20px 0;
+    }
+    .title {
+
+        font-size: 30px;
+        margin-top: 0;
     }
     h2 {
         margin: 9px 0;
