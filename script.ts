@@ -18,13 +18,13 @@ class GuessBot {
 }
 
 window.onload = init;
-let guess: any
-let gamePlaying = false
+let guess: any;
+let gamePlaying = false;
 const maxNum = 100;
 let nGuesses: number = 0;
 const guessBot = new GuessBot(maxNum);
-let playerName = "ghost"
-
+let playerName = "ghost";
+let gameRunning = false;
 
 const gameText = {
   welcome: `Welcome to the fantastic Guess The Number game. The objective is to guess what number the guess robot is thinking of.`,
@@ -39,12 +39,25 @@ const gameText = {
 function init() {
   robotInstructions(gameText.welcome, false, ".robotInstructions");
   robotInstructions(gameText.guess, false, ".robotClues");
+  pressEnter();
+}
+
+function pressEnter() {
+  document.onkeydown = function(event) {
+    if (gameRunning === false && event.keyCode === 13) {
+      welcomePlayer();
+    } else if (gameRunning === true && event.keyCode === 13) {
+      getPlayerInput();
+    }
+  };
 }
 
 function getPlayerInput() {
-  let playerInputField = document.querySelector(".playerInput") as HTMLInputElement
+  let playerInputField = document.querySelector(
+    ".playerInput"
+  ) as HTMLInputElement;
   if (playerInputField !== null) {
-    guess = Number(playerInputField.value)
+    guess = Number(playerInputField.value);
 
     if (!isNaN(guess)) {
       nGuesses++;
@@ -53,39 +66,47 @@ function getPlayerInput() {
       switch (sign) {
         case -1:
           robotInstructions(gameText.lower, true, ".robotClues");
+          playerInputField.value = "";
           break;
         case 1:
           robotInstructions(gameText.higher, true, ".robotClues");
+          playerInputField.value = "";
           break;
         default:
           let winText = gameText.correct + " " + nGuesses + " guesses.";
-          robotInstructions(winText, false, ".robotEndMessage")
-          window.location.href = "./end_page.html"
+          robotInstructions(winText, false, ".robotEndMessage");
+          window.location.href = "./end_page.html";
       }
     }
   }
 
-  console.log(guess)
+  console.log(guess);
 }
 
 function welcomePlayer() {
-  let playerNameField = document.querySelector(".playerName") as HTMLInputElement
+  let playerNameField = document.querySelector(
+    ".playerName"
+  ) as HTMLInputElement;
   if (playerNameField !== null) {
-    playerName = playerNameField.value
+    playerName = playerNameField.value;
   }
-  console.log(playerName)
-  window.location.href = "./game.html"
+  console.log(playerName);
+  window.location.href = "./game.html";
+  gameRunning = true;
 }
 
-function robotInstructions(gameText: string, trim: boolean, nameOfClass: string) {
-  const gameTextSelector = document.querySelector(nameOfClass)
+function robotInstructions(
+  gameText: string,
+  trim: boolean,
+  nameOfClass: string
+) {
+  const gameTextSelector = document.querySelector(nameOfClass);
   if (gameTextSelector !== null) {
     if (trim) {
       gameTextSelector.innerHTML = gameText.toLowerCase().trim();
-    }
-    else {
-      gameTextSelector.innerHTML = gameText
+    } else {
+      gameTextSelector.innerHTML = gameText;
     }
   }
-  return gameText
+  return gameText;
 }

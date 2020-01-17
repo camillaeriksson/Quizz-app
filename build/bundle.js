@@ -17,6 +17,7 @@ const maxNum = 100;
 let nGuesses = 0;
 const guessBot = new GuessBot(maxNum);
 let playerName = "ghost";
+let gameRunning = false;
 const gameText = {
     welcome: `Welcome to the fantastic Guess The Number game. The objective is to guess what number the guess robot is thinking of.`,
     guess: `The guess robot is thinking of a number between 0 and ${maxNum}. What's your guess?`,
@@ -29,6 +30,17 @@ const gameText = {
 function init() {
     robotInstructions(gameText.welcome, false, ".robotInstructions");
     robotInstructions(gameText.guess, false, ".robotClues");
+    pressEnter();
+}
+function pressEnter() {
+    document.onkeydown = function (event) {
+        if (gameRunning === false && event.keyCode === 13) {
+            welcomePlayer();
+        }
+        else if (gameRunning === true && event.keyCode === 13) {
+            getPlayerInput();
+        }
+    };
 }
 function getPlayerInput() {
     let playerInputField = document.querySelector(".playerInput");
@@ -40,9 +52,11 @@ function getPlayerInput() {
             switch (sign) {
                 case -1:
                     robotInstructions(gameText.lower, true, ".robotClues");
+                    playerInputField.value = "";
                     break;
                 case 1:
                     robotInstructions(gameText.higher, true, ".robotClues");
+                    playerInputField.value = "";
                     break;
                 default:
                     let winText = gameText.correct + " " + nGuesses + " guesses.";
@@ -60,6 +74,7 @@ function welcomePlayer() {
     }
     console.log(playerName);
     window.location.href = "./game.html";
+    gameRunning = true;
 }
 function robotInstructions(gameText, trim, nameOfClass) {
     const gameTextSelector = document.querySelector(nameOfClass);
