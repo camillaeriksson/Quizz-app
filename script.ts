@@ -47,7 +47,7 @@ function pressEnter() {
     if (gameRunning === false && event.keyCode === 13) {
       welcomePlayer();
     } else if (gameRunning === true && event.keyCode === 13) {
-      getPlayerInput();
+      getPlayerInput();      
     }
   };
 }
