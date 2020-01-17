@@ -73,4 +73,32 @@ function robotInstructions(gameText, trim, nameOfClass) {
     }
     return gameText;
 }
+function startGameSaveInput() {
+    let playerName = document.getElementById("playerName");
+    if (playerName !== null) {
+        playerName.value;
+        console.log(playerName);
+    }
+}
+function playGameSaveInput() {
+    let playerGuess = document.getElementById("playerGuess");
+    if (playerGuess !== null) {
+        playerGuess.value;
+        console.log(playerGuess);
+    }
+}
+function startGameSaveInput() {
+    let playerName = document.getElementById("playerName");
+    if (playerName !== null) {
+        playerName.value;
+        console.log(playerName);
+    }
+}
+function playGameSaveInput() {
+    let playerGuess = document.getElementById("playerGuess");
+    if (playerGuess !== null) {
+        playerGuess.value;
+        console.log(playerGuess);
+    }
+}
 //# sourceMappingURL=bundle.js.map
