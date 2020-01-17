@@ -18,13 +18,13 @@ let nGuesses = 0;
 const guessBot = new GuessBot(maxNum);
 let playerName = "ghost";
 const gameText = {
-    welcome: `Welcome to the fantastic Guess The Number game. The objective is to guess what number the guess robot is thinking of.`,
-    guess: `The guess robot is thinking of a number between 0 and ${maxNum}. What's your guess?`,
-    higher: `The robot is thinking of a higher number than your guess. Guess again.`,
-    lower: `The robot is thinking of a lower number than your guess. Guess again`,
-    invalidGuess: `Your guess is invalid, enter a number between 0 and ${maxNum}.`,
-    correct: `Victory!!! You outsmarted the guess robot and guessed the correct number in `,
-    playAgain: `Play again? Y/N?`
+    welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, the robot can’t remember. Help him answer the doorman correctly!`,
+    guess: `The robot drank between 1 and ${maxNum}. What's your guess?`,
+    higher: `- *hick**blip blop* No, that can’t be right... It must be more!`,
+    lower: `-*beep beep boop* No, that can’t be right... It must be less!`,
+    invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNum}.`,
+    correct: `CORRECT! 
+  -"That few?!?! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 function init() {
     robotInstructions(gameText.welcome, false, ".robotInstructions");
