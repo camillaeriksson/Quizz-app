@@ -6,34 +6,23 @@ enum GamePage {
 
 window.onload = init;
 let guess: any;
-let gamePlaying: boolean = false;
 const maxNum: number = 100;
 let nGuesses: number = 0;
 const guessBot: GuessBot = new GuessBot(maxNum);
-let playerName: string = "ghost";
-let button: HTMLButtonElement;
 
 const gameText = {
-  welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, the robot can’t remember. Help him answer the doorman correctly!`,
-  guess: `The robot drank between 1 and ${maxNum}. What's your guess?`,
+  welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
+  The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
+  the robot can’t remember. Help him answer the doorman correctly!`,
+  guess: `The robot had between 1 to ${maxNum} drinks. What's your guess?`,
   higher: `- *hick**blip blop* No, that can’t be right... It must be more!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be less!`,
   invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNum}.`,
-  correct: `CORRECT! 
-  -"That few?!?! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
+  correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 
-// only run once
 function init() {
   showPage(GamePage.StartPage);
-
-  // robotInstructions(gameText.welcome, false, ".robotInstructions");
-  // robotInstructions(gameText.guess, false, ".robotClues");
-  // playerName = localStorage.getItem("playerName") || "";
-  // robotInstructions("Greetings " + playerName + "!", false, ".robotGreetings");
-  // let NoOfGuesses = localStorage.getItem("NoOfGuesses") || "1";
-  // let winText = gameText.correct + " " + NoOfGuesses + " guesses.";
-  // robotInstructions(winText, false, ".robotEndMessage");
 }
 
 function showPage(gamePage: GamePage) {
@@ -53,6 +42,7 @@ function showPage(gamePage: GamePage) {
 }
 
 function getPlayerInput() {
+  const gameTextSelector = document.querySelector(".gameMessage") as HTMLDivElement;
   let playerInputField = document.querySelector(
     ".playerInput"
   ) as HTMLInputElement;
@@ -65,70 +55,28 @@ function getPlayerInput() {
 
       switch (sign) {
         case -1:
-          robotInstructions(gameText.lower, true, ".robotClues");
+          gameTextSelector.innerHTML = gameText.lower;
           break;
         case 1:
-          robotInstructions(gameText.higher, true, ".robotClues");
+          gameTextSelector.innerHTML = gameText.higher;
           break;
         default:
-          localStorage.setItem("NoOfGuesses", nGuesses.toString());
-          showPage(GamePage.EndPage)
+          showPage(GamePage.EndPage);
       }
     } else if (isNaN(guess)) {
-      robotInstructions(gameText.invalidGuess, true, ".robotClues");
+      gameTextSelector.innerHTML = gameText.invalidGuess;
     }
   }
+  playerInputField.value = ""
   console.log(guess);
-}
-
-function welcomePlayer() {
-  let playerNameField = document.querySelector(
-    ".playerName"
-  ) as HTMLInputElement;
-  if (playerNameField !== null) {
-    playerName = playerNameField.value;
-  }
-  console.log(playerName);
-  localStorage.setItem("playerName", playerName);
-  runGame();
-}
-
-function runGame() {
-  window.location.href = "./game.html";
-}
-
-function robotInstructions(
-  gameText: string,
-  trim: boolean,
-  nameOfClass: string
-) {
-  const gameTextSelector = document.querySelector(nameOfClass);
-  if (gameTextSelector !== null) {
-    if (trim) {
-      gameTextSelector.innerHTML = gameText.toLowerCase().trim();
-    } else {
-      gameTextSelector.innerHTML = gameText;
-    }
-  }
-  return gameText;
 }
 
 function startGameSaveInput() {
   let playerName = document.getElementById("playerName") as HTMLInputElement;
   if (playerName !== null) {
-    playerName.value;
-    console.log(playerName);
-  }
-
+    localStorage.setItem("playerName", playerName.value);
+ }
   showPage(GamePage.PlayPage)
-}
-
-function playGameSaveInput() {
-  let playerGuess = document.getElementById("playerGuess") as HTMLInputElement;
-  if (playerGuess !== null) {
-    playerGuess.value;
-    console.log(playerGuess);
-  }
 }
 
 function createStartPage() {
@@ -154,7 +102,7 @@ function createStartPage() {
 
     <div class="rules">
       <h2>HOW TO PLAY</h2>
-      <div class="robotInstructions"></div>
+      <div class="robotInstructions">${gameText.welcome}</div>
     </div>
 
     <div class="player_input">
@@ -171,10 +119,12 @@ function createStartPage() {
 function createPlayPage() {
   const mainWrapper = clearMainWrapper();
 
+  const playerName = localStorage.getItem("playerName");
+
   const markup = `
     <div class="title_game"></div>
 
-    <div class="robotGreetings"></div>
+    <div class="robotGreetings">"Greetings ${playerName}!"</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -183,7 +133,7 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <div class="robotClues"></div>
+      <div class="gameMessage">${gameText.guess}</div>
       <input class="playerInput" type="text" placeholder="enter your guess" />
       <button class="playGame" onclick="getPlayerInput()">
         <h2>PLAY</h2>
@@ -206,7 +156,7 @@ function createEndPage() {
 
     <div class="high_score">
       <h2>HIGHEST SCORES</h2>
-      <div class="robotEndMessage"></div>
+      <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
     </div>
   
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
@@ -220,3 +170,4 @@ function clearMainWrapper(): HTMLElement {
   mainWrapper.innerHTML = "";
   return mainWrapper;
 }
+
