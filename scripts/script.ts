@@ -76,7 +76,7 @@ function startGameSaveInput() {
   if (playerName !== null) {
     localStorage.setItem("playerName", playerName.value);
  }
-  showPage(GamePage.PlayPage)
+  showPage(GamePage.PlayPage);
 }
 
 function createStartPage() {
@@ -112,6 +112,11 @@ function createStartPage() {
       </button>
     </div>
   `;
+  document.onkeydown = function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      startGameSaveInput();   
+    } }
 
   mainWrapper.innerHTML = markup;
 }
@@ -140,7 +145,11 @@ function createPlayPage() {
       </button>
     </div>
   `;
-
+  document.onkeydown = function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      getPlayerInput();      
+    } }
   mainWrapper.innerHTML = markup;
 }
 
@@ -161,7 +170,11 @@ function createEndPage() {
   
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
-
+  document.onkeydown = function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      showPage(GamePage.StartPage);      
+    } }
   mainWrapper.innerHTML = markup;
 }
 
