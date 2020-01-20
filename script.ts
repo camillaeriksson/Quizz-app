@@ -44,10 +44,11 @@ function init() {
 
 function pressEnter() {
   document.onkeydown = function(event) {
-    if (gameRunning === false && event.keyCode === 13) {
-      welcomePlayer();
-    } else if (gameRunning === true && event.keyCode === 13) {
+    if (/*gameRunning === true && */event.keyCode === 13) {
       getPlayerInput();      
+    } //This code is currently not running because of multiple HTML pages
+    else if (gameRunning === false && event.keyCode === 13) {
+      welcomePlayer();
     }
   };
 }

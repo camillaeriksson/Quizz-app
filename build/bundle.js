@@ -34,11 +34,11 @@ function init() {
 }
 function pressEnter() {
     document.onkeydown = function (event) {
-        if (gameRunning === false && event.keyCode === 13) {
-            welcomePlayer();
-        }
-        else if (gameRunning === true && event.keyCode === 13) {
+        if (event.keyCode === 13) {
             getPlayerInput();
+        }
+        else if (gameRunning === false && event.keyCode === 13) {
+            welcomePlayer();
         }
     };
 }
