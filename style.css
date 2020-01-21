@@ -15,7 +15,7 @@ body {
 
 }
 
-.main_wraper {
+.main_wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
