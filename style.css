@@ -21,6 +21,7 @@ body {
     justify-content: center;
     align-items: center;
     grid-area: 2/2;
+    height: 100%;
 
 
 }
@@ -128,7 +129,6 @@ H3{
     font-style: italic;
 }
 @media screen and (max-width: 414px) {
-    
     html {
         height: 100%;
     }
@@ -138,12 +138,13 @@ H3{
         grid-area: 2/2;
     }
     .player_input {
-        padding-bottom: 0;
+        padding: 0;
+    
     }
     .startGame {
         padding: 3px 0;
     }
-    .playerName {
+    #playerName {
         margin: 20px 0;
     }
     .title {
@@ -155,15 +156,21 @@ H3{
     }
     h2 {
         margin: 9px 0;
+        text-align: center;
+    }
+    h1 {
+        margin: 6rem 0;
+        font-size: 42px;
+    }
+    .gameEndMessage {
+        text-align: center;
     }
     
 }
 
 @media screen and (max-width: 322px) {
     
-    html {
-        height: 100%;
-    }
+    
     .main_wraper {
         height: 100%;
         grid-template-rows: auto;
@@ -185,6 +192,9 @@ H3{
     }
     h2 {
         margin: 9px 0;
+    }
+    .robotInstructions {
+        font-size: 12px;
     }
     
 }
