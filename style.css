@@ -128,7 +128,7 @@ a{
 H3{
     font-style: italic;
 }
-@media screen and (max-width: 550px){
+@media screen and (max-width: 566px){
     .title {
         font-size: 40px;
     }
