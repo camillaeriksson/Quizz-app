@@ -18,20 +18,43 @@ var GamePage;
 })(GamePage || (GamePage = {}));
 window.onload = init;
 let guess;
-const maxNum = 100;
+const maxNumEasy = 10;
+const maxNumMedium = 50;
+const maxNumHard = 100;
 let nGuesses = 0;
-const guessBot = new GuessBot(maxNum);
+const guessBot = new GuessBot(maxNumEasy);
 let gamePage;
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
   the robot can’t remember. Help him answer the doorman correctly!`,
-    guess: `The robot had between 1 to ${maxNum} drinks. What's your guess?`,
+    guess: `The robot had between 1 to ${maxNumEasy} drinks. What's your guess?`,
     higher: `- *hick**blip blop* No, that can’t be right... It must be more!`,
     lower: `-*beep beep boop* No, that can’t be right... It must be less!`,
-    invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNum}.`,
+    invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNumEasy}.`,
     correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
+function clickTipsy() {
+    let tipsy = document.getElementById("imgEasy");
+    tipsy.addEventListener("click");
+    window.location.assign("./assets/images/easy.png");
+}
+function createRobotTipsy() {
+}
+function clickHammered() {
+    let hammered = document.getElementById("imgMedium");
+    hammered.addEventListener("click");
+    window.location.assign("./assets/images/medium.png");
+}
+function createRobotHammered() {
+}
+function clickShitfaced() {
+    let shitfaced = document.getElementById("imgHard");
+    shitfaced.addEventListener("click");
+    window.location.assign("./assets/images/hard.png");
+}
+function createRobotShitfaced() {
+}
 function init() {
     showPage(GamePage.StartPage);
     document.addEventListener("keydown", e => handleKeypress(e));
@@ -107,15 +130,15 @@ function createStartPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy.png" alt="" class="images" />
+        <img src="./assets/images/easy.png" alt="" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/medium.png" alt="" class="images" />
+        <img src="./assets/images/medium.png" alt="" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/hard.png" alt="" class="images" />
+        <img src="./assets/images/hard.png" alt="" id="imgHard" />
         <h3 class="difficulty">Shitfaced</h3>
       </div>
     </div>
@@ -145,7 +168,7 @@ function createPlayPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/hard.png" alt="" class="images_game" />
+        <img src="./assets/images/easy.png" alt="" class="images_game" />
       </div>
     </div>
 
