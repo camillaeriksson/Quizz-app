@@ -9,6 +9,7 @@ let guess: any;
 const maxNum: number = 100;
 let nGuesses: number = 0;
 const guessBot: GuessBot = new GuessBot(maxNum);
+let gamePage: GamePage;
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
@@ -23,7 +24,25 @@ const gameText = {
 
 function init() {
   showPage(GamePage.StartPage);
+  document.addEventListener("keydown", e => handleKeypress(e))
 }
+
+function handleKeypress(e: KeyboardEvent) {
+  if (e.keyCode === 13) {
+    switch(gamePage) {
+      case GamePage.StartPage:
+        startGameSaveInput(); 
+        break;
+      case GamePage.PlayPage:
+        getPlayerInput();
+        break;
+      case GamePage.EndPage:
+        showPage(GamePage.StartPage); 
+        break;
+    }
+  }
+}
+
 
 function showPage(gamePage: GamePage) {
   switch(gamePage) {
@@ -80,6 +99,7 @@ function startGameSaveInput() {
 }
 
 function createStartPage() {
+  gamePage = GamePage.StartPage;
   const mainWrapper = clearMainWrapper();
 
   const markup = `
@@ -88,15 +108,15 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy.png" alt="" class="images" />
-        <h3 class="difficulty">Easy</h3>
+        <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium.png" alt="" class="images" />
-        <h3 class="difficulty">Medium</h3>
+        <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard.png" alt="" class="images" />
-        <h3 class="difficulty">Hard</h3>
+        <h3 class="difficulty">Shitfaced</h3>
       </div>
     </div>
 
@@ -112,16 +132,12 @@ function createStartPage() {
       </button>
     </div>
   `;
-  document.onkeydown = function(event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      startGameSaveInput();   
-    } }
 
   mainWrapper.innerHTML = markup;
 }
 
 function createPlayPage() {
+  gamePage = GamePage.PlayPage;
   const mainWrapper = clearMainWrapper();
 
   const playerName = localStorage.getItem("playerName");
@@ -145,15 +161,12 @@ function createPlayPage() {
       </button>
     </div>
   `;
-  document.onkeydown = function(event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      getPlayerInput();      
-    } }
+
   mainWrapper.innerHTML = markup;
 }
 
 function createEndPage() {
+  gamePage = GamePage.EndPage;
   const mainWrapper = clearMainWrapper();
 
   const markup = `
@@ -170,11 +183,7 @@ function createEndPage() {
   
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
-  document.onkeydown = function(event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      showPage(GamePage.StartPage);      
-    } }
+
   mainWrapper.innerHTML = markup;
 }
 
