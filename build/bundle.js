@@ -17,6 +17,7 @@ const maxNum = 100;
 let nGuesses = 0;
 const guessBot = new GuessBot(maxNum);
 let playerName = "ghost";
+let gameRunning = false;
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, the robot can’t remember. Help him answer the doorman correctly!`,
     guess: `The robot drank between 1 and ${maxNum}. What's your guess?`,
@@ -29,6 +30,17 @@ const gameText = {
 function init() {
     robotInstructions(gameText.welcome, false, ".robotInstructions");
     robotInstructions(gameText.guess, false, ".robotClues");
+    pressEnter();
+}
+function pressEnter() {
+    document.onkeydown = function (event) {
+        if (event.keyCode === 13) {
+            getPlayerInput();
+        }
+        else if (gameRunning === false && event.keyCode === 13) {
+            welcomePlayer();
+        }
+    };
     playerName = localStorage.getItem("playerName") || "";
     robotInstructions("Greetings " + playerName + "!", false, ".robotGreetings");
     let NoOfGuesses = localStorage.getItem("NoOfGuesses") || "1";
@@ -45,9 +57,11 @@ function getPlayerInput() {
             switch (sign) {
                 case -1:
                     robotInstructions(gameText.lower, true, ".robotClues");
+                    playerInputField.value = "";
                     break;
                 case 1:
                     robotInstructions(gameText.higher, true, ".robotClues");
+                    playerInputField.value = "";
                     break;
                 default:
                     localStorage.setItem("NoOfGuesses", (nGuesses.toString()));
@@ -71,6 +85,7 @@ function welcomePlayer() {
 }
 function runGame() {
     window.location.href = "./game.html";
+    gameRunning = true;
 }
 function robotInstructions(gameText, trim, nameOfClass) {
     const gameTextSelector = document.querySelector(nameOfClass);

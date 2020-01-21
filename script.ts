@@ -18,13 +18,13 @@ class GuessBot {
 }
 
 window.onload = init;
-let guess: any
-let gamePlaying = false
+let guess: any;
+let gamePlaying = false;
 const maxNum = 100;
 let nGuesses: number = 0;
 const guessBot = new GuessBot(maxNum);
-let playerName = "ghost"
-
+let playerName = "ghost";
+let gameRunning = false;
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, the robot can’t remember. Help him answer the doorman correctly!`,
@@ -39,6 +39,18 @@ const gameText = {
 function init() {
   robotInstructions(gameText.welcome, false, ".robotInstructions");
   robotInstructions(gameText.guess, false, ".robotClues");
+  pressEnter();
+}
+
+function pressEnter() {
+  document.onkeydown = function(event) {
+    if (/*gameRunning === true && */event.keyCode === 13) {
+      getPlayerInput();      
+    } //This code is currently not running because of multiple HTML pages
+    else if (gameRunning === false && event.keyCode === 13) {
+      welcomePlayer();
+    }
+  };
   playerName = localStorage.getItem("playerName") || ""
   robotInstructions("Greetings "+playerName+ "!", false, ".robotGreetings")
   let NoOfGuesses = localStorage.getItem("NoOfGuesses") || "1"
@@ -47,9 +59,11 @@ function init() {
 }
 
 function getPlayerInput() {
-  let playerInputField = document.querySelector(".playerInput") as HTMLInputElement
+  let playerInputField = document.querySelector(
+    ".playerInput"
+  ) as HTMLInputElement;
   if (playerInputField !== null) {
-    guess = Number(playerInputField.value)
+    guess = Number(playerInputField.value);
 
     if (!isNaN(guess)) {
       nGuesses++;
@@ -58,9 +72,11 @@ function getPlayerInput() {
       switch (sign) {
         case -1:
           robotInstructions(gameText.lower, true, ".robotClues");
+          playerInputField.value = "";
           break;
         case 1:
           robotInstructions(gameText.higher, true, ".robotClues");
+          playerInputField.value = "";
           break;
         default:
           localStorage.setItem("NoOfGuesses",(nGuesses.toString()))
@@ -75,9 +91,11 @@ function getPlayerInput() {
 }
 
 function welcomePlayer() {
-  let playerNameField = document.querySelector(".playerName") as HTMLInputElement
+  let playerNameField = document.querySelector(
+    ".playerName"
+  ) as HTMLInputElement;
   if (playerNameField !== null) {
-    playerName = playerNameField.value
+    playerName = playerNameField.value;
   }
   console.log(playerName)
   localStorage.setItem("playerName",playerName)
@@ -88,17 +106,20 @@ function runGame(){
   window.location.href = "./game.html"
 }
 
-function robotInstructions(gameText: string, trim: boolean, nameOfClass: string) {
-  const gameTextSelector = document.querySelector(nameOfClass)
+function robotInstructions(
+  gameText: string,
+  trim: boolean,
+  nameOfClass: string
+) {
+  const gameTextSelector = document.querySelector(nameOfClass);
   if (gameTextSelector !== null) {
     if (trim) {
       gameTextSelector.innerHTML = gameText.toLowerCase().trim();
-    }
-    else {
-      gameTextSelector.innerHTML = gameText
+    } else {
+      gameTextSelector.innerHTML = gameText;
     }
   }
-  return gameText
+  return gameText;
 }
 
 function startGameSaveInput()
