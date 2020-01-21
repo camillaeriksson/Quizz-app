@@ -128,6 +128,14 @@ a{
 H3{
     font-style: italic;
 }
+@media screen and (max-width: 550px){
+    .title {
+        font-size: 40px;
+    }
+    .robotInstructions {
+        width: 60vw;
+    }
+}
 @media screen and (max-width: 472px) {
     html {
         height: 100%;
@@ -188,7 +196,7 @@ H3{
     .title {
 
         font-size: 30px;
-        margin-top: 0;
+        margin-top: 2rem;
     }
     h2 {
         margin: 9px 0;
