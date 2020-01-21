@@ -15,7 +15,7 @@ body {
 
 }
 
-.main_wrapper {
+.main_wraper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,16 +29,21 @@ body {
     font-size: 4rem;
     padding-bottom: 3rem;
 }
+
+
 .title_game{
     Font-size: 2rem;
     text-align: center;
     font-style: italic;
 }
-.title_ender{
-    Font-size: 3rem;
+.title_ender
+{
+    height: 30vh;
+    Font-size: 4rem;
     text-align: center;
     font-style: italic;
-    line-height: 1rem;
+
+
 }
 
 .bot_choice {
@@ -67,6 +72,9 @@ body {
     border: 1px solid #000;
     width: 5rem; 
 
+}
+.images_game{
+    width: 25vw; 
 }
 
 
@@ -119,9 +127,61 @@ input {
     
 
 }
+.robotClues{
+    font-size: 2em;
+    font-style: italic;
+    text-transform: uppercase;
+    text-align: center;
+}
+.robotEndMessage{
+    margin-top: 3rem;
+    font-size: 6em;
+    font-style: italic;
+    text-transform: uppercase;
+    text-align: center;
+}
+
 a{
     text-decoration: none;
 }
 H3{
     font-style: italic;
 }
+@media only screen and (max-width: 500px) {
+    .title {
+        font-size: 2rem;
+        padding-bottom: 2rem;
+    }
+    .rules {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70vw;
+        text-justify: distribute;
+    
+    }
+    .images_game{
+        width: 50vw; 
+    }
+    .robotClues{
+        font-size: 1.5em;
+        font-style: italic;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .robotEndMessage{
+        font-size: 1.5em;
+        font-style: italic;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .title_ender{
+        font-size: 1.5em;
+        font-style: italic;
+        text-transform: uppercase;
+        text-align: center;
+    
+    
+    }
+    
+  }
