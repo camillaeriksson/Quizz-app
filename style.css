@@ -128,7 +128,7 @@ a{
 H3{
     font-style: italic;
 }
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 472px) {
     html {
         height: 100%;
     }
@@ -159,7 +159,7 @@ H3{
         text-align: center;
     }
     h1 {
-        margin: 6rem 0;
+        margin-bottom: 6rem;
         font-size: 42px;
     }
     .gameEndMessage {
