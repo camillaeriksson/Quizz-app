@@ -29,15 +29,15 @@ function init() {
 
 function handleKeypress(e: KeyboardEvent) {
   if (e.keyCode === 13) {
-    switch(gamePage) {
+    switch (gamePage) {
       case GamePage.StartPage:
-        startGameSaveInput(); 
+        startGameSaveInput();
         break;
       case GamePage.PlayPage:
         getPlayerInput();
         break;
       case GamePage.EndPage:
-        showPage(GamePage.StartPage); 
+        showPage(GamePage.StartPage);
         break;
     }
   }
@@ -45,7 +45,7 @@ function handleKeypress(e: KeyboardEvent) {
 
 
 function showPage(gamePage: GamePage) {
-  switch(gamePage) {
+  switch (gamePage) {
     case GamePage.StartPage:
       createStartPage();
       break;
@@ -94,7 +94,7 @@ function startGameSaveInput() {
   let playerName = document.getElementById("playerName") as HTMLInputElement;
   if (playerName !== null) {
     localStorage.setItem("playerName", playerName.value);
- }
+  }
   showPage(GamePage.PlayPage);
 }
 
@@ -103,7 +103,7 @@ function createStartPage() {
   const mainWrapper = clearMainWrapper();
 
   const markup = `
-    <div class="title">GAME'S NAME</div>
+    <div class="title">THE DRUNK ROBOT</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -126,7 +126,7 @@ function createStartPage() {
     </div>
 
     <div class="player_input">
-      <input id="playerName" type="text" placeholder="enter your name" />
+      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
       <button onclick="startGameSaveInput()" id="player_input">
         START
       </button>
@@ -155,7 +155,7 @@ function createPlayPage() {
 
     <div class="player_input">
       <div class="gameMessage">${gameText.guess}</div>
-      <input class="playerInput" type="text" placeholder="enter your guess" />
+      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
       <button class="playGame" onclick="getPlayerInput()">
         <h2>PLAY</h2>
       </button>

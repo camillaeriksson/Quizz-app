@@ -103,7 +103,7 @@ function createStartPage() {
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
-    <div class="title">GAME'S NAME</div>
+    <div class="title">THE DRUNK ROBOT</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -126,7 +126,7 @@ function createStartPage() {
     </div>
 
     <div class="player_input">
-      <input id="playerName" type="text" placeholder="enter your name" />
+      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
       <button onclick="startGameSaveInput()" id="player_input">
         START
       </button>
@@ -151,7 +151,7 @@ function createPlayPage() {
 
     <div class="player_input">
       <div class="gameMessage">${gameText.guess}</div>
-      <input class="playerInput" type="text" placeholder="enter your guess" />
+      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
       <button class="playGame" onclick="getPlayerInput()">
         <h2>PLAY</h2>
       </button>
