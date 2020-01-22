@@ -152,7 +152,7 @@ a{
 H3{
     font-style: italic;
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 550px) {
     body {
         background-image: linear-gradient(180deg,
                 #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
