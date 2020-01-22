@@ -27,8 +27,8 @@ const gameText = {
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
   the robot can’t remember. Help him answer the doorman correctly!`,
     guess: `The robot had between 1 to ${maxNum} drinks. What's your guess?`,
-    higher: `- *hick**blip blop* No, that can’t be right... It must be more!`,
-    lower: `-*beep beep boop* No, that can’t be right... It must be less!`,
+    higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
+    lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
     invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNum}.`,
     correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
@@ -68,7 +68,11 @@ function showPage(gamePage) {
 }
 function getPlayerInput() {
     const gameTextSelector = document.querySelector(".gameMessage");
-    let playerInputField = document.querySelector(".playerInput");
+    const playerInputField = document.querySelector(".playerInput");
+    gameTextSelector.classList.add('typewriter');
+    setTimeout(function () {
+        gameTextSelector.classList.remove('typewriter');
+    }, 3500);
     if (playerInputField !== null) {
         guess = Number(playerInputField.value);
         if (!isNaN(guess)) {
