@@ -40,6 +40,7 @@ function handleKeypress(e: KeyboardEvent) {
         showPage(GamePage.StartPage);
         break;
     }
+    inputFocus();
   }
 }
 
@@ -127,7 +128,7 @@ function createStartPage() {
 
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-      <button onclick="startGameSaveInput()" id="player_input">
+      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input">
         START
       </button>
     </div>
@@ -156,7 +157,7 @@ function createPlayPage() {
     <div class="player_input">
       <div class="gameMessage">${gameText.guess}</div>
       <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
-      <button class="playGame" onclick="getPlayerInput()">
+      <button class="playGame" onclick="getPlayerInput(); inputFocus();">
         <h2>PLAY</h2>
       </button>
     </div>
@@ -185,6 +186,11 @@ function createEndPage() {
   `;
 
   mainWrapper.innerHTML = markup;
+}
+
+function inputFocus() {
+  const playerInput = document.querySelector('.playerInput') as HTMLElement;
+  playerInput.focus();
 }
 
 function clearMainWrapper(): HTMLElement {
