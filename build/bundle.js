@@ -69,10 +69,10 @@ function showPage(gamePage) {
 function getPlayerInput() {
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
-    gameTextSelector.classList.add('typewriter');
+    gameTextSelector.classList.add('wobble');
     setTimeout(function () {
-        gameTextSelector.classList.remove('typewriter');
-    }, 3500);
+        gameTextSelector.classList.remove('wobble');
+    }, 5000);
     if (playerInputField !== null) {
         guess = Number(playerInputField.value);
         if (!isNaN(guess)) {

@@ -63,11 +63,11 @@ function showPage(gamePage: GamePage) {
 function getPlayerInput() {
   const gameTextSelector = document.querySelector(".gameMessage") as HTMLDivElement;
   const playerInputField = document.querySelector(".playerInput") as HTMLInputElement;
-  gameTextSelector.classList.add('typewriter');
+  gameTextSelector.classList.add('wobble');
 
   setTimeout(function () {
-    gameTextSelector.classList.remove('typewriter')
-  }, 3500)
+    gameTextSelector.classList.remove('wobble')
+  }, 5000)
 
   if (playerInputField !== null) {
     guess = Number(playerInputField.value);

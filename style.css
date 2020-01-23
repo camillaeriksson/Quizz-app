@@ -115,13 +115,6 @@ input {
     margin-top: 3rem;
 }
 
-.robotClues {
-    font-size: 2em;
-    font-style: italic;
-    text-transform: uppercase;
-    text-align: center;
-}
-
 .robotEndMessage {
     margin-top: 3rem;
     font-size: 6em;
@@ -142,34 +135,20 @@ H3 {
     font-style: italic;
 }
 
-.typewriter {
-    display: inline;
-    overflow: hidden;
-    border-right: .15em solid orangered;
-    white-space: nowrap;
-    margin: 0 auto;
-    animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+.wobble {
+    animation: wobble 6s infinite both;
 }
 
-/* The typing effect */
-@keyframes typing {
-    from {
-        width: 0%
-    }
-    to {
-        width: 50%
-    }
-}
-
-/* The typewriter cursor effect */
-@keyframes blink-caret {
-    from, to {
-        border-color: transparent
-    }
-    50% {
-        border-color: orangered;
-    }
-} 
+/* The wobble effect */
+@keyframes wobble {
+    0% {transform: translateX(0%);}
+    15% {transform: translateX(-25%) rotate(-5deg);}
+    30% {transform: translateX(20%) rotate(3deg);}
+    45% {transform: translateX(-15%) rotate(-3deg);}
+    60% {transform: translateX(10%) rotate(2deg);}
+    75% {transform: translateX(-5%) rotate(-1deg);}
+    100% {transform: translateX(0%);}
+  }
 
 /* The bounce effect */
 @keyframes bounce {
@@ -229,12 +208,7 @@ H3 {
     .images_game {
         width: 50vw;
     }
-    .robotClues {
-        font-size: 1.5em;
-        font-style: italic;
-        text-transform: uppercase;
-        text-align: center;
-    }
+    
     .robotEndMessage {
         font-size: 1.5em;
         font-style: italic;
