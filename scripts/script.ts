@@ -169,6 +169,7 @@ function createPlayPage() {
 function createEndPage() {
   gamePage = GamePage.EndPage;
   const mainWrapper = clearMainWrapper();
+  const playerName = localStorage.getItem("playerName");
 
   const markup = `
     <div class="title_ender">
@@ -178,8 +179,12 @@ function createEndPage() {
     <div class="bot_choice"></div>
 
     <div class="high_score">
-      <h2>HIGHEST SCORES</h2>
       <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+      <h2>HIGHEST SCORES</h2>
+      <div class="user_and_score">
+      Name Score<br>
+      ${playerName} ${nGuesses}
+      </div>
     </div>
   
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
