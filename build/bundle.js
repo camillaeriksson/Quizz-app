@@ -49,6 +49,7 @@ function handleKeypress(e) {
                 showPage(GamePage.StartPage);
                 break;
         }
+        inputFocus();
     }
 }
 function showPage(gamePage) {
@@ -103,7 +104,7 @@ function createStartPage() {
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
-    <div class="title">DRUNK BOTS</div>
+    <div class="title">THE DRUNK ROBOT</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -125,8 +126,8 @@ function createStartPage() {
     </div>
 
     <div class="player_input">
-      <input id="playerName" type="text" placeholder="enter your name" />
-      <button onclick="startGameSaveInput()" id="player_input">
+      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
+      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input">
         START
       </button>
     </div>
@@ -150,9 +151,9 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      
-      <input class="playerInput" type="text" placeholder="enter your guess" />
-      <button class="playGame" onclick="getPlayerInput()">
+      <div class="gameMessage">${gameText.guess}</div>
+      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
+      <button class="playGame" onclick="getPlayerInput(); inputFocus();">
         <h2>PLAY</h2>
       </button>
     </div>
@@ -177,6 +178,10 @@ function createEndPage() {
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
     mainWrapper.innerHTML = markup;
+}
+function inputFocus() {
+    const playerInput = document.querySelector('.playerInput');
+    playerInput.focus();
 }
 function clearMainWrapper() {
     const mainWrapper = document.querySelector(".main_wrapper");
