@@ -3,8 +3,7 @@ html {
 }
 
 body {
-    background-image: linear-gradient(180deg,
-            #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+    background-image: linear-gradient(180deg, #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
     background-size: cover;
     background-repeat: no-repeat;
     display: grid;
@@ -12,7 +11,6 @@ body {
     grid-template-rows: 10% auto 10%;
     height: 100vh;
     margin: 0;
-
 }
 
 .main_wrapper {
@@ -21,29 +19,25 @@ body {
     justify-content: center;
     align-items: center;
     grid-area: 2/2;
-
-
 }
 
 .title {
     font-size: 4rem;
     padding-bottom: 3rem;
+    animation: bounce 2.5s 2 both;
 }
 
-
-.title_game{
+.title_game {
     Font-size: 2rem;
     text-align: center;
     font-style: italic;
 }
-.title_ender
-{
+
+.title_ender {
     height: 30vh;
     Font-size: 4rem;
     text-align: center;
     font-style: italic;
-
-
 }
 
 .bot_choice {
@@ -54,29 +48,23 @@ body {
     color: white;
     font-size: 5vw;
     width: 25vw;
-    
-
-
 }
 
 .robotImages {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-
 }
 
 .images {
     border-radius: 50%;
     border: 1px solid #000;
-    width: 5rem; 
-
-}
-.images_game{
-    width: 25vw; 
+    width: 5rem;
 }
 
+.images_game {
+    width: 25vw;
+}
 
 .difficulty {
     font-size: 0.75rem;
@@ -91,7 +79,6 @@ body {
     width: 40vw;
     text-justify: distribute;
     margin: 2rem 0 0 0;
-
 }
 
 .player_input {
@@ -113,73 +100,92 @@ input {
     width: 100px;
     border-radius: 5%;
     border: 0px solid #000;
-
 }
-.startGame:hover{
-    background-color:springgreen;
+
+.startGame:hover {
+    background-color: springgreen;
     border: none;
 }
+
 .startAgain {
     background-color: pink;
     width: 150px;
     border-radius: 5%;
     border: 0px solid #000;
     margin-top: 3rem;
-    
-
 }
-.robotClues{
+
+.robotClues {
     font-size: 2em;
     font-style: italic;
     text-transform: uppercase;
     text-align: center;
 }
-.robotEndMessage{
+
+.robotEndMessage {
     margin-top: 3rem;
     font-size: 6em;
     font-style: italic;
     text-transform: uppercase;
     text-align: center;
 }
-.high_score{
-    margin: 2rem 0 2rem 0;
 
+.high_score {
+    margin: 2rem 0 2rem 0;
 }
 
-a{
+a {
     text-decoration: none;
 }
-H3{
+
+H3 {
     font-style: italic;
 }
 
 .typewriter {
     overflow: hidden;
-    border-right: .15em solid orangered; /* The typwriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    animation: 
-      typing 3s steps(60, end),
-      blink-caret .75s step-end infinite;
-  }
-  
-  /* The typing effect */
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
-  
-  /* The typewriter cursor effect */
-  @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: orangered; }
-  }
-  
-@media only screen and (max-width: 500px) {
+    border-right: .15em solid orangered;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from {
+        width: 0%
+    }
+    to {
+        width: 50%
+    }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent
+    }
+    50% {
+        border-color: orangered;
+    }
+}
+
+/* The bounce effect */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
 @media only screen and (max-width: 550px) {
     body {
-        background-image: linear-gradient(180deg,
-                #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+        background-image: linear-gradient(180deg, #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
         background-size: cover;
         background-repeat: no-repeat;
         display: grid;
@@ -187,7 +193,6 @@ H3{
         grid-template-rows: 5% auto 5%;
         height: 100vh;
         margin: 0;
-    
     }
     .title {
         font-size: 2rem;
@@ -196,8 +201,7 @@ H3{
     .images {
         border-radius: 50%;
         border: 1px solid #000;
-        width: 3rem; 
-    
+        width: 3rem;
     }
     .rules {
         display: flex;
@@ -206,7 +210,6 @@ H3{
         width: 70vw;
         text-align: center;
         margin: 2rem 0 0 0;
-    
     }
     .robotImages {
         display: flex;
@@ -214,7 +217,6 @@ H3{
         align-items: center;
         justify-content: space-evenly;
         width: 100vw;
-    
     }
     input {
         width: 200px;
@@ -223,33 +225,29 @@ H3{
         margin: 2rem 0 2rem 0;
         font-size: 1rem;
     }
-    .images_game{
-        width: 50vw; 
+    .images_game {
+        width: 50vw;
     }
-    .robotClues{
+    .robotClues {
         font-size: 1.5em;
         font-style: italic;
         text-transform: uppercase;
         text-align: center;
     }
-    .robotEndMessage{
+    .robotEndMessage {
         font-size: 1.5em;
         font-style: italic;
         text-transform: uppercase;
         text-align: center;
     }
-    .title_ender{
+    .title_ender {
         font-size: 1.5em;
         font-style: italic;
         text-transform: uppercase;
         text-align: center;
-    
-    
     }
-    .high_score{
+    .high_score {
         text-align: center;
         margin: 0rem 0 2rem 0;
-    
     }
-    
-  }}
+}
