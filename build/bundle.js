@@ -122,7 +122,6 @@ function createStartPage() {
     </div>
 
     <div class="rules">
-      <h2>HOW TO PLAY</h2>
       <div class="robotInstructions">${gameText.welcome}</div>
     </div>
 
@@ -143,6 +142,7 @@ function createPlayPage() {
     <div class="title_game"></div>
 
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
+    <div class="gameMessage">${gameText.guess}</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -165,7 +165,7 @@ function createEndPage() {
     const mainWrapper = clearMainWrapper();
     const markup = `
     <div class="title_ender">
-      <H1>YOU WON!</H1>
+      <H2>YOU WON!</H2>
     </div>
     
     <div class="bot_choice"></div>
