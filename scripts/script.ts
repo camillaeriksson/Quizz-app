@@ -64,7 +64,7 @@ function getPlayerInput() {
   const gameTextSelector = document.querySelector(".gameMessage") as HTMLDivElement;
   const playerInputField = document.querySelector(".playerInput") as HTMLInputElement;
   gameTextSelector.classList.add('typewriter');
-  
+
   setTimeout(function () {
     gameTextSelector.classList.remove('typewriter')
   }, 3500)
@@ -196,4 +196,7 @@ function clearMainWrapper(): HTMLElement {
   mainWrapper.innerHTML = "";
   return mainWrapper;
 }
+
+
+
 

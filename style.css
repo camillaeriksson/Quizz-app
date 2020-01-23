@@ -143,6 +143,7 @@ H3 {
 }
 
 .typewriter {
+    display: inline;
     overflow: hidden;
     border-right: .15em solid orangered;
     white-space: nowrap;
@@ -168,7 +169,7 @@ H3 {
     50% {
         border-color: orangered;
     }
-}
+} 
 
 /* The bounce effect */
 @keyframes bounce {
