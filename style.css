@@ -90,6 +90,7 @@ body {
     align-items: center;
     width: 40vw;
     text-justify: distribute;
+    margin: 2rem 0 0 0;
 
 }
 
@@ -140,6 +141,10 @@ input {
     text-transform: uppercase;
     text-align: center;
 }
+.high_score{
+    margin: 2rem 0 2rem 0;
+
+}
 
 a{
     text-decoration: none;
@@ -147,18 +152,52 @@ a{
 H3{
     font-style: italic;
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 550px) {
+    body {
+        background-image: linear-gradient(180deg,
+                #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: grid;
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 5%;
+        height: 100vh;
+        margin: 0;
+    
+    }
     .title {
         font-size: 2rem;
         padding-bottom: 2rem;
+    }
+    .images {
+        border-radius: 50%;
+        border: 1px solid #000;
+        width: 3rem; 
+    
     }
     .rules {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 70vw;
-        text-justify: distribute;
+        text-align: center;
+        margin: 2rem 0 0 0;
     
+    }
+    .robotImages {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100vw;
+    
+    }
+    input {
+        width: 200px;
+        height: 30px;
+        padding-left: 1em;
+        margin: 2rem 0 2rem 0;
+        font-size: 1rem;
     }
     .images_game{
         width: 50vw; 
@@ -181,6 +220,11 @@ H3{
         text-transform: uppercase;
         text-align: center;
     
+    
+    }
+    .high_score{
+        text-align: center;
+        margin: 0rem 0 2rem 0;
     
     }
     
