@@ -1,5 +1,6 @@
 html {
     font-family: 'Raleway', sans-serif;
+    overflow: hidden;
 }
 
 body {
@@ -38,6 +39,7 @@ body {
     Font-size: 4rem;
     text-align: center;
     font-style: italic;
+    text-transform: uppercase;
 }
 
 .bot_choice {
@@ -54,22 +56,25 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: .8rem;
 }
 
 .images {
     border-radius: 50%;
     border: 1px solid #000;
     width: 5rem;
+    animation: spin 1000ms linear 1s 3;
 }
 
 .images_game {
-    width: 25vw;
+    width: 20vw;
 }
 
 .difficulty {
     font-size: 0.75rem;
     color: black;
     text-transform: uppercase;
+
 }
 
 .rules {
@@ -115,6 +120,11 @@ input {
     margin-top: 3rem;
 }
 
+.gameMessage {
+    padding: 2rem;
+    text-align: center;
+}
+
 .robotEndMessage {
     margin-top: 3rem;
     font-size: 6em;
@@ -140,17 +150,33 @@ H3 {
 }
 
 /* The wobble effect */
+
 @keyframes wobble {
-    0% {transform: translateX(0%);}
-    15% {transform: translateX(-25%) rotate(-5deg);}
-    30% {transform: translateX(20%) rotate(3deg);}
-    45% {transform: translateX(-15%) rotate(-3deg);}
-    60% {transform: translateX(10%) rotate(2deg);}
-    75% {transform: translateX(-5%) rotate(-1deg);}
-    100% {transform: translateX(0%);}
-  }
+    0% {
+        transform: translateX(0%);
+    }
+    15% {
+        transform: translateX(-25%) rotate(-5deg);
+    }
+    30% {
+        transform: translateX(20%) rotate(3deg);
+    }
+    45% {
+        transform: translateX(-15%) rotate(-3deg);
+    }
+    60% {
+        transform: translateX(10%) rotate(2deg);
+    }
+    75% {
+        transform: translateX(-5%) rotate(-1deg);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
 
 /* The bounce effect */
+
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);
@@ -163,63 +189,54 @@ H3 {
     }
 }
 
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveLeftToRight {
+    0% {
+        left: -100px;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
 @media only screen and (max-width: 550px) {
     body {
-        background-image: linear-gradient(180deg, #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
-        background-size: cover;
-        background-repeat: no-repeat;
-        display: grid;
-        grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 5%;
-        height: 100vh;
-        margin: 0;
     }
     .title {
         font-size: 2rem;
         padding-bottom: 2rem;
     }
     .images {
-        border-radius: 50%;
-        border: 1px solid #000;
         width: 3rem;
     }
     .rules {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         width: 70vw;
         text-align: center;
-        margin: 2rem 0 0 0;
     }
     .robotImages {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: space-evenly;
         width: 100vw;
     }
     input {
-        width: 200px;
-        height: 30px;
-        padding-left: 1em;
         margin: 2rem 0 2rem 0;
-        font-size: 1rem;
     }
     .images_game {
         width: 50vw;
     }
-    
     .robotEndMessage {
         font-size: 1.5em;
-        font-style: italic;
-        text-transform: uppercase;
-        text-align: center;
     }
     .title_ender {
         font-size: 1.5em;
-        font-style: italic;
-        text-transform: uppercase;
-        text-align: center;
     }
     .high_score {
         text-align: center;

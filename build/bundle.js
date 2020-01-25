@@ -120,7 +120,7 @@ function createStartPage() {
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard.png" alt="" class="images" />
-        <h3 class="difficulty">Shitfaced</h3>
+        <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
 
@@ -142,8 +142,6 @@ function createPlayPage() {
     const mainWrapper = clearMainWrapper();
     const playerName = localStorage.getItem("playerName");
     const markup = `
-    <div class="title_game"></div>
-
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
     <div class="gameMessage">${gameText.guess}</div>
 
