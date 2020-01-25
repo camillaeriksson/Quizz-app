@@ -68,6 +68,7 @@ function showPage(gamePage) {
     }
 }
 function getPlayerInput() {
+    inputFocus();
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
     gameTextSelector.classList.add('wobble');
@@ -103,12 +104,13 @@ function startGameSaveInput() {
         localStorage.setItem("playerName", playerName.value);
     }
     showPage(GamePage.PlayPage);
+    inputFocus();
 }
 function createStartPage() {
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
-    <div class="title">THE DRUNK ROBOT</div>
+    <div class="title">DRUNK BOTS</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -131,7 +133,7 @@ function createStartPage() {
 
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input">
+      <button onclick="startGameSaveInput();" id="player_input">
         START
       </button>
     </div>
@@ -153,9 +155,8 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <div class="gameMessage">${gameText.guess}</div>
       <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
-      <button class="playGame" onclick="getPlayerInput(); inputFocus();">
+      <button class="playGame" onclick="getPlayerInput();">
         <h2>PLAY</h2>
       </button>
     </div>
