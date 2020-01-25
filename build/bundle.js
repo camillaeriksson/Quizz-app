@@ -72,6 +72,7 @@ function getPlayerInput() {
     let playerInputField = document.querySelector(".playerInput");
     if (playerInputField !== null) {
         guess = Number(playerInputField.value);
+        localStorage.setItem("score", nGuesses.toString());
         if (!isNaN(guess)) {
             nGuesses++;
             const sign = guessBot.checkGuess(guess);
@@ -163,7 +164,9 @@ function createPlayPage() {
 function createEndPage() {
     gamePage = GamePage.EndPage;
     const mainWrapper = clearMainWrapper();
-    const playerName = localStorage.getItem("playerName");
+    connectUsernameWithGuesses();
+    let listOfHighScores = localStorage.getItem("highscore") || "";
+    console.log(listOfHighScores);
     const markup = `
     <div class="title_ender">
       <H2>YOU WON!</H2>
@@ -176,12 +179,13 @@ function createEndPage() {
       <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
       Name Score<br>
-      ${playerName} ${nGuesses}
+      ${listOfHighScores}
       </div>
     </div>
   
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
+    nGuesses = 0;
     mainWrapper.innerHTML = markup;
 }
 function inputFocus() {
@@ -192,5 +196,20 @@ function clearMainWrapper() {
     const mainWrapper = document.querySelector(".main_wrapper");
     mainWrapper.innerHTML = "";
     return mainWrapper;
+}
+function connectUsernameWithGuesses() {
+    let name = localStorage.getItem("playerName") || "";
+    let totalGuesses = localStorage.getItem("score") || "";
+    const highscore = localStorage.getItem("highscore") || "[]";
+    const playerObject = {
+        name,
+        totalGuesses
+    };
+    const highscores = [...JSON.parse(highscore), playerObject]
+        .sort((a, b) => a.totalGuesses - b.totalGuesses)
+        .slice(0, 5);
+    localStorage.setItem("highscore", JSON.stringify(highscores));
+    highscores.push(name);
+    highscores.push(totalGuesses);
 }
 //# sourceMappingURL=bundle.js.map
