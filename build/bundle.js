@@ -19,7 +19,7 @@ var GamePage;
 window.onload = init;
 let guess;
 const maxNum = 100;
-let nGuesses = 0;
+let nGuesses = 1;
 const guessBot = new GuessBot(maxNum);
 let gamePage;
 const gameText = {
@@ -165,8 +165,7 @@ function createEndPage() {
     gamePage = GamePage.EndPage;
     const mainWrapper = clearMainWrapper();
     connectUsernameWithGuesses();
-    let listOfHighScores = localStorage.getItem("highscore") || "";
-    console.log(listOfHighScores);
+    let totalGuesses = localStorage.getItem("score");
     const markup = `
     <div class="title_ender">
       <H2>YOU WON!</H2>
@@ -175,18 +174,27 @@ function createEndPage() {
     <div class="bot_choice"></div>
 
     <div class="high_score">
-      <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+      <div class="gameEndMessage"> "Only ${totalGuesses} ${gameText.correct}</div>
       <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
-      Name Score<br>
-      ${listOfHighScores}
+      <ul class="ul_highscores">
       </div>
     </div>
   
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
-    nGuesses = 0;
+    nGuesses = 1;
     mainWrapper.innerHTML = markup;
+    const ulHighScores = document.querySelector('.ul_highscores');
+    console.log(ulHighScores);
+    let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
+    listOfHighScores.forEach((element) => {
+        var node = document.createElement("LI");
+        var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
+        console.log(textnode);
+        node.appendChild(textnode);
+        ulHighScores.appendChild(node);
+    });
 }
 function inputFocus() {
     const playerInput = document.querySelector('.playerInput');
