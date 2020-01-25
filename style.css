@@ -154,6 +154,7 @@ H3 {
 @keyframes wobble {
     0% {
         transform: translateX(0%);
+        opacity: 0;
     }
     15% {
         transform: translateX(-25%) rotate(-5deg);
@@ -172,6 +173,7 @@ H3 {
     }
     100% {
         transform: translateX(0%);
+        opacity: 1;
     }
 }
 
