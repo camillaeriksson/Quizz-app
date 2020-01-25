@@ -188,7 +188,9 @@ function createEndPage() {
 }
 function inputFocus() {
     const playerInput = document.querySelector('.playerInput');
-    playerInput.focus();
+    if (playerInput) {
+        playerInput.focus();
+    }
 }
 function clearMainWrapper() {
     const mainWrapper = document.querySelector(".main_wrapper");

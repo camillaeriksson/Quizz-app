@@ -201,8 +201,9 @@ function createEndPage() {
 }
 
 function inputFocus() {
-  const playerInput = document.querySelector('.playerInput') as HTMLElement;
-  playerInput.focus();
+  const playerInput = document.querySelector('.playerInput') as HTMLInputElement;
+  if(playerInput)
+  {playerInput.focus();}
 }
 
 function clearMainWrapper(): HTMLElement {
