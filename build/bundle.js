@@ -3,6 +3,7 @@ class GuessBot {
     constructor(maxNumber) {
         this.pickANumber = () => {
             this.secretNumber = Math.floor(Math.random() * this.maxNumber);
+            console.log(this.secretNumber);
             return this.secretNumber;
         };
         this.checkGuess = (guess) => guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
@@ -29,7 +30,7 @@ const gameText = {
     guess: `The robot had between 1 to ${maxNum} drinks. What's your guess?`,
     higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
     lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
-    invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNum}.`,
+    invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNum}.`,
     correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 function init() {
@@ -71,6 +72,7 @@ function getPlayerInput() {
     inputFocus();
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
+    const gameImage = document.querySelector(".images_game");
     gameTextSelector.classList.add('wobble');
     setTimeout(function () {
         gameTextSelector.classList.remove('wobble');
@@ -83,9 +85,11 @@ function getPlayerInput() {
             switch (sign) {
                 case -1:
                     gameTextSelector.innerHTML = gameText.lower;
+                    gameImage.src = "./assets/images/lower.png";
                     break;
                 case 1:
                     gameTextSelector.innerHTML = gameText.higher;
+                    gameImage.src = "./assets/images/higher.png";
                     break;
                 default:
                     showPage(GamePage.EndPage);
@@ -93,6 +97,7 @@ function getPlayerInput() {
         }
         else if (isNaN(guess)) {
             gameTextSelector.innerHTML = gameText.invalidGuess;
+            gameImage.src = "./assets/images/invalid.png";
         }
     }
     playerInputField.value = "";
@@ -168,17 +173,16 @@ function createEndPage() {
     const mainWrapper = clearMainWrapper();
     const markup = `
     <div class="title_ender">
-      <H2>YOU WON!</H2>
+    <h2>YOU WON!</h2>
     </div>
     
-    <div class="bot_choice"></div>
-
     <div class="high_score">
-      <h2>HIGHEST SCORES</h2>
-      <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+    <h2>HIGHEST SCORES</h2>
+    <img src="./assets/images/win.gif" alt="" class="images_game" />
+    <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
     </div>
   
-    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
     mainWrapper.innerHTML = markup;
 }

@@ -35,8 +35,7 @@ body {
 }
 
 .title_ender {
-    height: 30vh;
-    Font-size: 4rem;
+    height: 10vh;
     text-align: center;
     font-style: italic;
     text-transform: uppercase;
@@ -67,14 +66,13 @@ body {
 }
 
 .images_game {
-    width: 20vw;
+    height: 30vh;
 }
 
 .difficulty {
     font-size: 0.75rem;
     color: black;
     text-transform: uppercase;
-
 }
 
 .rules {
@@ -135,13 +133,12 @@ input {
 
 .high_score {
     margin: 2rem 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-a {
-    text-decoration: none;
-}
-
-H3 {
+h3 {
     font-style: italic;
 }
 
