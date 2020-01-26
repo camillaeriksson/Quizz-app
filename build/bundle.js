@@ -16,15 +16,18 @@ class PlayerBot {
         this.smartGuess = (sign, lastGuess) => {
             let guess;
             if (sign === 0) {
-                guess = Math.floor((this.high - this.low) / 2);
+                this.low = 1;
+                this.high = this.maxNumber;
+                guess = Math.floor((this.high - this.low) / 2) + 1;
                 this.lastGuess = guess;
                 return guess;
             }
-            lastGuess ? this.lastGuess = lastGuess : null;
+            lastGuess ? (this.lastGuess = lastGuess) : null;
             if (sign === 1) {
                 this.low = this.lastGuess;
-                const x = Math.floor((this.high - this.low) / 2);
-                guess = this.lastGuess + x;
+                const diff = this.high - this.lastGuess;
+                const x = Math.floor(diff / 2);
+                guess = this.lastGuess + (diff <= 1 ? diff : x);
                 this.lastGuess = guess;
                 return guess;
             }
@@ -39,11 +42,13 @@ class PlayerBot {
         this.stupidGuess = (sign, lastGuess) => {
             let guess;
             if (sign === 0) {
+                this.low = 1;
+                this.high = this.maxNumber;
                 guess = Math.floor(Math.random() * this.high) + 1;
                 this.lastGuess = guess;
                 return guess;
             }
-            lastGuess ? this.lastGuess = lastGuess : null;
+            lastGuess ? (this.lastGuess = lastGuess) : null;
             if (sign === 1) {
                 guess =
                     this.lastGuess +
@@ -66,9 +71,10 @@ class PlayerBot {
                 guess = "bip bop";
                 return guess;
             }
-            guess = Math.floor(Math.random() * this.high) + 1;
+            guess = Math.floor(Math.random() * this.maxNumber) + 1;
             return guess;
         };
+        this.maxNumber = maxNumber;
         this.low = 1;
         this.high = maxNumber;
     }
@@ -96,7 +102,6 @@ const gameText = {
     correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 function init() {
-    const playerBot = new PlayerBot(maxNum);
     showPage(GamePage.StartPage);
     document.addEventListener("keydown", e => handleKeypress(e));
 }

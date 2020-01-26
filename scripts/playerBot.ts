@@ -1,9 +1,23 @@
+/**
+ * The player bot has three guessing algorithms
+ * If the player bot is the first to guess in a round
+ * the sign parameter should be 0.
+ * If it's not the first guess of the round, the sign parameter
+ * should be 1 if the guess should be higher and -1 if
+ * the guess should be lower.
+ * To make the algorithms better also supply the lastGuess
+ * parameter which should be the number the previous player
+ * guessed.
+ */
+
 class PlayerBot {
-  private lastGuess: number = -1;
+  private maxNumber: number;
   private low: number;
   private high: number;
+  private lastGuess: number = -1;
 
   constructor(maxNumber: number) {
+    this.maxNumber = maxNumber;
     this.low = 1;
     this.high = maxNumber;
   }
@@ -11,19 +25,21 @@ class PlayerBot {
   smartGuess = (sign: -1 | 0 | 1, lastGuess?: number): number => {
     let guess: number;
 
-    // 0 if it's the first guess of the round
     if (sign === 0) {
-      guess = Math.floor((this.high - this.low) / 2);
+      this.low = 1;
+      this.high = this.maxNumber;
+      guess = Math.floor((this.high - this.low) / 2) + 1;
       this.lastGuess = guess;
       return guess;
     }
 
-    lastGuess ? this.lastGuess = lastGuess : null;
+    lastGuess ? (this.lastGuess = lastGuess) : null;
 
     if (sign === 1) {
       this.low = this.lastGuess;
-      const x = Math.floor((this.high - this.low) / 2);
-      guess = this.lastGuess + x;
+      const diff = this.high - this.lastGuess;
+      const x = Math.floor(diff / 2);
+      guess = this.lastGuess + (diff <= 1 ? diff : x);
       this.lastGuess = guess;
       return guess;
     } else {
@@ -39,12 +55,14 @@ class PlayerBot {
     let guess: number;
 
     if (sign === 0) {
+      this.low = 1;
+      this.high = this.maxNumber;
       guess = Math.floor(Math.random() * this.high) + 1;
       this.lastGuess = guess;
       return guess;
     }
 
-    lastGuess ? this.lastGuess = lastGuess : null;
+    lastGuess ? (this.lastGuess = lastGuess) : null;
 
     if (sign === 1) {
       guess =
@@ -61,9 +79,8 @@ class PlayerBot {
     }
   };
 
-  retardedGuess = (): (number | string) => {
+  retardedGuess = (): number | string => {
     let guess: number | string;
-
     const chance = Math.random();
 
     if (chance > 0.6) {
@@ -71,8 +88,8 @@ class PlayerBot {
       return guess;
     }
 
-    guess = Math.floor(Math.random() * this.high) + 1;
+    guess = Math.floor(Math.random() * this.maxNumber) + 1;
 
     return guess;
-  }
+  };
 }

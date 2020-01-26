@@ -23,8 +23,6 @@ const gameText = {
 };
 
 function init() {
-  const playerBot = new PlayerBot(maxNum);
-  
   showPage(GamePage.StartPage);
   document.addEventListener("keydown", e => handleKeypress(e))
 }
