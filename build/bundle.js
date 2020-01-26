@@ -11,6 +11,77 @@ class GuessBot {
         this.secretNumber = this.pickANumber();
     }
 }
+class PlayerBot {
+    constructor(maxNumber) {
+        this.lastGuess = -1;
+        this.smartGuess = (sign, lastGuess) => {
+            let guess;
+            if (sign === 0) {
+                this.low = 1;
+                this.high = this.maxNumber;
+                guess = Math.floor((this.high - this.low) / 2) + 1;
+                this.lastGuess = guess;
+                return guess;
+            }
+            lastGuess ? (this.lastGuess = lastGuess) : null;
+            if (sign === 1) {
+                this.low = this.lastGuess;
+                const diff = this.high - this.lastGuess;
+                const x = Math.floor(diff / 2);
+                guess = this.lastGuess + (diff <= 1 ? diff : x);
+                this.lastGuess = guess;
+                return guess;
+            }
+            else {
+                this.high = this.lastGuess;
+                const x = Math.floor((this.high - this.low) / 2);
+                guess = this.lastGuess - x;
+                this.lastGuess = guess;
+                return guess;
+            }
+        };
+        this.stupidGuess = (sign, lastGuess) => {
+            let guess;
+            if (sign === 0) {
+                this.low = 1;
+                this.high = this.maxNumber;
+                guess = Math.floor(Math.random() * this.high) + 1;
+                this.lastGuess = guess;
+                return guess;
+            }
+            lastGuess ? (this.lastGuess = lastGuess) : null;
+            if (sign === 1) {
+                this.low = this.lastGuess;
+                guess =
+                    this.lastGuess +
+                        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
+                this.lastGuess = guess;
+                return guess > this.high ? this.high : guess;
+            }
+            else {
+                this.high = this.lastGuess;
+                guess =
+                    this.lastGuess -
+                        Math.floor(Math.random() * (this.high - this.low) + 1);
+                this.lastGuess = guess;
+                return guess < this.low ? this.low : guess;
+            }
+        };
+        this.retardedGuess = () => {
+            let guess;
+            const chance = Math.random();
+            if (chance > 0.6) {
+                guess = "bip bop";
+                return guess;
+            }
+            guess = Math.floor(Math.random() * this.maxNumber) + 1;
+            return guess;
+        };
+        this.maxNumber = maxNumber;
+        this.low = 1;
+        this.high = maxNumber;
+    }
+}
 var GamePage;
 (function (GamePage) {
     GamePage[GamePage["StartPage"] = 0] = "StartPage";
