@@ -12,48 +12,65 @@ class GuessBot {
 }
 class PlayerBot {
     constructor(maxNumber) {
-        this.history = [];
-        this.guesses = [
-            {
-                value: 50,
-                sign: 1
-            },
-            {
-                value: 75,
-                sign: -1
-            },
-            {
-                value: 62,
-                sign: 1
-            }
-        ];
-        this.makeAGuess = () => {
+        this.lastGuess = -1;
+        this.smartGuess = (sign, lastGuess) => {
             let guess;
-            if (this.history.length == 0) {
-                guess = Math.floor(Math.random() * this.maxNumber);
-                this.history.push(guess);
+            if (sign === 0) {
+                guess = Math.floor((this.high - this.low) / 2);
+                this.lastGuess = guess;
                 return guess;
             }
-            const [min, max] = this.findMinMax();
-            guess = Math.floor((min + max) / 2);
+            lastGuess ? this.lastGuess = lastGuess : null;
+            if (sign === 1) {
+                this.low = this.lastGuess;
+                const x = Math.floor((this.high - this.low) / 2);
+                guess = this.lastGuess + x;
+                this.lastGuess = guess;
+                return guess;
+            }
+            else {
+                this.high = this.lastGuess;
+                const x = Math.floor((this.high - this.low) / 2);
+                guess = this.lastGuess - x;
+                this.lastGuess = guess;
+                return guess;
+            }
+        };
+        this.stupidGuess = (sign, lastGuess) => {
+            let guess;
+            if (sign === 0) {
+                guess = Math.floor(Math.random() * this.high) + 1;
+                this.lastGuess = guess;
+                return guess;
+            }
+            lastGuess ? this.lastGuess = lastGuess : null;
+            if (sign === 1) {
+                guess =
+                    this.lastGuess +
+                        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
+                this.lastGuess = guess;
+                return guess > this.high ? this.high : guess;
+            }
+            else {
+                guess =
+                    this.lastGuess -
+                        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
+                this.lastGuess = guess;
+                return guess < this.low ? this.low : guess;
+            }
+        };
+        this.retardedGuess = () => {
+            let guess;
+            const chance = Math.random();
+            if (chance > 0.6) {
+                guess = "bip bop";
+                return guess;
+            }
+            guess = Math.floor(Math.random() * this.high) + 1;
             return guess;
         };
-        this.maxNumber = maxNumber;
-    }
-    findMinMax() {
-        let min = 0;
-        let max = 0;
-        for (let i = 0; i < this.guesses.length; i++) {
-            if (i === 0)
-                min = this.guesses[i].value;
-            if (i === 0)
-                max = this.guesses[i].value;
-            if (min > this.guesses[i].value)
-                min = this.guesses[i].value;
-            if (max < this.guesses[i].value)
-                max = this.guesses[i].value;
-        }
-        return [min, max];
+        this.low = 1;
+        this.high = maxNumber;
     }
 }
 var GamePage;
@@ -79,6 +96,7 @@ const gameText = {
     correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 function init() {
+    const playerBot = new PlayerBot(maxNum);
     showPage(GamePage.StartPage);
     document.addEventListener("keydown", e => handleKeypress(e));
 }
