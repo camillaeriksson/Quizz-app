@@ -3,6 +3,7 @@ class GuessBot {
     constructor(maxNumber) {
         this.pickANumber = () => {
             this.secretNumber = Math.floor(Math.random() * this.maxNumber);
+            console.log(this.secretNumber);
             return this.secretNumber;
         };
         this.checkGuess = (guess) => guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
@@ -98,9 +99,9 @@ const gameText = {
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
   the robot can’t remember. Help him answer the doorman correctly!`,
     guess: `The robot had between 1 to ${maxNum} drinks. What's your guess?`,
-    higher: `- *hick**blip blop* No, that can’t be right... It must be more!`,
-    lower: `-*beep beep boop* No, that can’t be right... It must be less!`,
-    invalidGuess: `Your guess is invalid, enter a number between 1 and ${maxNum}.`,
+    higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
+    lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
+    invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNum}.`,
     correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 function init() {
@@ -139,8 +140,14 @@ function showPage(gamePage) {
     }
 }
 function getPlayerInput() {
+    inputFocus();
     const gameTextSelector = document.querySelector(".gameMessage");
-    let playerInputField = document.querySelector(".playerInput");
+    const playerInputField = document.querySelector(".playerInput");
+    const gameImage = document.querySelector(".images_game");
+    gameTextSelector.classList.add('wobble');
+    setTimeout(function () {
+        gameTextSelector.classList.remove('wobble');
+    }, 5000);
     if (playerInputField !== null) {
         guess = Number(playerInputField.value);
         if (!isNaN(guess)) {
@@ -149,9 +156,11 @@ function getPlayerInput() {
             switch (sign) {
                 case -1:
                     gameTextSelector.innerHTML = gameText.lower;
+                    gameImage.src = "./assets/images/lower.png";
                     break;
                 case 1:
                     gameTextSelector.innerHTML = gameText.higher;
+                    gameImage.src = "./assets/images/higher.png";
                     break;
                 default:
                     showPage(GamePage.EndPage);
@@ -159,6 +168,7 @@ function getPlayerInput() {
         }
         else if (isNaN(guess)) {
             gameTextSelector.innerHTML = gameText.invalidGuess;
+            gameImage.src = "./assets/images/invalid.png";
         }
     }
     playerInputField.value = "";
@@ -170,12 +180,13 @@ function startGameSaveInput() {
         localStorage.setItem("playerName", playerName.value);
     }
     showPage(GamePage.PlayPage);
+    inputFocus();
 }
 function createStartPage() {
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
-    <div class="title">THE DRUNK ROBOT</div>
+    <div class="title">DRUNK BOTS</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -188,7 +199,7 @@ function createStartPage() {
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard.png" alt="" class="images" />
-        <h3 class="difficulty">Shitfaced</h3>
+        <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
 
@@ -198,7 +209,7 @@ function createStartPage() {
 
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input">
+      <button onclick="startGameSaveInput();" id="player_input">
         START
       </button>
     </div>
@@ -210,8 +221,6 @@ function createPlayPage() {
     const mainWrapper = clearMainWrapper();
     const playerName = localStorage.getItem("playerName");
     const markup = `
-    <div class="title_game"></div>
-
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
     <div class="gameMessage">${gameText.guess}</div>
 
@@ -222,9 +231,8 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <div class="gameMessage">${gameText.guess}</div>
       <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
-      <button class="playGame" onclick="getPlayerInput(); inputFocus();">
+      <button class="playGame" onclick="getPlayerInput();">
         <h2>PLAY</h2>
       </button>
     </div>
@@ -236,23 +244,24 @@ function createEndPage() {
     const mainWrapper = clearMainWrapper();
     const markup = `
     <div class="title_ender">
-      <H2>YOU WON!</H2>
+    <h2>YOU WON!</h2>
     </div>
     
-    <div class="bot_choice"></div>
-
     <div class="high_score">
-      <h2>HIGHEST SCORES</h2>
-      <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+    <h2>HIGHEST SCORES</h2>
+    <img src="./assets/images/win.gif" alt="" class="images_game" />
+    <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
     </div>
   
-    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
   `;
     mainWrapper.innerHTML = markup;
 }
 function inputFocus() {
     const playerInput = document.querySelector('.playerInput');
-    playerInput.focus();
+    if (playerInput) {
+        playerInput.focus();
+    }
 }
 function clearMainWrapper() {
     const mainWrapper = document.querySelector(".main_wrapper");
