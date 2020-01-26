@@ -19,7 +19,7 @@ const gameText = {
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNum}.`,
-  correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
+  correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 
 function init() {
@@ -188,15 +188,17 @@ function createEndPage() {
 
   const markup = `
     <div class="title_ender">
-    <h2>YOU WON!</h2>
+    <h2>YOU WON!</h2><br>
     </div>
-    
+    <p>You got ${totalGuesses} points.</p>
+    <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
-      <div class="gameEndMessage"> "Only ${totalGuesses} ${gameText.correct}</div>
+      <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
       <ul class="ul_highscores">
       </div>
+    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
     </div>
   
   `;
@@ -206,12 +208,10 @@ function createEndPage() {
   mainWrapper.innerHTML = markup;
 
   const ulHighScores = document.querySelector('.ul_highscores') as HTMLElement;
-  console.log(ulHighScores)
   let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "")
   listOfHighScores.forEach((element: any) => {         // CHANGE TYPE
     var node = document.createElement("LI");
     var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
-    console.log(textnode)
     node.appendChild(textnode);
     ulHighScores.appendChild(node);
   });
