@@ -65,15 +65,17 @@ class PlayerBot {
     lastGuess ? (this.lastGuess = lastGuess) : null;
 
     if (sign === 1) {
+      this.low = this.lastGuess;
       guess =
         this.lastGuess +
         Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
       this.lastGuess = guess;
       return guess > this.high ? this.high : guess;
     } else {
+      this.high = this.lastGuess;
       guess =
         this.lastGuess -
-        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
+        Math.floor(Math.random() * (this.high - this.low) + 1);
       this.lastGuess = guess;
       return guess < this.low ? this.low : guess;
     }
