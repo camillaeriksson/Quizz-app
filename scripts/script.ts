@@ -36,7 +36,6 @@ window.onclick = function (e: any) {
   }
 }
 
-
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
