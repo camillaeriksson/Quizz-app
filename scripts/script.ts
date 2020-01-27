@@ -10,6 +10,7 @@ const maxNum: number = 100;
 let nGuesses: number = 1;
 const guessBot: GuessBot = new GuessBot(maxNum);
 let gamePage: GamePage;
+let multiplayerMode: boolean = false;
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
@@ -113,9 +114,17 @@ function startGameSaveInput() {
   inputFocus()
 }
 
+function changeModeToBot() {
+  multiplayerMode = true;
+}
+
+function changeModeToSingle() {
+  multiplayerMode = false;
+}
+
 function createStartPage() {
   const oldPlayerName = localStorage.getItem('playerName');
-  
+
   gamePage = GamePage.StartPage;
   const mainWrapper = clearMainWrapper();
 
@@ -141,6 +150,7 @@ function createStartPage() {
       <div class="robotInstructions">${gameText.welcome}</div>
     </div>
 
+    <button onclick="changeModeToSingle()" class="background-1">Single player</button><button onclick="changeModeToBot()" class="background-1">Against bot</button>
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
 
@@ -212,14 +222,14 @@ function createEndPage() {
 
   `;
 
-  nGuesses =1;
+  nGuesses = 1;
   mainWrapper.innerHTML = markup;
 
   const ulHighScores = document.querySelector('.ul_highscores') as HTMLElement;
   let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "")
   listOfHighScores.forEach((element: any) => {         // CHANGE TYPE
-    var node = document.createElement("LI");
-    var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
+    let node = document.createElement("LI");
+    let textnode = document.createTextNode(element.name + " " + element.totalGuesses);
     node.appendChild(textnode);
     ulHighScores.appendChild(node);
   });
@@ -259,7 +269,7 @@ function connectUsernameWithGuesses() {
 
 }
 
-function removeGreetings(){
+function removeGreetings() {
   const greetings = document.querySelector('.robotGreetings')
   greetings?.remove()
 }
