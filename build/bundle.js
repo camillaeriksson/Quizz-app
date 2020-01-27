@@ -141,42 +141,43 @@ function showPage(gamePage) {
 }
 function getPlayerInput() {
     inputFocus();
+    removeGreetings();
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
     const gameImage = document.querySelector(".images_game");
     gameTextSelector.classList.add('wobble');
     setTimeout(function () {
         gameTextSelector.classList.remove('wobble');
-    }, 5000);
+    }, 2000);
     if (playerInputField !== null) {
-        guess = Number(playerInputField.value);
+        guess = playerInputField.value || "invalid";
         localStorage.setItem("score", nGuesses.toString());
         if (!isNaN(guess)) {
             nGuesses++;
             const sign = guessBot.checkGuess(guess);
             switch (sign) {
                 case -1:
-                    gameTextSelector.innerHTML = gameText.lower;
                     gameImage.src = "./assets/images/lower.png";
+                    gameTextSelector.innerHTML = gameText.lower;
                     break;
                 case 1:
-                    gameTextSelector.innerHTML = gameText.higher;
                     gameImage.src = "./assets/images/higher.png";
+                    gameTextSelector.innerHTML = gameText.higher;
                     break;
                 default:
                     showPage(GamePage.EndPage);
             }
         }
         else if (isNaN(guess)) {
-            gameTextSelector.innerHTML = gameText.invalidGuess;
             gameImage.src = "./assets/images/invalid.png";
+            gameTextSelector.innerHTML = gameText.invalidGuess;
         }
     }
-    playerInputField.value = "";
+    playerInputField.value = "enter your guess";
     console.log(guess);
 }
 function startGameSaveInput() {
-    let playerName = document.getElementById("playerName");
+    const playerName = document.getElementById("playerName");
     if (playerName !== null) {
         localStorage.setItem("playerName", playerName.value);
     }
@@ -184,6 +185,7 @@ function startGameSaveInput() {
     inputFocus();
 }
 function createStartPage() {
+    const oldPlayerName = localStorage.getItem('playerName');
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -216,8 +218,13 @@ function createStartPage() {
     </div>
   `;
     mainWrapper.innerHTML = markup;
+    const playerName = document.getElementById("playerName");
+    if (oldPlayerName !== null) {
+        playerName.value = oldPlayerName;
+    }
 }
 function createPlayPage() {
+    guessBot.pickANumber();
     gamePage = GamePage.PlayPage;
     const mainWrapper = clearMainWrapper();
     const playerName = localStorage.getItem("playerName");
@@ -232,7 +239,7 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
+      <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
       <button class="playGame" onclick="getPlayerInput();">
         <h2>PLAY</h2>
       </button>
@@ -249,7 +256,7 @@ function createEndPage() {
     <div class="title_ender">
     <h2>YOU WON!</h2><br>
     </div>
-    <p>You got ${totalGuesses} points.</p>
+    <p>You took ${totalGuesses} guesses.</p>
     <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
@@ -293,9 +300,14 @@ function connectUsernameWithGuesses() {
     };
     const highscores = [...JSON.parse(highscore), playerObject]
         .sort((a, b) => a.totalGuesses - b.totalGuesses)
-        .slice(0, 5);
+        .slice(0, 3);
     localStorage.setItem("highscore", JSON.stringify(highscores));
     highscores.push(name);
     highscores.push(totalGuesses);
+}
+function removeGreetings() {
+    var _a;
+    const greetings = document.querySelector('.robotGreetings');
+    (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
 }
 //# sourceMappingURL=bundle.js.map
