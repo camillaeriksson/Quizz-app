@@ -99,8 +99,8 @@ input {
 }
 button {
     margin: 1rem 0;
-    /* -webkit-transform-style: preserve-3d;
-    -webkit-backface-visibility: hidden; */
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
     border-radius: 3px;
     padding: 0.7rem 1.8rem;
     border: none;
@@ -132,8 +132,8 @@ button {
 
   button:hover {
     filter: blur(0) brightness(110%);
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
-    transform: scale(1.005);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
+  transform: scale(1.005);
   }
   
   button:active {
@@ -142,7 +142,7 @@ button {
   
   .background-2 {
     background: linear-gradient(123deg, #FFFFFF 0%, #00B2FF 100%), linear-gradient(236deg, #BAFF99 0%, #005E64 100%), linear-gradient(180deg, #FFFFFF 0%, #002A5A 100%), linear-gradient(225deg, #0094FF 20%, #BFF4ED 45%, #280F34 45%, #280F34 70%, #FF004E 70%, #E41655 85%, #B30753 85%, #B30753 100%), linear-gradient(135deg, #0E0220 15%, #0E0220 35%, #E40475 35%, #E40475 60%, #48E0E4 60%, #48E0E4 68%, #D7FBF6 68%, #D7FBF6 100%);
-  background-blend-mode: overlay, overlay, overlay, darken, normal;
+    background-blend-mode: overlay, overlay, overlay, darken, normal;
   }
 
   .background-5 {
