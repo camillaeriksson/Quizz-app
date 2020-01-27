@@ -212,6 +212,7 @@ function createStartPage() {
 
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
+
       <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
 
     </div>
@@ -266,7 +267,6 @@ function createEndPage() {
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
     </div>
   
-
     <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2 startAgain">Home</button>
 
   `;
