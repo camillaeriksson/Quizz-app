@@ -1,10 +1,10 @@
 html {
     font-family: 'Raleway', sans-serif;
+    overflow: hidden;
 }
 
 body {
-    background-image: linear-gradient(180deg,
-            #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+    background-image: linear-gradient(180deg, #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
     background-size: cover;
     background-repeat: no-repeat;
     display: grid;
@@ -12,7 +12,6 @@ body {
     grid-template-rows: 10% auto 10%;
     height: 100vh;
     margin: 0;
-
 }
 
 .main_wrapper {
@@ -21,29 +20,25 @@ body {
     justify-content: center;
     align-items: center;
     grid-area: 2/2;
-
-
 }
 
 .title {
     font-size: 4rem;
     padding-bottom: 3rem;
+    animation: bounce 2.5s 2 both;
 }
 
-
-.title_game{
+.title_game {
     Font-size: 2rem;
     text-align: center;
     font-style: italic;
 }
-.title_ender
-{
-    height: 30vh;
-    Font-size: 4rem;
+
+.title_ender {
+    height: 10vh;
     text-align: center;
     font-style: italic;
-
-
+    text-transform: uppercase;
 }
 
 .bot_choice {
@@ -54,17 +49,13 @@ body {
     color: white;
     font-size: 5vw;
     width: 25vw;
-    
-
-
 }
 
 .robotImages {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-
+    padding-left: .8rem;
 }
 
 #imgEasy, #imgMedium, #imgHard {
@@ -84,6 +75,9 @@ body {
     width: 25vw; 
 }
 
+.images_game {
+    height: 30vh;
+}
 
 .difficulty {
     font-size: 0.75rem;
@@ -97,7 +91,7 @@ body {
     align-items: center;
     width: 40vw;
     text-justify: distribute;
-
+    margin: 2rem 0 0 0;
 }
 
 .player_input {
@@ -113,34 +107,86 @@ input {
     margin: 3rem 0 2rem 0;
     font-size: 1rem;
 }
+button {
+    margin: 1rem 0;
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    border-radius: 3px;
+    padding: 0.7rem 1.8rem;
+    border: none;
+    outline: none;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    filter: blur(0.5px) brightness(90%);
+    -webkit-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
+    -moz-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
+    -o-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
+    transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
+    font-family: monospace;
+    letter-spacing: 10px;
+    text-indent: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+  }
+
+
+  .button-round {
+    width: 5rem;
+    height: 5rem;
+    padding: 0;
+    border-radius: 50%;
+    letter-spacing: 5px;
+    text-indent: 5px;
+  }
+
+  button:hover {
+    filter: blur(0) brightness(110%);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
+  transform: scale(1.005);
+  }
+  
+  button:active {
+    filter: brightness(140%);
+  }
+  
+  .background-2 {
+    background: linear-gradient(123deg, #FFFFFF 0%, #00B2FF 100%), linear-gradient(236deg, #BAFF99 0%, #005E64 100%), linear-gradient(180deg, #FFFFFF 0%, #002A5A 100%), linear-gradient(225deg, #0094FF 20%, #BFF4ED 45%, #280F34 45%, #280F34 70%, #FF004E 70%, #E41655 85%, #B30753 85%, #B30753 100%), linear-gradient(135deg, #0E0220 15%, #0E0220 35%, #E40475 35%, #E40475 60%, #48E0E4 60%, #48E0E4 68%, #D7FBF6 68%, #D7FBF6 100%);
+    background-blend-mode: overlay, overlay, overlay, darken, normal;
+  }
+
+  .background-5 {
+    background: radial-gradient(100% 225% at 100% 0%, #FF0000 0%, #000000 100%), linear-gradient(236deg, #00C2FF 0%, #000000 100%), linear-gradient(135deg, #CDFFEB 0%, #CDFFEB 36%, #009F9D 36%, #009F9D 60%, #07456F 60%, #07456F 67%, #0F0A3C 67%, #0F0A3C 100%);
+  background-blend-mode: overlay, hard-light, normal;
+  }
+  
 
 .startGame {
     background-color: pink;
     width: 100px;
     border-radius: 5%;
     border: 0px solid #000;
-
 }
-.startGame:hover{
-    background-color:springgreen;
+
+.startGame:hover {
+    background-color: springgreen;
     border: none;
 }
+
 .startAgain {
     background-color: pink;
     width: 150px;
     border-radius: 5%;
     border: 0px solid #000;
-    margin-top: 3rem;
-    
-
+    margin-top: 1rem;
 }
-.robotClues{
-    font-size: 2em;
-    font-style: italic;
-    text-transform: uppercase;
+
+.gameMessage {
+    padding: 2rem;
     text-align: center;
 }
-.robotEndMessage{
+
+.robotEndMessage {
     margin-top: 3rem;
     font-size: 6em;
     font-style: italic;
@@ -148,47 +194,118 @@ input {
     text-align: center;
 }
 
-a{
-    text-decoration: none;
+.high_score {
+    margin: 2rem 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-H3{
+
+h3 {
     font-style: italic;
 }
-@media only screen and (max-width: 500px) {
+
+.wobble {
+    animation: wobble 1.5s both;
+}
+
+ul{
+    margin:0;
+}
+
+/* The wobble effect */
+
+@keyframes wobble {
+    0% {
+        transform: translateX(0%);
+        opacity: 0;
+    }
+    15% {
+        transform: translateX(-25%) rotate(-5deg);
+    }
+    30% {
+        transform: translateX(20%) rotate(3deg);
+    }
+    45% {
+        transform: translateX(-15%) rotate(-3deg);
+    }
+    60% {
+        transform: translateX(10%) rotate(2deg);
+    }
+    75% {
+        transform: translateX(-5%) rotate(-1deg);
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+/* The bounce effect */
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveLeftToRight {
+    0% {
+        left: -100px;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    body {
+        grid-template-rows: 5% auto 5%;
+    }
     .title {
         font-size: 2rem;
         padding-bottom: 2rem;
     }
+    .images {
+        width: 3rem;
+    }
     .rules {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         width: 70vw;
-        text-justify: distribute;
-    
-    }
-    .images_game{
-        width: 50vw; 
-    }
-    .robotClues{
-        font-size: 1.5em;
-        font-style: italic;
-        text-transform: uppercase;
         text-align: center;
     }
-    .robotEndMessage{
-        font-size: 1.5em;
-        font-style: italic;
-        text-transform: uppercase;
-        text-align: center;
+    .robotImages {
+        justify-content: space-evenly;
+        width: 100vw;
     }
-    .title_ender{
-        font-size: 1.5em;
-        font-style: italic;
-        text-transform: uppercase;
-        text-align: center;
-    
-    
+    input {
+        margin: 2rem 0 2rem 0;
     }
-    
-  }
+    .images_game {
+        width: 50vw;
+    }
+    .robotEndMessage {
+        font-size: 1.5em;
+    }
+    .title_ender {
+        font-size: 1.5em;
+    }
+    .high_score {
+        text-align: center;
+        margin: 0rem 0 2rem 0;
+    }
+}
