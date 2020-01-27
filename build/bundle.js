@@ -264,7 +264,7 @@ function createEndPage() {
       <div class="user_and_score">
       <ul class="ul_highscores">
       </div>
-    <button class="startAgain" onclick="showPage(GamePage.StartPage)">RESTART</button>
+  
     </div>
   
     <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2 startAgain">Home</button>
