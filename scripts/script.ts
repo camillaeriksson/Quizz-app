@@ -7,7 +7,7 @@ enum GamePage {
 window.onload = init;
 let guess: any;
 const maxNum: number = 100;
-let nGuesses: number = 0;
+let nGuesses: number = 1;
 const guessBot: GuessBot = new GuessBot(maxNum);
 let gamePage: GamePage;
 
@@ -19,7 +19,7 @@ const gameText = {
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNum}.`,
-  correct: `guesses! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
+  correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 
 function init() {
@@ -76,6 +76,7 @@ function getPlayerInput() {
 
   if (playerInputField !== null) {
     guess = Number(playerInputField.value);
+    localStorage.setItem("score", nGuesses.toString());
 
     if (!isNaN(guess)) {
       nGuesses++;
@@ -182,28 +183,43 @@ function createPlayPage() {
 function createEndPage() {
   gamePage = GamePage.EndPage;
   const mainWrapper = clearMainWrapper();
+  connectUsernameWithGuesses();
+  let totalGuesses = localStorage.getItem("score");
 
   const markup = `
     <div class="title_ender">
-    <h2>YOU WON!</h2>
+    <h2>YOU WON!</h2><br>
     </div>
-    
-    <div class="high_score">
-    <h2>HIGHEST SCORES</h2>
+    <p>You got ${totalGuesses} points.</p>
     <img src="./assets/images/win.gif" alt="" class="images_game" />
-    <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
+    <div class="high_score">
+      <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
+      <h2>HIGHEST SCORES</h2>
+      <div class="user_and_score">
+      <ul class="ul_highscores">
+      </div>
     <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
     </div>
   
   `;
 
+  nGuesses = 1;
+
   mainWrapper.innerHTML = markup;
+
+  const ulHighScores = document.querySelector('.ul_highscores') as HTMLElement;
+  let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "")
+  listOfHighScores.forEach((element: any) => {         // CHANGE TYPE
+    var node = document.createElement("LI");
+    var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
+    node.appendChild(textnode);
+    ulHighScores.appendChild(node);
+  });
 }
 
 function inputFocus() {
   const playerInput = document.querySelector('.playerInput') as HTMLInputElement;
-  if(playerInput)
-  {playerInput.focus();}
+  if (playerInput) { playerInput.focus(); }
 }
 
 function clearMainWrapper(): HTMLElement {
@@ -212,6 +228,25 @@ function clearMainWrapper(): HTMLElement {
   return mainWrapper;
 }
 
+function connectUsernameWithGuesses() {
+  let name = localStorage.getItem("playerName") || "";
+  let totalGuesses = localStorage.getItem("score") || "";
+
+  const highscore = localStorage.getItem("highscore") || "[]";
+
+  const playerObject = {
+    name,
+    totalGuesses
+  };
+
+  const highscores = [...JSON.parse(highscore), playerObject]
+    .sort((a, b) => a.totalGuesses - b.totalGuesses)
+    .slice(0, 5);
+
+  localStorage.setItem("highscore", JSON.stringify(highscores));
+
+  highscores.push(name);
+  highscores.push(totalGuesses);
 
 
-
+}
