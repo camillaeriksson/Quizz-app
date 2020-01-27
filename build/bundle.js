@@ -127,9 +127,7 @@ function createStartPage() {
 
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input">
-        START
-      </button>
+      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
     </div>
   `;
     mainWrapper.innerHTML = markup;
@@ -151,11 +149,8 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <div class="gameMessage">${gameText.guess}</div>
       <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
-      <button class="playGame" onclick="getPlayerInput(); inputFocus();">
-        <h2>PLAY</h2>
-      </button>
+      </button><button onclick="getPlayerInput();" class="button-round background-5 playGame">Submit</button>
     </div>
   `;
     mainWrapper.innerHTML = markup;
@@ -175,7 +170,8 @@ function createEndPage() {
       <div class="gameEndMessage"> "Only ${nGuesses} ${gameText.correct}</div>
     </div>
   
-    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
+  
+    <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2 startAgain">Home</button>
   `;
     mainWrapper.innerHTML = markup;
 }
