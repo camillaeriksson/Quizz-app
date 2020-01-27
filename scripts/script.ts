@@ -13,18 +13,29 @@ let nGuesses: number = 1;
 const guessBot: GuessBot = new GuessBot(maxNumEasy);
 let gamePage: GamePage;
 const range = {
-  Easy:10,
-  Medium:50,
-  Hard:100,
+  Easy: 10,
+  Medium: 50,
+  Hard: 100,
 
 }
 
-function checkSelectedRange(){
- const imageClicked = document.querySelector('.robotImages')
- imageClicked.clickfunction(){
-   
- }
+
+window.onclick = function (e: any) {
+  console.log(e.toElement.id)
+  switch (e.toElement.id) {
+    case 'imgEasy':
+      console.log(1)
+      
+      break;
+    case 'imgMedium':
+      console.log(2)
+      break;
+    case 'imgHard':
+      console.log(3)
+      break;
+  }
 }
+
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
@@ -38,35 +49,35 @@ const gameText = {
 };
 
 
-function clickTipsy() {
-let tipsy = document.getElementById("imgEasy");
-tipsy.addEventListener("click");
-window.location.assign("./assets/images/easy.png");
-  } 
+// function clickTipsy() {
+// let tipsy = document.getElementById("imgEasy");
+// tipsy.addEventListener("click");
+// window.location.assign("./assets/images/easy.png");
+//   } 
 
-function createRobotTipsy() {
+// function createRobotTipsy() {
 
-}
+// }
 
-function clickHammered() {
-  let hammered = document.getElementById("imgMedium");
-  hammered.addEventListener("click");
-  window.location.assign("./assets/images/medium.png");
-    } 
-  
-  function createRobotHammered() {
-  
-  }
+// function clickHammered() {
+//   let hammered = document.getElementById("imgMedium");
+//   hammered.addEventListener("click");
+//   window.location.assign("./assets/images/medium.png");
+//     } 
 
-  function clickShitfaced() {
-    let shitfaced = document.getElementById("imgHard");
-    shitfaced.addEventListener("click"); 
-    window.location.assign("./assets/images/hard.png");
-      } 
-    
-    function createRobotShitfaced() {
-    
-    }
+//   function createRobotHammered() {
+
+//   }
+
+//   function clickShitfaced() {
+//     let shitfaced = document.getElementById("imgHard");
+//     shitfaced.addEventListener("click"); 
+//     window.location.assign("./assets/images/hard.png");
+//       } 
+
+//     function createRobotShitfaced() {
+
+//     }
 
 function init() {
   showPage(GamePage.StartPage);
@@ -160,7 +171,7 @@ function startGameSaveInput() {
 
 function createStartPage() {
   const oldPlayerName = localStorage.getItem('playerName');
-  
+
   gamePage = GamePage.StartPage;
   const mainWrapper = clearMainWrapper();
 
@@ -257,7 +268,7 @@ function createEndPage() {
 
   `;
 
-  nGuesses =1;
+  nGuesses = 1;
   mainWrapper.innerHTML = markup;
 
   const ulHighScores = document.querySelector('.ul_highscores') as HTMLElement;
@@ -304,7 +315,7 @@ function connectUsernameWithGuesses() {
 
 }
 
-function removeGreetings(){
+function removeGreetings() {
   const greetings = document.querySelector('.robotGreetings')
   greetings?.remove()
 }

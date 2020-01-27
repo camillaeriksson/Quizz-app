@@ -101,12 +101,20 @@ const range = {
     Medium: 50,
     Hard: 100,
 };
-function checkSelectedRange() {
-    const imageClicked = document.querySelector('.robotImages');
-    imageClicked.clickfunction();
-    {
+window.onclick = function (e) {
+    console.log(e.toElement.id);
+    switch (e.toElement.id) {
+        case 'imgEasy':
+            console.log(1);
+            break;
+        case 'imgMedium':
+            console.log(2);
+            break;
+        case 'imgHard':
+            console.log(3);
+            break;
     }
-}
+};
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -117,27 +125,6 @@ const gameText = {
     invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNumEasy}.`,
     correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
-function clickTipsy() {
-    let tipsy = document.getElementById("imgEasy");
-    tipsy.addEventListener("click");
-    window.location.assign("./assets/images/easy.png");
-}
-function createRobotTipsy() {
-}
-function clickHammered() {
-    let hammered = document.getElementById("imgMedium");
-    hammered.addEventListener("click");
-    window.location.assign("./assets/images/medium.png");
-}
-function createRobotHammered() {
-}
-function clickShitfaced() {
-    let shitfaced = document.getElementById("imgHard");
-    shitfaced.addEventListener("click");
-    window.location.assign("./assets/images/hard.png");
-}
-function createRobotShitfaced() {
-}
 function init() {
     showPage(GamePage.StartPage);
     document.addEventListener("keydown", e => handleKeypress(e));
