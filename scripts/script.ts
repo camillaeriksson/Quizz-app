@@ -64,6 +64,7 @@ function showPage(gamePage: GamePage) {
 function getPlayerInput() {
 
   inputFocus()
+  removeGreetings()
   const gameTextSelector = document.querySelector(".gameMessage") as HTMLDivElement;
   const playerInputField = document.querySelector(".playerInput") as HTMLInputElement;
   const gameImage = document.querySelector(".images_game") as HTMLImageElement;
@@ -72,10 +73,10 @@ function getPlayerInput() {
 
   setTimeout(function () {
     gameTextSelector.classList.remove('wobble')
-  }, 5000)
+  }, 2000)
 
   if (playerInputField !== null) {
-    guess = Number(playerInputField.value);
+    guess = playerInputField.value || "invalid";
     localStorage.setItem("score", nGuesses.toString());
 
     if (!isNaN(guess)) {
@@ -84,23 +85,22 @@ function getPlayerInput() {
 
       switch (sign) {
         case -1:
-          gameTextSelector.innerHTML = gameText.lower;
           gameImage.src = "./assets/images/lower.png";
-
+          gameTextSelector.innerHTML = gameText.lower;
           break;
         case 1:
-          gameTextSelector.innerHTML = gameText.higher;
           gameImage.src = "./assets/images/higher.png"
+          gameTextSelector.innerHTML = gameText.higher;
           break;
         default:
           showPage(GamePage.EndPage);
       }
     } else if (isNaN(guess)) {
-      gameTextSelector.innerHTML = gameText.invalidGuess;
       gameImage.src = "./assets/images/invalid.png"
+      gameTextSelector.innerHTML = gameText.invalidGuess;
     }
   }
-  playerInputField.value = ""
+  playerInputField.value = "enter your guess"
   console.log(guess);
 }
 
@@ -114,6 +114,8 @@ function startGameSaveInput() {
 }
 
 function createStartPage() {
+  const oldPlayerName = localStorage.getItem('playerName') || "enter your name"
+ 
   gamePage = GamePage.StartPage;
   const mainWrapper = clearMainWrapper();
 
@@ -140,7 +142,7 @@ function createStartPage() {
     </div>
 
     <div class="player_input">
-      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
+      <input id="playerName" type="text" placeholder=${oldPlayerName} autofocus/>
       <button onclick="startGameSaveInput();" id="player_input">
         START
       </button>
@@ -152,7 +154,7 @@ function createStartPage() {
 }
 
 function createPlayPage() {
-
+  guessBot.pickANumber()
   gamePage = GamePage.PlayPage;
   const mainWrapper = clearMainWrapper();
 
@@ -169,7 +171,7 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
+      <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
       <button class="playGame" onclick="getPlayerInput();">
         <h2>PLAY</h2>
       </button>
@@ -190,7 +192,7 @@ function createEndPage() {
     <div class="title_ender">
     <h2>YOU WON!</h2><br>
     </div>
-    <p>You got ${totalGuesses} points.</p>
+    <p>You took ${totalGuesses} guesses.</p>
     <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
@@ -241,7 +243,7 @@ function connectUsernameWithGuesses() {
 
   const highscores = [...JSON.parse(highscore), playerObject]
     .sort((a, b) => a.totalGuesses - b.totalGuesses)
-    .slice(0, 5);
+    .slice(0, 3);
 
   localStorage.setItem("highscore", JSON.stringify(highscores));
 
@@ -250,3 +252,10 @@ function connectUsernameWithGuesses() {
 
 
 }
+
+function removeGreetings(){
+  const greetings = document.querySelector('.robotGreetings')
+  greetings?.remove()
+}
+
+
