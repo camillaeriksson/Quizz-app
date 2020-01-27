@@ -240,7 +240,7 @@ function createPlayPage() {
 
     <div class="player_input">
 
-      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
+    <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
       </button><button onclick="getPlayerInput();" class="button-round background-5 playGame">Submit</button>
 
     </div>
@@ -264,7 +264,7 @@ function createEndPage() {
       <div class="user_and_score">
       <ul class="ul_highscores">
       </div>
-    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
+    <button class="startAgain" onclick="showPage(GamePage.StartPage)">RESTART</button>
     </div>
   
     <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2 startAgain">Home</button>
