@@ -105,7 +105,7 @@ function getPlayerInput() {
 }
 
 function startGameSaveInput() {
-  let playerName = document.getElementById("playerName") as HTMLInputElement;
+  const playerName = document.getElementById("playerName") as HTMLInputElement;
   if (playerName !== null) {
     localStorage.setItem("playerName", playerName.value);
   }
@@ -114,8 +114,8 @@ function startGameSaveInput() {
 }
 
 function createStartPage() {
-  const oldPlayerName = localStorage.getItem('playerName') || "enter your name"
- 
+  const oldPlayerName = localStorage.getItem('playerName');
+  
   gamePage = GamePage.StartPage;
   const mainWrapper = clearMainWrapper();
 
@@ -142,7 +142,7 @@ function createStartPage() {
     </div>
 
     <div class="player_input">
-      <input id="playerName" type="text" placeholder=${oldPlayerName} autofocus/>
+      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
       <button onclick="startGameSaveInput();" id="player_input">
         START
       </button>
@@ -151,10 +151,16 @@ function createStartPage() {
 
   mainWrapper.innerHTML = markup;
 
+  const playerName = document.getElementById("playerName") as HTMLInputElement;
+  if (oldPlayerName !== null) {
+    playerName.value = oldPlayerName;
+  }
+
 }
 
 function createPlayPage() {
-  guessBot.pickANumber()
+  guessBot.pickANumber();
+
   gamePage = GamePage.PlayPage;
   const mainWrapper = clearMainWrapper();
 
@@ -179,6 +185,7 @@ function createPlayPage() {
   `;
 
   mainWrapper.innerHTML = markup;
+
 }
 
 
@@ -205,8 +212,7 @@ function createEndPage() {
   
   `;
 
-  nGuesses = 1;
-
+  nGuesses =1;
   mainWrapper.innerHTML = markup;
 
   const ulHighScores = document.querySelector('.ul_highscores') as HTMLElement;

@@ -177,7 +177,7 @@ function getPlayerInput() {
     console.log(guess);
 }
 function startGameSaveInput() {
-    let playerName = document.getElementById("playerName");
+    const playerName = document.getElementById("playerName");
     if (playerName !== null) {
         localStorage.setItem("playerName", playerName.value);
     }
@@ -185,7 +185,7 @@ function startGameSaveInput() {
     inputFocus();
 }
 function createStartPage() {
-    const oldPlayerName = localStorage.getItem('playerName') || "enter your name";
+    const oldPlayerName = localStorage.getItem('playerName');
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -211,13 +211,17 @@ function createStartPage() {
     </div>
 
     <div class="player_input">
-      <input id="playerName" type="text" placeholder=${oldPlayerName} autofocus/>
+      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
       <button onclick="startGameSaveInput();" id="player_input">
         START
       </button>
     </div>
   `;
     mainWrapper.innerHTML = markup;
+    const playerName = document.getElementById("playerName");
+    if (oldPlayerName !== null) {
+        playerName.value = oldPlayerName;
+    }
 }
 function createPlayPage() {
     guessBot.pickANumber();
