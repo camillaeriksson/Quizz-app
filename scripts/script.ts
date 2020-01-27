@@ -47,7 +47,6 @@ const gameText = {
   correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
 };
 
-
 // function clickTipsy() {
 // let tipsy = document.getElementById("imgEasy");
 // tipsy.addEventListener("click");
