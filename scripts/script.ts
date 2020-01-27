@@ -155,7 +155,6 @@ function createStartPage() {
   if (oldPlayerName !== null) {
     playerName.value = oldPlayerName;
   }
-
 }
 
 function createPlayPage() {
@@ -185,7 +184,6 @@ function createPlayPage() {
   `;
 
   mainWrapper.innerHTML = markup;
-
 }
 
 

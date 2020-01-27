@@ -115,7 +115,7 @@ input {
     width: 150px;
     border-radius: 5%;
     border: 0px solid #000;
-    margin-top: 3rem;
+    margin-top: 1rem;
 }
 
 .gameMessage {
@@ -144,6 +144,10 @@ h3 {
 
 .wobble {
     animation: wobble 1.5s both;
+}
+
+ul{
+    margin:0;
 }
 
 /* The wobble effect */
