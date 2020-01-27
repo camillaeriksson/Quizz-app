@@ -208,7 +208,7 @@ function createEndPage() {
   
     </div>
   
-    <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2 startAgain">Home</button>
+    <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2 startAgain">Restart</button>
 
   `;
 
