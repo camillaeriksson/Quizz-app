@@ -96,29 +96,7 @@ const maxNumHard = 100;
 let nGuesses = 1;
 const guessBot = new GuessBot(maxNumEasy);
 let gamePage;
-<<<<<<< HEAD
-const range = {
-    Easy: 10,
-    Medium: 50,
-    Hard: 100,
-};
-window.onclick = function (e) {
-    console.log(e.toElement.id);
-    switch (e.toElement.id) {
-        case 'imgEasy':
-            console.log(1);
-            break;
-        case 'imgMedium':
-            console.log(2);
-            break;
-        case 'imgHard':
-            console.log(3);
-            break;
-    }
-};
-=======
 let multiplayerMode = false;
->>>>>>> master
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -216,7 +194,7 @@ function changeModeToSingle() {
     multiplayerMode = false;
 }
 function createStartPage() {
-    const oldPlayerName = localStorage.getItem("playerName");
+    const oldPlayerName = localStorage.getItem('playerName');
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -345,7 +323,7 @@ function connectUsernameWithGuesses() {
 }
 function removeGreetings() {
     var _a;
-    const greetings = document.querySelector(".robotGreetings");
+    const greetings = document.querySelector('.robotGreetings');
     (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
 }
 //# sourceMappingURL=bundle.js.map
