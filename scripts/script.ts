@@ -17,7 +17,6 @@ const range = {
 const guessBot: GuessBot = new GuessBot(range.easy);
 
 window.onclick = function (e: any) {
-  console.log(e.toElement.id)
   switch (e.toElement.id) {
     case 'imgEasy':
       guessBot.setMaxNum(range.easy)
@@ -46,24 +45,6 @@ const gameText = {
     return text
   }
 };
-
-// function getImageSource(imageName:string){
-//   let path
-//   if(guessBot.getMaxNum === range.easy){
-//     let path = `./assets/images/easy_${imageName}.png`
-//   }
-//  else if (guessBot.getMaxNum === range.medium){
-//       let path = `./assets/images/medium_${imageName}.png`
-// }
-//     }
-//   },
-//   hard: {
-//     function(imageName: string): string {
-//       let path = `./assets/images/hard_${imageName}.png`
-//       return path
-//     }
-//   }
-// }
 
 function init() {
   showPage(GamePage.StartPage);
@@ -129,20 +110,20 @@ function getPlayerInput() {
       const sign = guessBot.checkGuess(guess);
 
       switch (sign) {
-        
+
         case -1:
-          gameImage.src = "./assets/images/lower.png";
+          gameImage.src = getImageSource('lower.png');
           gameTextSelector.innerHTML = gameText.lower;
           break;
         case 1:
-          gameImage.src = "./assets/images/higher.png";
+          gameImage.src = getImageSource('higher.png');
           gameTextSelector.innerHTML = gameText.higher;
           break;
         default:
           showPage(GamePage.EndPage);
       }
     } else if (isNaN(guess)) {
-      gameImage.src = "./assets/images/invalid.png";
+      gameImage.src = getImageSource('invalid.png');
       gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
     }
   }
@@ -178,15 +159,15 @@ function createStartPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy.png" alt="" class="images" id="imgEasy" />
+        <img src="./assets/images/easy_begin.png" alt="" class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/medium.png" alt="" class="images" id="imgMedium" />
+        <img src="./assets/images/medium_begin.png" alt="" class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/hard.png" alt="" class="images" id="imgHard"/>
+        <img src="./assets/images/hard_begin.png" alt="" class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
@@ -226,7 +207,7 @@ function createPlayPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy.png" alt="" class="images_game" />
+        <img src=${getImageSource('begin.png')} alt="" class="images_game" />
       </div>
     </div>
 
@@ -252,7 +233,7 @@ function createEndPage() {
     <h2>YOU WON!</h2><br>
     </div>
     <p>You took ${totalGuesses} guesses.</p>
-    <img src="./assets/images/win.gif" alt="" class="images_game" />
+    <img src=${getImageSource('win.gif')} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
@@ -326,4 +307,17 @@ function connectUsernameWithGuesses() {
 function removeGreetings() {
   const greetings = document.querySelector('.robotGreetings')
   greetings?.remove()
+}
+
+
+function getImageSource(imageName: string): string {
+  let path = `./assets/images/easy_${imageName}`
+  if (guessBot.getMaxNum() === range.medium) {
+    path = `./assets/images/medium_${imageName}`
+  }
+  else if (guessBot.getMaxNum() === range.hard)
+  {
+    path = `./assets/images/hard_${imageName}`
+  }
+  return path
 }

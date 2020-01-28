@@ -69,7 +69,7 @@ body {
     height: 30vh;
 }
 
-.difficulty {
+h3 {
     font-size: 0.75rem;
     color: black;
     text-transform: uppercase;

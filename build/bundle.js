@@ -103,20 +103,6 @@ const range = {
     hard: 100,
 };
 const guessBot = new GuessBot(range.easy);
-window.onclick = function (e) {
-    console.log(e.toElement.id);
-    switch (e.toElement.id) {
-        case 'imgEasy':
-            guessBot.setMaxNum(range.easy);
-            break;
-        case 'imgMedium':
-            guessBot.setMaxNum(range.medium);
-            break;
-        case 'imgHard':
-            guessBot.setMaxNum(range.hard);
-            break;
-    }
-};
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -132,18 +118,10 @@ const gameText = {
         return text;
     }
 };
-const imageSource = {
-    easy: {
-        prefix: './assets/images/',
-        start: this.prefix + 'lower.png',
-        lower: "./assets/images/lower.png",
-        higher: "./assets/images/higher.png",
-        invalid: win
-    }
-};
 function init() {
     showPage(GamePage.StartPage);
     document.addEventListener("keydown", e => handleKeypress(e));
+    setRange();
 }
 function handleKeypress(e) {
     if (e.keyCode === 13) {
@@ -176,6 +154,25 @@ function showPage(gamePage) {
             createStartPage();
     }
 }
+function setRange() {
+    document.onclick = function (e) {
+        console.log(e.toElement.id);
+        switch (e.toElement.id) {
+            case 'imgEasy':
+                guessBot.setMaxNum(range.easy);
+                console.log(1);
+                break;
+            case 'imgMedium':
+                guessBot.setMaxNum(range.medium);
+                console.log(2);
+                break;
+            case 'imgHard':
+                guessBot.setMaxNum(range.hard);
+                console.log(3);
+                break;
+        }
+    };
+}
 function getPlayerInput() {
     inputFocus();
     removeGreetings();
@@ -194,11 +191,11 @@ function getPlayerInput() {
             const sign = guessBot.checkGuess(guess);
             switch (sign) {
                 case -1:
-                    gameImage.src = "./assets/images/lower.png";
+                    gameImage.src = getImageSource('lower.png');
                     gameTextSelector.innerHTML = gameText.lower;
                     break;
                 case 1:
-                    gameImage.src = "./assets/images/higher.png";
+                    gameImage.src = getImageSource('higher.png');
                     gameTextSelector.innerHTML = gameText.higher;
                     break;
                 default:
@@ -206,7 +203,7 @@ function getPlayerInput() {
             }
         }
         else if (isNaN(guess)) {
-            gameImage.src = "./assets/images/invalid.png";
+            gameImage.src = getImageSource('invalid.png');
             gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
         }
     }
@@ -236,16 +233,16 @@ function createStartPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy.png" alt="" class="images" id="imgEasy" />
-        <h3 class="difficulty">Tipsy</h3>
+        <img src="./assets/images/easy_begin.png" alt="" class="images" id="imgEasy" />
+        <h3>Tipsy</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/medium.png" alt="" class="images" id="imgMedium" />
-        <h3 class="difficulty">Hammered</h3>
+        <img src="./assets/images/medium_begin.png" alt="" class="images" id="imgMedium" />
+        <h3>Hammered</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/hard.png" alt="" class="images" id="imgHard"/>
-        <h3 class="difficulty">Sloshed</h3>
+        <img src="./assets/images/hard_begin.png" alt="" class="images" id="imgHard"/>
+        <h3>Sloshed</h3>
       </div>
     </div>
 
@@ -278,7 +275,7 @@ function createPlayPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy.png" alt="" class="images_game" />
+        <img src=${getImageSource('begin.png')} alt="" class="images_game" />
       </div>
     </div>
 
@@ -301,7 +298,7 @@ function createEndPage() {
     <h2>YOU WON!</h2><br>
     </div>
     <p>You took ${totalGuesses} guesses.</p>
-    <img src="./assets/images/win.gif" alt="" class="images_game" />
+    <img src=${getImageSource('win.gif')} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
@@ -359,5 +356,15 @@ function removeGreetings() {
     var _a;
     const greetings = document.querySelector('.robotGreetings');
     (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
+}
+function getImageSource(imageName) {
+    let path = `./assets/images/easy_${imageName}`;
+    if (guessBot.getMaxNum() === range.medium) {
+        path = `./assets/images/medium_${imageName}`;
+    }
+    else if (guessBot.getMaxNum() === range.hard) {
+        path = `./assets/images/hard_${imageName}`;
+    }
+    return path;
 }
 //# sourceMappingURL=bundle.js.map
