@@ -146,9 +146,9 @@ function getPlayerInput() {
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
     const gameImage = document.querySelector(".images_game");
-    gameTextSelector.classList.add('wobble');
+    gameTextSelector.classList.add("wobble");
     setTimeout(function () {
-        gameTextSelector.classList.remove('wobble');
+        gameTextSelector.classList.remove("wobble");
     }, 2000);
     if (playerInputField !== null) {
         guess = playerInputField.value || "invalid";
@@ -192,7 +192,7 @@ function changeModeToSingle() {
     multiplayerMode = false;
 }
 function createStartPage() {
-    const oldPlayerName = localStorage.getItem('playerName');
+    const oldPlayerName = localStorage.getItem("playerName");
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -268,8 +268,8 @@ function createEndPage() {
     <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
-      <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
+      <h2>HIGHEST SCORES</h2>
       <ul class="ul_highscores">
       </div>
   
@@ -280,7 +280,8 @@ function createEndPage() {
   `;
     nGuesses = 1;
     mainWrapper.innerHTML = markup;
-    const ulHighScores = document.querySelector('.ul_highscores');
+    const highscoreDiv = document.querySelector(".user_and_score");
+    const ulHighScores = document.querySelector(".ul_highscores");
     let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
     listOfHighScores.forEach((element) => {
         let node = document.createElement("LI");
@@ -288,9 +289,12 @@ function createEndPage() {
         node.appendChild(textnode);
         ulHighScores.appendChild(node);
     });
+    if (multiplayerMode === true) {
+        highscoreDiv.style.display = "none";
+    }
 }
 function inputFocus() {
-    const playerInput = document.querySelector('.playerInput');
+    const playerInput = document.querySelector(".playerInput");
     if (playerInput) {
         playerInput.focus();
     }
@@ -317,7 +321,7 @@ function connectUsernameWithGuesses() {
 }
 function removeGreetings() {
     var _a;
-    const greetings = document.querySelector('.robotGreetings');
+    const greetings = document.querySelector(".robotGreetings");
     (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
 }
 //# sourceMappingURL=bundle.js.map
