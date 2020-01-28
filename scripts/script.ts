@@ -6,54 +6,64 @@ enum GamePage {
 
 window.onload = init;
 let guess: any;
-const maxNumEasy: number = 10;
-const maxNumMedium: number = 50;
-const maxNumHard: number = 100;
 let nGuesses: number = 1;
-const guessBot: GuessBot = new GuessBot(maxNumEasy);
 let gamePage: GamePage;
 let multiplayerMode: boolean = false;
+const range = {
+  easy: 10,
+  medium: 50,
+  hard: 100,
+};
+const guessBot: GuessBot = new GuessBot(range.easy);
+
+window.onclick = function (e: any) {
+  console.log(e.toElement.id)
+  switch (e.toElement.id) {
+    case 'imgEasy':
+      guessBot.setMaxNum(range.easy)
+      break;
+    case 'imgMedium':
+      guessBot.setMaxNum(range.medium)
+      break;
+    case 'imgHard':
+      guessBot.setMaxNum(range.hard)
+      break;
+  }
+}
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
   the robot can’t remember. Help him answer the doorman correctly!`,
-  guess: `The robot had between 1 to ${maxNumEasy} drinks. What's your guess?`,
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
-  invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNumEasy}.`,
-  correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
+  correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
+  getGuessText: function (range: number, isValid: boolean): string {
+    let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`
+    if (isValid) {
+      text = `The robot had between 1 to ${range} drinks. What's your guess?`
+    }
+    return text
+  }
 };
 
-// function clickTipsy() {
-// let tipsy = document.getElementById("imgEasy");
-// tipsy.addEventListener("click");
-// window.location.assign("./assets/images/easy.png");
-//   } 
-
-// function createRobotTipsy() {
-
-// }
-
-// function clickHammered() {
-//   let hammered = document.getElementById("imgMedium");
-//   hammered.addEventListener("click");
-//   window.location.assign("./assets/images/medium.png");
-//     } 
-
-//   function createRobotHammered() {
-
+// function getImageSource(imageName:string){
+//   let path
+//   if(guessBot.getMaxNum === range.easy){
+//     let path = `./assets/images/easy_${imageName}.png`
 //   }
-
-//   function clickShitfaced() {
-//     let shitfaced = document.getElementById("imgHard");
-//     shitfaced.addEventListener("click"); 
-//     window.location.assign("./assets/images/hard.png");
-//       } 
-
-//     function createRobotShitfaced() {
-
+//  else if (guessBot.getMaxNum === range.medium){
+//       let path = `./assets/images/medium_${imageName}.png`
+// }
 //     }
+//   },
+//   hard: {
+//     function(imageName: string): string {
+//       let path = `./assets/images/hard_${imageName}.png`
+//       return path
+//     }
+//   }
+// }
 
 function init() {
   showPage(GamePage.StartPage);
@@ -106,7 +116,7 @@ function getPlayerInput() {
 
   gameTextSelector.classList.add("wobble");
 
-  setTimeout(function() {
+  setTimeout(function () {
     gameTextSelector.classList.remove("wobble");
   }, 2000);
 
@@ -119,6 +129,7 @@ function getPlayerInput() {
       const sign = guessBot.checkGuess(guess);
 
       switch (sign) {
+        
         case -1:
           gameImage.src = "./assets/images/lower.png";
           gameTextSelector.innerHTML = gameText.lower;
@@ -132,7 +143,7 @@ function getPlayerInput() {
       }
     } else if (isNaN(guess)) {
       gameImage.src = "./assets/images/invalid.png";
-      gameTextSelector.innerHTML = gameText.invalidGuess;
+      gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
     }
   }
   playerInputField.value = "enter your guess";
@@ -211,7 +222,7 @@ function createPlayPage() {
 
   const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
-    <div class="gameMessage">${gameText.guess}</div>
+    <div class="gameMessage">${gameText.getGuessText(guessBot.getMaxNum(), true)}</div>
 
     <div class="bot_choice">
       <div class="robotImages">

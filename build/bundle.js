@@ -6,6 +6,10 @@ class GuessBot {
             console.log(this.secretNumber);
             return this.secretNumber;
         };
+        this.setMaxNum = (range) => {
+            this.maxNumber = range;
+        };
+        this.getMaxNum = () => { return this.maxNumber; };
         this.checkGuess = (guess) => guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
         this.maxNumber = maxNumber;
         this.secretNumber = this.pickANumber();
@@ -90,22 +94,52 @@ var GamePage;
 })(GamePage || (GamePage = {}));
 window.onload = init;
 let guess;
-const maxNumEasy = 10;
-const maxNumMedium = 50;
-const maxNumHard = 100;
 let nGuesses = 1;
-const guessBot = new GuessBot(maxNumEasy);
 let gamePage;
 let multiplayerMode = false;
+const range = {
+    easy: 10,
+    medium: 50,
+    hard: 100,
+};
+const guessBot = new GuessBot(range.easy);
+window.onclick = function (e) {
+    console.log(e.toElement.id);
+    switch (e.toElement.id) {
+        case 'imgEasy':
+            guessBot.setMaxNum(range.easy);
+            break;
+        case 'imgMedium':
+            guessBot.setMaxNum(range.medium);
+            break;
+        case 'imgHard':
+            guessBot.setMaxNum(range.hard);
+            break;
+    }
+};
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
   the robot can’t remember. Help him answer the doorman correctly!`,
-    guess: `The robot had between 1 to ${maxNumEasy} drinks. What's your guess?`,
     higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
     lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
-    invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNumEasy}.`,
-    correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
+    correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
+    getGuessText: function (range, isValid) {
+        let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
+        if (isValid) {
+            text = `The robot had between 1 to ${range} drinks. What's your guess?`;
+        }
+        return text;
+    }
+};
+const imageSource = {
+    easy: {
+        prefix: './assets/images/',
+        start: this.prefix + 'lower.png',
+        lower: "./assets/images/lower.png",
+        higher: "./assets/images/higher.png",
+        invalid: win
+    }
 };
 function init() {
     showPage(GamePage.StartPage);
@@ -173,7 +207,7 @@ function getPlayerInput() {
         }
         else if (isNaN(guess)) {
             gameImage.src = "./assets/images/invalid.png";
-            gameTextSelector.innerHTML = gameText.invalidGuess;
+            gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
         }
     }
     playerInputField.value = "enter your guess";
@@ -240,7 +274,7 @@ function createPlayPage() {
     const playerName = localStorage.getItem("playerName");
     const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
-    <div class="gameMessage">${gameText.guess}</div>
+    <div class="gameMessage">${gameText.getGuessText(guessBot.getMaxNum(), true)}</div>
 
     <div class="bot_choice">
       <div class="robotImages">
