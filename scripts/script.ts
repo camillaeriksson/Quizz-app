@@ -12,29 +12,7 @@ const maxNumHard: number = 100;
 let nGuesses: number = 1;
 const guessBot: GuessBot = new GuessBot(maxNumEasy);
 let gamePage: GamePage;
-const range = {
-  Easy: 10,
-  Medium: 50,
-  Hard: 100,
-
-}
-
-
-window.onclick = function (e: any) {
-  console.log(e.toElement.id)
-  switch (e.toElement.id) {
-    case 'imgEasy':
-      console.log(1)
-      
-      break;
-    case 'imgMedium':
-      console.log(2)
-      break;
-    case 'imgHard':
-      console.log(3)
-      break;
-  }
-}
+let multiplayerMode: boolean = false;
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
@@ -79,7 +57,7 @@ const gameText = {
 
 function init() {
   showPage(GamePage.StartPage);
-  document.addEventListener("keydown", e => handleKeypress(e))
+  document.addEventListener("keydown", e => handleKeypress(e));
 }
 
 function handleKeypress(e: KeyboardEvent) {
@@ -116,18 +94,21 @@ function showPage(gamePage: GamePage) {
 }
 
 function getPlayerInput() {
-
-  inputFocus()
-  removeGreetings()
-  const gameTextSelector = document.querySelector(".gameMessage") as HTMLDivElement;
-  const playerInputField = document.querySelector(".playerInput") as HTMLInputElement;
+  inputFocus();
+  removeGreetings();
+  const gameTextSelector = document.querySelector(
+    ".gameMessage"
+  ) as HTMLDivElement;
+  const playerInputField = document.querySelector(
+    ".playerInput"
+  ) as HTMLInputElement;
   const gameImage = document.querySelector(".images_game") as HTMLImageElement;
 
-  gameTextSelector.classList.add('wobble');
+  gameTextSelector.classList.add("wobble");
 
-  setTimeout(function () {
-    gameTextSelector.classList.remove('wobble')
-  }, 2000)
+  setTimeout(function() {
+    gameTextSelector.classList.remove("wobble");
+  }, 2000);
 
   if (playerInputField !== null) {
     guess = playerInputField.value || "invalid";
@@ -143,18 +124,18 @@ function getPlayerInput() {
           gameTextSelector.innerHTML = gameText.lower;
           break;
         case 1:
-          gameImage.src = "./assets/images/higher.png"
+          gameImage.src = "./assets/images/higher.png";
           gameTextSelector.innerHTML = gameText.higher;
           break;
         default:
           showPage(GamePage.EndPage);
       }
     } else if (isNaN(guess)) {
-      gameImage.src = "./assets/images/invalid.png"
+      gameImage.src = "./assets/images/invalid.png";
       gameTextSelector.innerHTML = gameText.invalidGuess;
     }
   }
-  playerInputField.value = "enter your guess"
+  playerInputField.value = "enter your guess";
   console.log(guess);
 }
 
@@ -164,7 +145,15 @@ function startGameSaveInput() {
     localStorage.setItem("playerName", playerName.value);
   }
   showPage(GamePage.PlayPage);
-  inputFocus()
+  inputFocus();
+}
+
+function changeModeToBot() {
+  multiplayerMode = true;
+}
+
+function changeModeToSingle() {
+  multiplayerMode = false;
 }
 
 function createStartPage() {
@@ -195,6 +184,7 @@ function createStartPage() {
       <div class="robotInstructions">${gameText.welcome}</div>
     </div>
 
+    <button onclick="changeModeToSingle()" class="background-1">Single player</button><button onclick="changeModeToBot()" class="background-1">Against bot</button>
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
 
@@ -240,7 +230,6 @@ function createPlayPage() {
   mainWrapper.innerHTML = markup;
 }
 
-
 function createEndPage() {
   gamePage = GamePage.EndPage;
   const mainWrapper = clearMainWrapper();
@@ -255,8 +244,8 @@ function createEndPage() {
     <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
-      <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
+      <h2>HIGHEST SCORES</h2>
       <ul class="ul_highscores">
       </div>
   
@@ -269,19 +258,31 @@ function createEndPage() {
   nGuesses = 1;
   mainWrapper.innerHTML = markup;
 
-  const ulHighScores = document.querySelector('.ul_highscores') as HTMLElement;
-  let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "")
-  listOfHighScores.forEach((element: any) => {         // CHANGE TYPE
-    var node = document.createElement("LI");
-    var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
+  const highscoreDiv = document.querySelector(".user_and_score") as HTMLElement;
+  const ulHighScores = document.querySelector(".ul_highscores") as HTMLElement;
+  let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
+  listOfHighScores.forEach((element: any) => {
+    // CHANGE TYPE
+    let node = document.createElement("LI");
+    let textnode = document.createTextNode(
+      element.name + " " + element.totalGuesses
+    );
     node.appendChild(textnode);
     ulHighScores.appendChild(node);
   });
+
+  if (multiplayerMode === true) {
+    highscoreDiv.style.display = "none";
+  }
 }
 
 function inputFocus() {
-  const playerInput = document.querySelector('.playerInput') as HTMLInputElement;
-  if (playerInput) { playerInput.focus(); }
+  const playerInput = document.querySelector(
+    ".playerInput"
+  ) as HTMLInputElement;
+  if (playerInput) {
+    playerInput.focus();
+  }
 }
 
 function clearMainWrapper(): HTMLElement {
@@ -309,13 +310,9 @@ function connectUsernameWithGuesses() {
 
   highscores.push(name);
   highscores.push(totalGuesses);
-
-
 }
 
 function removeGreetings() {
   const greetings = document.querySelector('.robotGreetings')
   greetings?.remove()
 }
-
-

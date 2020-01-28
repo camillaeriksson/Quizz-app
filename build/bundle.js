@@ -96,6 +96,7 @@ const maxNumHard = 100;
 let nGuesses = 1;
 const guessBot = new GuessBot(maxNumEasy);
 let gamePage;
+<<<<<<< HEAD
 const range = {
     Easy: 10,
     Medium: 50,
@@ -115,6 +116,9 @@ window.onclick = function (e) {
             break;
     }
 };
+=======
+let multiplayerMode = false;
+>>>>>>> master
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -166,9 +170,9 @@ function getPlayerInput() {
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
     const gameImage = document.querySelector(".images_game");
-    gameTextSelector.classList.add('wobble');
+    gameTextSelector.classList.add("wobble");
     setTimeout(function () {
-        gameTextSelector.classList.remove('wobble');
+        gameTextSelector.classList.remove("wobble");
     }, 2000);
     if (playerInputField !== null) {
         guess = playerInputField.value || "invalid";
@@ -205,8 +209,14 @@ function startGameSaveInput() {
     showPage(GamePage.PlayPage);
     inputFocus();
 }
+function changeModeToBot() {
+    multiplayerMode = true;
+}
+function changeModeToSingle() {
+    multiplayerMode = false;
+}
 function createStartPage() {
-    const oldPlayerName = localStorage.getItem('playerName');
+    const oldPlayerName = localStorage.getItem("playerName");
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -231,6 +241,7 @@ function createStartPage() {
       <div class="robotInstructions">${gameText.welcome}</div>
     </div>
 
+    <button onclick="changeModeToSingle()" class="background-1">Single player</button><button onclick="changeModeToBot()" class="background-1">Against bot</button>
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
 
@@ -281,8 +292,8 @@ function createEndPage() {
     <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
-      <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
+      <h2>HIGHEST SCORES</h2>
       <ul class="ul_highscores">
       </div>
   
@@ -293,17 +304,21 @@ function createEndPage() {
   `;
     nGuesses = 1;
     mainWrapper.innerHTML = markup;
-    const ulHighScores = document.querySelector('.ul_highscores');
+    const highscoreDiv = document.querySelector(".user_and_score");
+    const ulHighScores = document.querySelector(".ul_highscores");
     let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
     listOfHighScores.forEach((element) => {
-        var node = document.createElement("LI");
-        var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
+        let node = document.createElement("LI");
+        let textnode = document.createTextNode(element.name + " " + element.totalGuesses);
         node.appendChild(textnode);
         ulHighScores.appendChild(node);
     });
+    if (multiplayerMode === true) {
+        highscoreDiv.style.display = "none";
+    }
 }
 function inputFocus() {
-    const playerInput = document.querySelector('.playerInput');
+    const playerInput = document.querySelector(".playerInput");
     if (playerInput) {
         playerInput.focus();
     }
@@ -330,7 +345,7 @@ function connectUsernameWithGuesses() {
 }
 function removeGreetings() {
     var _a;
-    const greetings = document.querySelector('.robotGreetings');
+    const greetings = document.querySelector(".robotGreetings");
     (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
 }
 //# sourceMappingURL=bundle.js.map

@@ -104,7 +104,7 @@ input {
     width: 200px;
     height: 30px;
     padding-left: 1em;
-    margin: 3rem 0 2rem 0;
+    margin: 1rem 0 2rem 0;
     font-size: 1rem;
 }
 button {
@@ -149,6 +149,47 @@ button {
   button:active {
     filter: brightness(140%);
   }
+
+  .background-1:focus {
+      outline: solid;
+  }
+
+  
+.background-1 {
+    letter-spacing: 2px;
+    background: linear-gradient(
+       125deg,
+       #00ff57 0%,
+       #010033 40%,
+       #460043 70%,
+       #f0ffc5 100%
+     ),
+     linear-gradient(55deg, #0014c9 0%, #410060 100%),
+     linear-gradient(300deg, #ffc700 0%, #001aff 100%),
+     radial-gradient(
+       135% 215% at 115% 40%,
+       #393939 0%,
+       #393939 40%,
+       #849561 calc(40% + 1px),
+       #849561 60%,
+       #eed690 calc(60% + 1px),
+       #eed690 80%,
+       #ecefd8 calc(80% + 1px),
+       #ecefd8 100%
+     ),
+     linear-gradient(
+       125deg,
+       #282d4f 0%,
+       #282d4f 40%,
+       #23103a calc(40% + 1px),
+       #23103a 70%,
+       #a0204c calc(70% + 1px),
+       #a0204c 88%,
+       #ff6c00 calc(88% + 1px),
+       #ff6c00 100%
+     );
+   background-blend-mode: overlay, screen, overlay, overlay, normal;
+ }
   
   .background-2 {
     background: linear-gradient(123deg, #FFFFFF 0%, #00B2FF 100%), linear-gradient(236deg, #BAFF99 0%, #005E64 100%), linear-gradient(180deg, #FFFFFF 0%, #002A5A 100%), linear-gradient(225deg, #0094FF 20%, #BFF4ED 45%, #280F34 45%, #280F34 70%, #FF004E 70%, #E41655 85%, #B30753 85%, #B30753 100%), linear-gradient(135deg, #0E0220 15%, #0E0220 35%, #E40475 35%, #E40475 60%, #48E0E4 60%, #48E0E4 68%, #D7FBF6 68%, #D7FBF6 100%);
