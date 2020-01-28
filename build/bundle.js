@@ -103,6 +103,19 @@ const range = {
     hard: 100,
 };
 const guessBot = new GuessBot(range.easy);
+window.onclick = function (e) {
+    switch (e.toElement.id) {
+        case 'imgEasy':
+            guessBot.setMaxNum(range.easy);
+            break;
+        case 'imgMedium':
+            guessBot.setMaxNum(range.medium);
+            break;
+        case 'imgHard':
+            guessBot.setMaxNum(range.hard);
+            break;
+    }
+};
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -121,7 +134,6 @@ const gameText = {
 function init() {
     showPage(GamePage.StartPage);
     document.addEventListener("keydown", e => handleKeypress(e));
-    setRange();
 }
 function handleKeypress(e) {
     if (e.keyCode === 13) {
@@ -153,25 +165,6 @@ function showPage(gamePage) {
         default:
             createStartPage();
     }
-}
-function setRange() {
-    document.onclick = function (e) {
-        console.log(e.toElement.id);
-        switch (e.toElement.id) {
-            case 'imgEasy':
-                guessBot.setMaxNum(range.easy);
-                console.log(1);
-                break;
-            case 'imgMedium':
-                guessBot.setMaxNum(range.medium);
-                console.log(2);
-                break;
-            case 'imgHard':
-                guessBot.setMaxNum(range.hard);
-                console.log(3);
-                break;
-        }
-    };
 }
 function getPlayerInput() {
     inputFocus();
@@ -234,15 +227,15 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" class="images" id="imgEasy" />
-        <h3>Tipsy</h3>
+        <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" class="images" id="imgMedium" />
-        <h3>Hammered</h3>
+        <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" class="images" id="imgHard"/>
-        <h3>Sloshed</h3>
+        <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
 
