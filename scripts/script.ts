@@ -253,8 +253,7 @@ function createEndPage() {
   const highscoreDiv = document.querySelector(".user_and_score") as HTMLElement;
   const ulHighScores = document.querySelector(".ul_highscores") as HTMLElement;
   let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
-  listOfHighScores.forEach((element: any) => {
-    // CHANGE TYPE
+  listOfHighScores.forEach((element: { name: string; totalGuesses: string; }) => {
     let node = document.createElement("LI");
     let textnode = document.createTextNode(
       element.name + " " + element.totalGuesses
