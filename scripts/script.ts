@@ -158,7 +158,7 @@ function createStartPage() {
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
-        title = "Im Sloshed, I drank between 1 to 10 drinks"
+        title = "Im Sloshed, I drank between 1 to 100 drinks"
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
