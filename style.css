@@ -1,3 +1,4 @@
+/*General Settings*/
 html {
     font-family: 'Raleway', sans-serif;
     overflow: hidden;
@@ -23,23 +24,11 @@ body {
     grid-area: 2/2;
 }
 
+/*Start Page*/
 .title {
     font-size: 4rem;
     padding-bottom: 3rem;
     animation: bounce 2.5s 2 both;
-}
-
-.title_game {
-    Font-size: 2rem;
-    text-align: center;
-    font-style: italic;
-}
-
-.title_ender {
-    height: 10vh;
-    text-align: center;
-    font-style: italic;
-    text-transform: uppercase;
 }
 
 .bot_choice {
@@ -62,18 +51,33 @@ body {
 .images {
     border-radius: 50%;
     border: 1px solid #000;
-    width: 5rem;
+    width: 5rem; 
     animation: spin 1000ms linear 1s 3;
+}
+
+.title_ender {
+    height: 10vh;
+    text-align: center;
+    font-style: italic;
+    text-transform: uppercase;
+}
+
+.images:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: 1px dotted #000;
+    background: #f6d535;
 }
 
 .images_game {
     height: 30vh;
 }
 
-.difficulty {
+h3 {
     font-size: 0.75rem;
     color: black;
     text-transform: uppercase;
+    font-style: italic;
 }
 
 .rules {
@@ -231,10 +235,6 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-h3 {
-    font-style: italic;
 }
 
 .wobble {

@@ -6,6 +6,10 @@ class GuessBot {
             console.log(this.secretNumber);
             return this.secretNumber;
         };
+        this.setMaxNum = (range) => {
+            this.maxNumber = range;
+        };
+        this.getMaxNum = () => { return this.maxNumber; };
         this.checkGuess = (guess) => guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
         this.maxNumber = maxNumber;
         this.secretNumber = this.pickANumber();
@@ -90,20 +94,29 @@ var GamePage;
 })(GamePage || (GamePage = {}));
 window.onload = init;
 let guess;
-const maxNum = 100;
 let nGuesses = 1;
-const guessBot = new GuessBot(maxNum);
 let gamePage;
 let multiplayerMode = false;
+const range = {
+    easy: 10,
+    medium: 50,
+    hard: 100,
+};
+const guessBot = new GuessBot(range.easy);
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
   the robot can’t remember. Help him answer the doorman correctly!`,
-    guess: `The robot had between 1 to ${maxNum} drinks. What's your guess?`,
     higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
     lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
-    invalidGuess: `errr....**!!!..error.., enter a number between 1 and ${maxNum}.`,
-    correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`
+    correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
+    getGuessText: function (range, isValid) {
+        let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
+        if (isValid) {
+            text = `The robot had between 1 to ${range} drinks. What's your guess?`;
+        }
+        return text;
+    }
 };
 function init() {
     showPage(GamePage.StartPage);
@@ -158,11 +171,11 @@ function getPlayerInput() {
             const sign = guessBot.checkGuess(guess);
             switch (sign) {
                 case -1:
-                    gameImage.src = "./assets/images/lower.png";
+                    gameImage.src = getImageSource('lower.png');
                     gameTextSelector.innerHTML = gameText.lower;
                     break;
                 case 1:
-                    gameImage.src = "./assets/images/higher.png";
+                    gameImage.src = getImageSource('higher.png');
                     gameTextSelector.innerHTML = gameText.higher;
                     break;
                 default:
@@ -170,8 +183,8 @@ function getPlayerInput() {
             }
         }
         else if (isNaN(guess)) {
-            gameImage.src = "./assets/images/invalid.png";
-            gameTextSelector.innerHTML = gameText.invalidGuess;
+            gameImage.src = getImageSource('invalid.png');
+            gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
         }
     }
     playerInputField.value = "enter your guess";
@@ -192,7 +205,7 @@ function changeModeToSingle() {
     multiplayerMode = false;
 }
 function createStartPage() {
-    const oldPlayerName = localStorage.getItem("playerName");
+    const oldPlayerName = localStorage.getItem('playerName');
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -200,15 +213,15 @@ function createStartPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy.png" alt="" class="images" />
+        <img src="./assets/images/easy_begin.png" alt="" class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/medium.png" alt="" class="images" />
+        <img src="./assets/images/medium_begin.png" alt="" class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/hard.png" alt="" class="images" />
+        <img src="./assets/images/hard_begin.png" alt="" class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
@@ -226,6 +239,7 @@ function createStartPage() {
     </div>
   `;
     mainWrapper.innerHTML = markup;
+    botSelection();
     const playerName = document.getElementById("playerName");
     if (oldPlayerName !== null) {
         playerName.value = oldPlayerName;
@@ -238,11 +252,11 @@ function createPlayPage() {
     const playerName = localStorage.getItem("playerName");
     const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
-    <div class="gameMessage">${gameText.guess}</div>
+    <div class="gameMessage">${gameText.getGuessText(guessBot.getMaxNum(), true)}</div>
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/hard.png" alt="" class="images_game" />
+        <img src=${getImageSource('begin.png')} alt="" class="images_game" />
       </div>
     </div>
 
@@ -265,7 +279,7 @@ function createEndPage() {
     <h2>YOU WON!</h2><br>
     </div>
     <p>You took ${totalGuesses} guesses.</p>
-    <img src="./assets/images/win.gif" alt="" class="images_game" />
+    <img src=${getImageSource('win.gif')} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
@@ -321,7 +335,44 @@ function connectUsernameWithGuesses() {
 }
 function removeGreetings() {
     var _a;
-    const greetings = document.querySelector(".robotGreetings");
+    const greetings = document.querySelector('.robotGreetings');
     (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
+}
+function botSelection() {
+    let botSelected = document.querySelector(".bot_choice");
+    let imageList = document.querySelectorAll(".images");
+    console.log(imageList);
+    botSelected.onclick = function (e) {
+        switch (e.toElement.id) {
+            case 'imgEasy':
+                guessBot.setMaxNum(range.easy);
+                imageList[0].style.background = "#f6d535";
+                imageList[1].style.background = "unset";
+                imageList[2].style.background = "unset";
+                break;
+            case 'imgMedium':
+                guessBot.setMaxNum(range.medium);
+                imageList[0].style.background = "unset";
+                imageList[1].style.background = "#f6d535";
+                imageList[2].style.background = "unset";
+                break;
+            case 'imgHard':
+                guessBot.setMaxNum(range.hard);
+                imageList[0].style.background = "unset";
+                imageList[1].style.background = "unset";
+                imageList[2].style.background = "#f6d535";
+                break;
+        }
+    };
+}
+function getImageSource(imageName) {
+    let path = `./assets/images/easy_${imageName}`;
+    if (guessBot.getMaxNum() === range.medium) {
+        path = `./assets/images/medium_${imageName}`;
+    }
+    else if (guessBot.getMaxNum() === range.hard) {
+        path = `./assets/images/hard_${imageName}`;
+    }
+    return path;
 }
 //# sourceMappingURL=bundle.js.map
