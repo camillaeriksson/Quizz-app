@@ -1,3 +1,4 @@
+/*General Settings*/
 html {
     font-family: 'Raleway', sans-serif;
     overflow: hidden;
@@ -22,17 +23,11 @@ body {
     grid-area: 2/2;
 }
 
+/*Start Page*/
 .title {
     font-size: 4rem;
     padding-bottom: 3rem;
     animation: bounce 2.5s 2 both;
-}
-
-.title_ender {
-    height: 10vh;
-    text-align: center;
-    font-style: italic;
-    text-transform: uppercase;
 }
 
 .bot_choice {
@@ -57,6 +52,13 @@ body {
     border: 1px solid #000;
     width: 5rem; 
     animation: spin 1000ms linear 1s 3;
+}
+
+.title_ender {
+    height: 10vh;
+    text-align: center;
+    font-style: italic;
+    text-transform: uppercase;
 }
 
 .images:hover {

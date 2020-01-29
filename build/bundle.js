@@ -103,19 +103,6 @@ const range = {
     hard: 100,
 };
 const guessBot = new GuessBot(range.easy);
-window.onclick = function (e) {
-    switch (e.toElement.id) {
-        case 'imgEasy':
-            guessBot.setMaxNum(range.easy);
-            break;
-        case 'imgMedium':
-            guessBot.setMaxNum(range.medium);
-            break;
-        case 'imgHard':
-            guessBot.setMaxNum(range.hard);
-            break;
-    }
-};
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -252,6 +239,7 @@ function createStartPage() {
     </div>
   `;
     mainWrapper.innerHTML = markup;
+    botSelection();
     const playerName = document.getElementById("playerName");
     if (oldPlayerName !== null) {
         playerName.value = oldPlayerName;
@@ -349,6 +337,33 @@ function removeGreetings() {
     var _a;
     const greetings = document.querySelector('.robotGreetings');
     (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
+}
+function botSelection() {
+    let botSelected = document.querySelector(".bot_choice");
+    let imageList = document.querySelectorAll(".images");
+    console.log(imageList);
+    botSelected.onclick = function (e) {
+        switch (e.toElement.id) {
+            case 'imgEasy':
+                guessBot.setMaxNum(range.easy);
+                imageList[0].style.background = "#f6d535";
+                imageList[1].style.background = "unset";
+                imageList[2].style.background = "unset";
+                break;
+            case 'imgMedium':
+                guessBot.setMaxNum(range.medium);
+                imageList[0].style.background = "unset";
+                imageList[1].style.background = "#f6d535";
+                imageList[2].style.background = "unset";
+                break;
+            case 'imgHard':
+                guessBot.setMaxNum(range.hard);
+                imageList[0].style.background = "unset";
+                imageList[1].style.background = "unset";
+                imageList[2].style.background = "#f6d535";
+                break;
+        }
+    };
 }
 function getImageSource(imageName) {
     let path = `./assets/images/easy_${imageName}`;

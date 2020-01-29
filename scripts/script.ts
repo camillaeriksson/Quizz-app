@@ -16,20 +16,6 @@ const range = {
 };
 const guessBot: GuessBot = new GuessBot(range.easy);
 
-window.onclick = function (e: any) {
-  switch (e.toElement.id) {
-    case 'imgEasy':
-      guessBot.setMaxNum(range.easy)
-      break;
-    case 'imgMedium':
-      guessBot.setMaxNum(range.medium)
-      break;
-    case 'imgHard':
-      guessBot.setMaxNum(range.hard)
-      break;
-  }
-}
-
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -186,7 +172,7 @@ function createStartPage() {
   `;
 
   mainWrapper.innerHTML = markup;
-
+  botSelection();
   const playerName = document.getElementById("playerName") as HTMLInputElement;
   if (oldPlayerName !== null) {
     playerName.value = oldPlayerName;
@@ -308,15 +294,44 @@ function removeGreetings() {
   greetings?.remove()
 }
 
+function botSelection() {
+  let botSelected = document.querySelector(".bot_choice") as HTMLDivElement
+  let imageList = document.querySelectorAll(".images") as any
+  console.log(imageList)
+  botSelected.onclick = function (e: any) {
+    switch (e.toElement.id) {
+      case 'imgEasy':
+        guessBot.setMaxNum(range.easy);
+        imageList[0].style.background = "#f6d535"
+        imageList[1].style.background = "unset"
+        imageList[2].style.background = "unset"
+        break;
+      case 'imgMedium':
+        guessBot.setMaxNum(range.medium)
+        imageList[0].style.background = "unset"
+        imageList[1].style.background = "#f6d535"
+        imageList[2].style.background = "unset"
+        break;
+      case 'imgHard':
+        guessBot.setMaxNum(range.hard)
+        imageList[0].style.background = "unset"
+        imageList[1].style.background = "unset"
+        imageList[2].style.background = "#f6d535"
+        break;
+    }
+  }
+}
+
 function getImageSource(imageName: string): string {
   let path = `./assets/images/easy_${imageName}`
   if (guessBot.getMaxNum() === range.medium) {
     path = `./assets/images/medium_${imageName}`
   }
-  else if (guessBot.getMaxNum() === range.hard)
-  {
+  else if (guessBot.getMaxNum() === range.hard) {
     path = `./assets/images/hard_${imageName}`
   }
   return path
 }
+
+
 
