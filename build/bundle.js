@@ -94,6 +94,7 @@ const maxNum = 100;
 let nGuesses = 1;
 const guessBot = new GuessBot(maxNum);
 let gamePage;
+let multiplayerMode = false;
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -141,49 +142,57 @@ function showPage(gamePage) {
 }
 function getPlayerInput() {
     inputFocus();
+    removeGreetings();
     const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
     const gameImage = document.querySelector(".images_game");
-    gameTextSelector.classList.add('wobble');
+    gameTextSelector.classList.add("wobble");
     setTimeout(function () {
-        gameTextSelector.classList.remove('wobble');
-    }, 5000);
+        gameTextSelector.classList.remove("wobble");
+    }, 2000);
     if (playerInputField !== null) {
-        guess = Number(playerInputField.value);
+        guess = playerInputField.value || "invalid";
         localStorage.setItem("score", nGuesses.toString());
         if (!isNaN(guess)) {
             nGuesses++;
             const sign = guessBot.checkGuess(guess);
             switch (sign) {
                 case -1:
-                    gameTextSelector.innerHTML = gameText.lower;
                     gameImage.src = "./assets/images/lower.png";
+                    gameTextSelector.innerHTML = gameText.lower;
                     break;
                 case 1:
-                    gameTextSelector.innerHTML = gameText.higher;
                     gameImage.src = "./assets/images/higher.png";
+                    gameTextSelector.innerHTML = gameText.higher;
                     break;
                 default:
                     showPage(GamePage.EndPage);
             }
         }
         else if (isNaN(guess)) {
-            gameTextSelector.innerHTML = gameText.invalidGuess;
             gameImage.src = "./assets/images/invalid.png";
+            gameTextSelector.innerHTML = gameText.invalidGuess;
         }
     }
-    playerInputField.value = "";
+    playerInputField.value = "enter your guess";
     console.log(guess);
 }
 function startGameSaveInput() {
-    let playerName = document.getElementById("playerName");
+    const playerName = document.getElementById("playerName");
     if (playerName !== null) {
         localStorage.setItem("playerName", playerName.value);
     }
     showPage(GamePage.PlayPage);
     inputFocus();
 }
+function changeModeToBot() {
+    multiplayerMode = true;
+}
+function changeModeToSingle() {
+    multiplayerMode = false;
+}
 function createStartPage() {
+    const oldPlayerName = localStorage.getItem("playerName");
     gamePage = GamePage.StartPage;
     const mainWrapper = clearMainWrapper();
     const markup = `
@@ -208,16 +217,22 @@ function createStartPage() {
       <div class="robotInstructions">${gameText.welcome}</div>
     </div>
 
+    <button onclick="changeModeToSingle()" class="background-1">Single player</button><button onclick="changeModeToBot()" class="background-1">Against bot</button>
     <div class="player_input">
       <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-      <button onclick="startGameSaveInput();" id="player_input">
-        START
-      </button>
+
+      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
+
     </div>
   `;
     mainWrapper.innerHTML = markup;
+    const playerName = document.getElementById("playerName");
+    if (oldPlayerName !== null) {
+        playerName.value = oldPlayerName;
+    }
 }
 function createPlayPage() {
+    guessBot.pickANumber();
     gamePage = GamePage.PlayPage;
     const mainWrapper = clearMainWrapper();
     const playerName = localStorage.getItem("playerName");
@@ -232,10 +247,10 @@ function createPlayPage() {
     </div>
 
     <div class="player_input">
-      <input class="playerInput" type="text" placeholder="enter your guess" autofocus/>
-      <button class="playGame" onclick="getPlayerInput();">
-        <h2>PLAY</h2>
-      </button>
+
+    <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
+      </button><button onclick="getPlayerInput();" class="button-round background-5 playGame">Submit</button>
+
     </div>
   `;
     mainWrapper.innerHTML = markup;
@@ -249,31 +264,37 @@ function createEndPage() {
     <div class="title_ender">
     <h2>YOU WON!</h2><br>
     </div>
-    <p>You got ${totalGuesses} points.</p>
+    <p>You took ${totalGuesses} guesses.</p>
     <img src="./assets/images/win.gif" alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
-      <h2>HIGHEST SCORES</h2>
       <div class="user_and_score">
+      <h2>HIGHEST SCORES</h2>
       <ul class="ul_highscores">
       </div>
-    <button class="startAgain" onclick="showPage(GamePage.StartPage)">PLAY AGAIN</button>
+  
     </div>
   
+    <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2">Restart</button>
+
   `;
     nGuesses = 1;
     mainWrapper.innerHTML = markup;
-    const ulHighScores = document.querySelector('.ul_highscores');
+    const highscoreDiv = document.querySelector(".user_and_score");
+    const ulHighScores = document.querySelector(".ul_highscores");
     let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
     listOfHighScores.forEach((element) => {
-        var node = document.createElement("LI");
-        var textnode = document.createTextNode(element.name + " " + element.totalGuesses);
+        let node = document.createElement("LI");
+        let textnode = document.createTextNode(element.name + " " + element.totalGuesses);
         node.appendChild(textnode);
         ulHighScores.appendChild(node);
     });
+    if (multiplayerMode === true) {
+        highscoreDiv.style.display = "none";
+    }
 }
 function inputFocus() {
-    const playerInput = document.querySelector('.playerInput');
+    const playerInput = document.querySelector(".playerInput");
     if (playerInput) {
         playerInput.focus();
     }
@@ -293,9 +314,14 @@ function connectUsernameWithGuesses() {
     };
     const highscores = [...JSON.parse(highscore), playerObject]
         .sort((a, b) => a.totalGuesses - b.totalGuesses)
-        .slice(0, 5);
+        .slice(0, 3);
     localStorage.setItem("highscore", JSON.stringify(highscores));
     highscores.push(name);
     highscores.push(totalGuesses);
+}
+function removeGreetings() {
+    var _a;
+    const greetings = document.querySelector(".robotGreetings");
+    (_a = greetings) === null || _a === void 0 ? void 0 : _a.remove();
 }
 //# sourceMappingURL=bundle.js.map
