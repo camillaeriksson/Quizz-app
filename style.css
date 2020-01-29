@@ -17,6 +17,7 @@ body {
 }
 
 .main_wrapper {
+    border: solid;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,6 +28,7 @@ body {
 /*Start Page*/
 .title {
     font-size: 4rem;
+    font-weight: bold;
     padding-bottom: 3rem;
     animation: bounce 2.5s 2 both;
 }
@@ -99,7 +101,7 @@ input {
     width: 200px;
     height: 30px;
     padding-left: 1em;
-    margin: 1rem 0 2rem 0;
+    margin: 2rem 0 2rem 0;
     font-size: 1rem;
 }
 button {
@@ -143,10 +145,6 @@ button {
   
   button:active {
     filter: brightness(140%);
-  }
-
-  .background-1:focus {
-      outline: solid;
   }
 
   

@@ -128,10 +128,16 @@ function startGameSaveInput() {
 
 function changeModeToBot() {
   multiplayerMode = true;
+  const modeButtons = document.querySelectorAll('.modeButtons button') as any
+  modeButtons[1].style.outline = 'solid';
+  modeButtons[0].style.outline = 'unset';
 }
 
 function changeModeToSingle() {
   multiplayerMode = false;
+  const modeButtons = document.querySelectorAll('.modeButtons button') as any
+  modeButtons[0].style.outline = 'solid';
+  modeButtons[1].style.outline = 'unset';
 }
 
 function createStartPage() {
