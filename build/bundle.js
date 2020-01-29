@@ -2,7 +2,7 @@
 class GuessBot {
     constructor(maxNumber) {
         this.pickANumber = () => {
-            this.secretNumber = Math.floor(Math.random() * this.maxNumber);
+            this.secretNumber = Math.floor((Math.random() + 1) * this.maxNumber);
             console.log(this.secretNumber);
             return this.secretNumber;
         };
@@ -213,15 +213,21 @@ function createStartPage() {
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src="./assets/images/easy_begin.png" alt="" class="images" id="imgEasy" />
+        <img src="./assets/images/easy_begin.png" alt="" 
+        title = "Im Tipsy, I drank between 1 to 10 drinks"
+        class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/medium_begin.png" alt="" class="images" id="imgMedium" />
+        <img src="./assets/images/medium_begin.png" alt="" 
+        title = "Im Hammered, I drank between 1 to 50 drinks"
+        class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
-        <img src="./assets/images/hard_begin.png" alt="" class="images" id="imgHard"/>
+        <img src="./assets/images/hard_begin.png" alt="" 
+        title = "Im Sloshed, I drank between 1 to 100 drinks"
+        class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
