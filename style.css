@@ -113,7 +113,7 @@ button {
     color: white;
     font-weight: bold;
     text-transform: uppercase;
-    filter: blur(0.5px) brightness(90%);
+    filter: brightness(90%);
     -webkit-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
     -moz-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
     -o-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
@@ -136,7 +136,7 @@ button {
   }
 
   button:hover {
-    filter: blur(0) brightness(110%);
+    filter: brightness(110%);
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
   transform: scale(1.005);
   }
@@ -150,7 +150,11 @@ button {
   }
 
   
-.background-1 {
+  .background-1 {
+    margin: 0.5rem;
+    width: 9rem;
+    padding: 0.7rem 0rem;
+    text-indent: 2px;
     letter-spacing: 2px;
     background: linear-gradient(
        125deg,
