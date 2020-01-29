@@ -17,6 +17,7 @@ body {
 }
 
 .main_wrapper {
+    border: solid;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,6 +28,7 @@ body {
 /*Start Page*/
 .title {
     font-size: 4rem;
+    font-weight: bold;
     padding-bottom: 3rem;
     animation: bounce 2.5s 2 both;
 }
@@ -99,7 +101,7 @@ input {
     width: 200px;
     height: 30px;
     padding-left: 1em;
-    margin: 1rem 0 2rem 0;
+    margin: 2rem 0 2rem 0;
     font-size: 1rem;
 }
 button {
@@ -113,7 +115,7 @@ button {
     color: white;
     font-weight: bold;
     text-transform: uppercase;
-    filter: blur(0.5px) brightness(90%);
+    filter: brightness(90%);
     -webkit-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
     -moz-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
     -o-transition: filter 0.5s ease-out, box-shadow 0.5s ease-out, transform .3s ease-out;
@@ -136,7 +138,7 @@ button {
   }
 
   button:hover {
-    filter: blur(0) brightness(110%);
+    filter: brightness(110%);
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
   transform: scale(1.005);
   }
@@ -145,12 +147,12 @@ button {
     filter: brightness(140%);
   }
 
-  .background-1:focus {
-      outline: solid;
-  }
-
   
-.background-1 {
+  .background-1 {
+    margin: 0.5rem;
+    width: 9rem;
+    padding: 0.7rem 0rem;
+    text-indent: 2px;
     letter-spacing: 2px;
     background: linear-gradient(
        125deg,
