@@ -52,13 +52,14 @@ body {
     padding-left: .8rem;
 }
 
-#imgEasy, #imgMedium, #imgHard {
+.images {
     border-radius: 50%;
     border: 1px solid #000;
     width: 5rem; 
+    animation: spin 1000ms linear 1s 3;
 }
 
-#imgEasy:hover, #imgMedium:hover, #imgHard:hover {
+.images:hover {
     transform: scale(1.2);
     cursor: pointer;
     border: 1px dotted #000;

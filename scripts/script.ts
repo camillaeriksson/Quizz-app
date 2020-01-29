@@ -308,7 +308,6 @@ function removeGreetings() {
   greetings?.remove()
 }
 
-
 function getImageSource(imageName: string): string {
   let path = `./assets/images/easy_${imageName}`
   if (guessBot.getMaxNum() === range.medium) {
@@ -320,3 +319,4 @@ function getImageSource(imageName: string): string {
   }
   return path
 }
+
