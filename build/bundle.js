@@ -2,7 +2,7 @@
 class GuessBot {
     constructor(maxNumber) {
         this.pickANumber = () => {
-            this.secretNumber = Math.floor((Math.random() + 1) * this.maxNumber);
+            this.secretNumber = Math.floor((Math.random()) * this.maxNumber);
             console.log(this.secretNumber);
             return this.secretNumber;
         };
@@ -111,9 +111,9 @@ const gameText = {
     lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
     correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
     getGuessText: function (range, isValid) {
-        let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
+        let text = `errr....**!!!..error.., enter a number between 0 and ${range}.`;
         if (isValid) {
-            text = `The robot had between 1 to ${range} drinks. What's your guess?`;
+            text = `The robot had between 0 to ${range} drinks. What's your guess?`;
         }
         return text;
     }
@@ -214,19 +214,19 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" 
-        title = "Im Tipsy, I drank between 1 to 10 drinks"
+        title = "Im Tipsy, I drank between 0 to 10 drinks"
         class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" 
-        title = "Im Hammered, I drank between 1 to 50 drinks"
+        title = "Im Hammered, I drank between 0 to 50 drinks"
         class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
-        title = "Im Sloshed, I drank between 1 to 100 drinks"
+        title = "Im Sloshed, I drank between 0 to 100 drinks"
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
