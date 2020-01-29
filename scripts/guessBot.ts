@@ -8,8 +8,9 @@ class GuessBot {
   }
 
   pickANumber = (): number => {
-    this.secretNumber = Math.floor((Math.random()+1) * this.maxNumber);
-    console.log(this.secretNumber)
+    this.secretNumber = Math.floor(Math.random() * this.maxNumber) + 1;
+    console.log("secret number ", this.secretNumber)
+    console.log("maxNumber: ", this.maxNumber;)
     return this.secretNumber;
   };
 
@@ -19,7 +20,15 @@ class GuessBot {
 
   getMaxNum = (): number => {return this.maxNumber}
 
-  checkGuess = (guess: number): number =>
-    guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
+  checkGuess = (guess: number): number => {
+    if (guess < this.secretNumber) {
+      return 1;
+    } else if (guess > this.secretNumber) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+    // guess < this.secretNumber ? 1 : guess > this.secretNumber ? -1 : 0;
 
 }

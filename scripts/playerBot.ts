@@ -22,10 +22,10 @@ class PlayerBot {
     this.high = maxNumber;
   }
 
-  smartGuess = (sign: -1 | 0 | 1, lastGuess?: number): number => {
+  smartGuess = (sign: -1 | 1, lastGuess?: number): number => {
     let guess: number;
 
-    if (sign === 0) {
+    if (lastGuess === -1) {
       this.low = 1;
       this.high = this.maxNumber;
       guess = Math.floor((this.high - this.low) / 2) + 1;
@@ -51,10 +51,10 @@ class PlayerBot {
     }
   };
 
-  stupidGuess = (sign: -1 | 0 | 1, lastGuess?: number): number => {
+  stupidGuess = (sign: -1 | 1, lastGuess?: number): number => {
     let guess: number;
 
-    if (sign === 0) {
+    if (lastGuess === -1) {
       this.low = 1;
       this.high = this.maxNumber;
       guess = Math.floor(Math.random() * this.high) + 1;
