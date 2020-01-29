@@ -200,9 +200,15 @@ function startGameSaveInput() {
 }
 function changeModeToBot() {
     multiplayerMode = true;
+    const modeButtons = document.querySelectorAll('.modeButtons button');
+    modeButtons[1].style.outline = 'solid';
+    modeButtons[0].style.outline = 'unset';
 }
 function changeModeToSingle() {
     multiplayerMode = false;
+    const modeButtons = document.querySelectorAll('.modeButtons button');
+    modeButtons[0].style.outline = 'solid';
+    modeButtons[1].style.outline = 'unset';
 }
 function createStartPage() {
     const oldPlayerName = localStorage.getItem('playerName');
@@ -233,16 +239,16 @@ function createStartPage() {
     </div>
 
     <div class="rules">
-      <div class="robotInstructions">${gameText.welcome}</div>
-    </div>
-
+    <div class="robotInstructions">${gameText.welcome}</div>
+  </div>
+  <div class="player_input">
+    <input id="playerName" type="text" placeholder="enter your name" autofocus/>
+    <div class="modeButtons">
     <button onclick="changeModeToSingle()" class="background-1">Single player</button><button onclick="changeModeToBot()" class="background-1">Against bot</button>
-    <div class="player_input">
-      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-
-      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
-
     </div>
+    <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
+
+  </div>
   `;
     mainWrapper.innerHTML = markup;
     botSelection();
