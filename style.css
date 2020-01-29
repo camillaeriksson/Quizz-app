@@ -4,7 +4,8 @@ html {
 }
 
 body {
-    background-image: linear-gradient(180deg, #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538);
+    background-image: linear-gradient(180deg, #6563f6, #8e5bf5, #b050f2, #d041eb, #ec2ae1);
+    /* background-image: linear-gradient(180deg, #eb6f5c, #fa884e, #ffa540, #fdc535, #f0e538); */
     background-size: cover;
     background-repeat: no-repeat;
     display: grid;
