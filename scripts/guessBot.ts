@@ -8,7 +8,7 @@ class GuessBot {
   }
 
   pickANumber = (): number => {
-    this.secretNumber = Math.floor((Math.random()+1) * this.maxNumber);
+    this.secretNumber = Math.floor((Math.random()) * this.maxNumber);
     console.log(this.secretNumber)
     return this.secretNumber;
   };
