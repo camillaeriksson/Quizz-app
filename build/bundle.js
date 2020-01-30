@@ -38,7 +38,11 @@ class PlayerBot {
                 const x = Math.floor(diff / 2);
                 guess = this.low + (diff <= 1 ? diff : x);
                 this.lastGuess = guess;
-                console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
+                console.log({
+                    low: this.low,
+                    high: this.high,
+                    lastGuess: this.lastGuess
+                });
                 return guess;
             }
             else {
@@ -47,35 +51,43 @@ class PlayerBot {
                 const x = Math.floor((this.high - this.low) / 2);
                 guess = this.low + diff - x;
                 this.lastGuess = guess;
-                console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
+                console.log({
+                    low: this.low,
+                    high: this.high,
+                    lastGuess: this.lastGuess
+                });
                 return guess;
             }
         };
         this.stupidGuess = (sign, lastGuess) => {
             let guess;
-            if (lastGuess === -1) {
-                this.low = 1;
-                this.high = this.maxNumber;
-                guess = Math.floor(Math.random() * this.high) + 1;
-                this.lastGuess = guess;
-                return guess;
-            }
             lastGuess ? (this.lastGuess = lastGuess) : null;
             if (sign === Sign.Higher) {
-                this.low = this.lastGuess;
+                this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
                 guess =
                     this.lastGuess +
                         Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
                 this.lastGuess = guess;
-                return guess > this.high ? this.high : guess;
+                guess = guess > this.high ? this.high : guess;
+                console.log({
+                    low: this.low,
+                    high: this.high,
+                    guess: this.lastGuess
+                });
+                return guess;
             }
             else {
-                this.high = this.lastGuess;
+                this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
                 guess =
-                    this.lastGuess -
-                        Math.floor(Math.random() * (this.high - this.low) + 1);
+                    this.lastGuess - Math.floor(Math.random() * (this.high - this.low) + 1);
                 this.lastGuess = guess;
-                return guess < this.low ? this.low : guess;
+                guess = guess < this.low ? this.low : guess;
+                console.log({
+                    low: this.low,
+                    high: this.high,
+                    guess: this.lastGuess
+                });
+                return guess;
             }
         };
         this.retardedGuess = () => {
@@ -86,8 +98,18 @@ class PlayerBot {
                 return guess;
             }
             guess = Math.floor(Math.random() * this.maxNumber) + 1;
-            console.log("kl");
+            console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
             return guess;
+        };
+        this.updateAlgorithm = (sign, guess) => {
+            switch (sign) {
+                case Sign.Higher:
+                    this.low = this.low > guess ? this.low : guess;
+                    break;
+                case Sign.Lower:
+                    this.high = this.high < guess ? this.high : guess;
+                    break;
+            }
         };
         this.maxNumber = difficulty;
         this.difficulty = difficulty;
@@ -146,9 +168,9 @@ const gameText = {
     lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
     correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
     getGuessText: function (range, isValid) {
-        let text = `errr....**!!!..error.., enter a number between 0 and ${range}.`;
+        let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
         if (isValid) {
-            text = `The robot had between 0 to ${range} drinks. What's your guess?`;
+            text = `The robot had between 1 to ${range} drinks. What's your guess?`;
         }
         return text;
     }
@@ -228,7 +250,7 @@ function showEndOfTurnMessage() {
                 break;
             default:
                 isGameOver = true;
-                if (multiplayerMode)
+                if (multiplayerMode && !isPlayersTurn)
                     setTimeout(() => showPage(GamePage.EndPage), 3000);
                 else
                     showPage(GamePage.EndPage);
@@ -258,6 +280,7 @@ function takeTurn() {
         if (multiplayerMode && !isGameOver) {
             isPlayersTurn = false;
             removePlayerInput();
+            playerBot.updateAlgorithm(sign, guess);
             setTimeout(botsTurn, 2000);
         }
     }
@@ -270,6 +293,7 @@ function takeTurn() {
         }
         sign = guessBot.checkGuess(guess);
         showEndOfTurnMessage();
+        playerBot.updateAlgorithm(sign, guess);
         if (!isGameOver) {
             inputWrapperElement.innerHTML = `
           <p>The bot guesses for: ${guess}</p>

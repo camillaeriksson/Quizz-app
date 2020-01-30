@@ -40,9 +40,9 @@ const gameText = {
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
   getGuessText: function (range: number, isValid: boolean): string {
-    let text = `errr....**!!!..error.., enter a number between 0 and ${range}.`
+    let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`
     if (isValid) {
-      text = `The robot had between 0 to ${range} drinks. What's your guess?`
+      text = `The robot had between 1 to ${range} drinks. What's your guess?`
     }
     return text;
   }
@@ -137,7 +137,7 @@ function showEndOfTurnMessage() {
         break;
       default:
         isGameOver = true;
-        if (multiplayerMode) setTimeout(() => showPage(GamePage.EndPage), 3000);
+        if (multiplayerMode && !isPlayersTurn) setTimeout(() => showPage(GamePage.EndPage), 3000);
         else showPage(GamePage.EndPage);
     }
   } else if (isNaN(guess)) {
@@ -167,10 +167,12 @@ function takeTurn() {
     guess = getPlayerInput();
     sign = guessBot.checkGuess(guess);
 
+    
     showEndOfTurnMessage();
     if (multiplayerMode && !isGameOver) {
       isPlayersTurn = false;
       removePlayerInput();
+      playerBot.updateAlgorithm(sign, guess);
       setTimeout(botsTurn, 2000);
     }
   } else {
@@ -180,8 +182,9 @@ function takeTurn() {
       guess = playerBot.guess();
     }
     sign = guessBot.checkGuess(guess);
-
+    
     showEndOfTurnMessage();
+    playerBot.updateAlgorithm(sign, guess);
 
     if (!isGameOver) {
       inputWrapperElement.innerHTML = `
