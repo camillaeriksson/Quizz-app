@@ -65,8 +65,8 @@ class PlayerBot {
             if (sign === Sign.Higher) {
                 this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
                 guess =
-                    this.lastGuess +
-                        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
+                    this.low +
+                        Math.floor(Math.random() * (this.high - this.low) + 1);
                 this.lastGuess = guess;
                 guess = guess > this.high ? this.high : guess;
                 console.log({
@@ -79,7 +79,7 @@ class PlayerBot {
             else {
                 this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
                 guess =
-                    this.lastGuess - Math.floor(Math.random() * (this.high - this.low) + 1);
+                    this.high - Math.floor(Math.random() * (this.high - this.low) + 1);
                 this.lastGuess = guess;
                 guess = guess < this.low ? this.low : guess;
                 console.log({
@@ -91,14 +91,17 @@ class PlayerBot {
             }
         };
         this.retardedGuess = () => {
-            let guess;
+            let guess = this.lastGuess;
             const chance = Math.random();
-            if (chance > 1) {
-                guess = -1;
+            if (chance >= 0.8) {
+                guess = -2;
                 return guess;
             }
-            guess = Math.floor(Math.random() * this.maxNumber) + 1;
-            console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
+            while (guess === this.lastGuess) {
+                guess = Math.floor(Math.random() * this.maxNumber) + 1;
+            }
+            this.lastGuess = guess;
+            console.log({ low: this.low, hiigh: this.high, guess: this.lastGuess });
             return guess;
         };
         this.updateAlgorithm = (sign, guess) => {
@@ -137,7 +140,7 @@ var GamePage;
 })(GamePage || (GamePage = {}));
 var Difficulty;
 (function (Difficulty) {
-    Difficulty[Difficulty["Easy"] = 5] = "Easy";
+    Difficulty[Difficulty["Easy"] = 10] = "Easy";
     Difficulty[Difficulty["Medium"] = 50] = "Medium";
     Difficulty[Difficulty["Hard"] = 100] = "Hard";
 })(Difficulty || (Difficulty = {}));
@@ -250,8 +253,10 @@ function showEndOfTurnMessage() {
                 break;
             default:
                 isGameOver = true;
-                if (multiplayerMode && !isPlayersTurn)
+                if (multiplayerMode && !isPlayersTurn) {
+                    gameTextSelector.innerHTML = "The bot guessed the correct number!";
                     setTimeout(() => showPage(GamePage.EndPage), 3000);
+                }
                 else
                     showPage(GamePage.EndPage);
         }
@@ -292,12 +297,12 @@ function takeTurn() {
             guess = playerBot.guess();
         }
         sign = guessBot.checkGuess(guess);
+        inputWrapperElement.innerHTML = `
+      <p>The bot guesses for: ${guess}</p>
+    `;
         showEndOfTurnMessage();
         playerBot.updateAlgorithm(sign, guess);
         if (!isGameOver) {
-            inputWrapperElement.innerHTML = `
-          <p>The bot guesses for: ${guess}</p>
-        `;
             setTimeout(playersTurn, 4000);
         }
     }
@@ -326,15 +331,15 @@ function removePlayerInput() {
 }
 function changeModeToBot() {
     multiplayerMode = true;
-    const modeButtons = document.querySelectorAll('.modeButtons button');
-    modeButtons[1].style.outline = 'solid';
-    modeButtons[0].style.outline = 'unset';
+    const modeButtons = document.querySelectorAll(".modeButtons button");
+    modeButtons[1].style.outline = "solid";
+    modeButtons[0].style.outline = "unset";
 }
 function changeModeToSingle() {
     multiplayerMode = false;
-    const modeButtons = document.querySelectorAll('.modeButtons button');
-    modeButtons[0].style.outline = 'solid';
-    modeButtons[1].style.outline = 'unset';
+    const modeButtons = document.querySelectorAll(".modeButtons button");
+    modeButtons[0].style.outline = "solid";
+    modeButtons[1].style.outline = "unset";
 }
 function createStartPage() {
     const oldPlayerName = localStorage.getItem("playerName");

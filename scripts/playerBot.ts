@@ -98,8 +98,8 @@ class PlayerBot {
     if (sign === Sign.Higher) {
       this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
       guess =
-        this.lastGuess +
-        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
+        this.low +
+        Math.floor(Math.random() * (this.high - this.low) + 1);
       this.lastGuess = guess;
       guess = guess > this.high ? this.high : guess;
       console.log({
@@ -111,7 +111,7 @@ class PlayerBot {
     } else {
       this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
       guess =
-        this.lastGuess - Math.floor(Math.random() * (this.high - this.low) + 1);
+        this.high - Math.floor(Math.random() * (this.high - this.low) + 1);
       this.lastGuess = guess;
       guess = guess < this.low ? this.low : guess;
       console.log({
@@ -124,17 +124,19 @@ class PlayerBot {
   };
 
   retardedGuess = (): number => {
-    let guess: number;
+    let guess: number = this.lastGuess;
     const chance = Math.random();
 
-    if (chance > 1) {
-      guess = -1;
+    if (chance >= 0.8) {
+      guess = -2;
       return guess;
     }
 
-    guess = Math.floor(Math.random() * this.maxNumber) + 1;
-
-    console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
+    while (guess === this.lastGuess) {
+      guess = Math.floor(Math.random() * this.maxNumber) + 1;
+    }
+    this.lastGuess = guess;
+    console.log({ low: this.low, hiigh: this.high, guess: this.lastGuess });
     return guess;
   };
 

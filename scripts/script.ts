@@ -5,7 +5,7 @@ enum GamePage {
 }
 
 enum Difficulty {
-  Easy = 5,
+  Easy = 10,
   Medium = 50,
   Hard = 100
 }
@@ -39,10 +39,10 @@ const gameText = {
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
-  getGuessText: function (range: number, isValid: boolean): string {
-    let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`
+  getGuessText: function(range: number, isValid: boolean): string {
+    let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
     if (isValid) {
-      text = `The robot had between 1 to ${range} drinks. What's your guess?`
+      text = `The robot had between 1 to ${range} drinks. What's your guess?`;
     }
     return text;
   }
@@ -137,8 +137,10 @@ function showEndOfTurnMessage() {
         break;
       default:
         isGameOver = true;
-        if (multiplayerMode && !isPlayersTurn) setTimeout(() => showPage(GamePage.EndPage), 3000);
-        else showPage(GamePage.EndPage);
+        if (multiplayerMode && !isPlayersTurn) {
+          gameTextSelector.innerHTML = "The bot guessed the correct number!";
+          setTimeout(() => showPage(GamePage.EndPage), 3000);
+        } else showPage(GamePage.EndPage);
     }
   } else if (isNaN(guess)) {
     gameImage.src = getImageSource("invalid.png");
@@ -167,7 +169,6 @@ function takeTurn() {
     guess = getPlayerInput();
     sign = guessBot.checkGuess(guess);
 
-    
     showEndOfTurnMessage();
     if (multiplayerMode && !isGameOver) {
       isPlayersTurn = false;
@@ -182,15 +183,15 @@ function takeTurn() {
       guess = playerBot.guess();
     }
     sign = guessBot.checkGuess(guess);
-    
+
+    inputWrapperElement.innerHTML = `
+      <p>The bot guesses for: ${guess}</p>
+    `;
+
     showEndOfTurnMessage();
     playerBot.updateAlgorithm(sign, guess);
 
     if (!isGameOver) {
-      inputWrapperElement.innerHTML = `
-          <p>The bot guesses for: ${guess}</p>
-        `;
-
       setTimeout(playersTurn, 4000);
     }
   }
@@ -229,16 +230,16 @@ function removePlayerInput() {
 
 function changeModeToBot() {
   multiplayerMode = true;
-  const modeButtons = document.querySelectorAll('.modeButtons button') as any
-  modeButtons[1].style.outline = 'solid';
-  modeButtons[0].style.outline = 'unset';
+  const modeButtons = document.querySelectorAll(".modeButtons button") as any;
+  modeButtons[1].style.outline = "solid";
+  modeButtons[0].style.outline = "unset";
 }
 
 function changeModeToSingle() {
   multiplayerMode = false;
-  const modeButtons = document.querySelectorAll('.modeButtons button') as any
-  modeButtons[0].style.outline = 'solid';
-  modeButtons[1].style.outline = 'unset';
+  const modeButtons = document.querySelectorAll(".modeButtons button") as any;
+  modeButtons[0].style.outline = "solid";
+  modeButtons[1].style.outline = "unset";
 }
 
 function createStartPage() {
