@@ -423,7 +423,7 @@ ul {
     }
 
     .images_game {
-        height: 20vh;
+        height: 18vh;
     }
 .gameEndMessage{
     display: flex;
@@ -448,5 +448,9 @@ ul {
         font-size: 1em;
         text-align: center;
         margin: 0rem 0 2rem 0;
+    }
+    span{
+        font-size: 1.1em;
+
     }
 }

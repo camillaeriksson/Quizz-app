@@ -296,7 +296,7 @@ function createEndPage() {
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
       <h2>HIGHEST SCORES</h2>
-      Name  -  Score
+       <span>Name  -  Score</span>
 
       <ul class="ul_highscores">
       </div>
