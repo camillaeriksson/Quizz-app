@@ -13,13 +13,13 @@ class GuessBot {
         this.getMaxNum = () => { return this.maxNumber; };
         this.checkGuess = (guess) => {
             if (guess < this.secretNumber) {
-                return 1;
+                return Sign.Higher;
             }
             else if (guess > this.secretNumber) {
-                return -1;
+                return Sign.Lower;
             }
             else {
-                return 0;
+                return Sign.Correct;
             }
         };
         this.maxNumber = maxNumber;
@@ -27,31 +27,27 @@ class GuessBot {
     }
 }
 class PlayerBot {
-    constructor(maxNumber) {
+    constructor(difficulty) {
         this.lastGuess = -1;
         this.smartGuess = (sign, lastGuess) => {
             let guess;
-            if (lastGuess === -1) {
-                this.low = 1;
-                this.high = this.maxNumber;
-                guess = Math.floor((this.high - this.low) / 2) + 1;
-                this.lastGuess = guess;
-                return guess;
-            }
             lastGuess ? (this.lastGuess = lastGuess) : null;
-            if (sign === 1) {
-                this.low = this.lastGuess;
-                const diff = this.high - this.lastGuess;
+            if (sign === Sign.Higher) {
+                this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
+                const diff = this.high - this.low;
                 const x = Math.floor(diff / 2);
-                guess = this.lastGuess + (diff <= 1 ? diff : x);
+                guess = this.low + (diff <= 1 ? diff : x);
                 this.lastGuess = guess;
+                console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
                 return guess;
             }
             else {
-                this.high = this.lastGuess;
+                this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
+                const diff = this.high - this.low;
                 const x = Math.floor((this.high - this.low) / 2);
-                guess = this.lastGuess - x;
+                guess = this.low + diff - x;
                 this.lastGuess = guess;
+                console.log({ low: this.low, high: this.high, lastGuess: this.lastGuess });
                 return guess;
             }
         };
@@ -65,7 +61,7 @@ class PlayerBot {
                 return guess;
             }
             lastGuess ? (this.lastGuess = lastGuess) : null;
-            if (sign === 1) {
+            if (sign === Sign.Higher) {
                 this.low = this.lastGuess;
                 guess =
                     this.lastGuess +
@@ -85,16 +81,30 @@ class PlayerBot {
         this.retardedGuess = () => {
             let guess;
             const chance = Math.random();
-            if (chance > 0.6) {
-                guess = "bip bop";
+            if (chance > 1) {
+                guess = -1;
                 return guess;
             }
             guess = Math.floor(Math.random() * this.maxNumber) + 1;
+            console.log("kl");
             return guess;
         };
-        this.maxNumber = maxNumber;
+        this.maxNumber = difficulty;
+        this.difficulty = difficulty;
         this.low = 1;
-        this.high = maxNumber;
+        this.high = this.maxNumber;
+    }
+    guess(sign, lastGuess) {
+        switch (this.difficulty) {
+            case Difficulty.Easy:
+                return this.retardedGuess();
+            case Difficulty.Medium:
+                return this.stupidGuess(sign, lastGuess);
+            case Difficulty.Hard:
+                return this.smartGuess(sign, lastGuess);
+            default:
+                return this.retardedGuess();
+        }
     }
 }
 var GamePage;
@@ -103,19 +113,31 @@ var GamePage;
     GamePage[GamePage["PlayPage"] = 1] = "PlayPage";
     GamePage[GamePage["EndPage"] = 2] = "EndPage";
 })(GamePage || (GamePage = {}));
+var Difficulty;
+(function (Difficulty) {
+    Difficulty[Difficulty["Easy"] = 5] = "Easy";
+    Difficulty[Difficulty["Medium"] = 50] = "Medium";
+    Difficulty[Difficulty["Hard"] = 100] = "Hard";
+})(Difficulty || (Difficulty = {}));
+var Sign;
+(function (Sign) {
+    Sign[Sign["Lower"] = -1] = "Lower";
+    Sign[Sign["Higher"] = 1] = "Higher";
+    Sign[Sign["Correct"] = 0] = "Correct";
+})(Sign || (Sign = {}));
 window.onload = init;
 let guess;
-let nGuesses = 1;
+let sign;
+let nGuesses = 0;
+let botGuesses = 0;
 let gamePage;
 let multiplayerMode = false;
-const range = {
-    easy: 3,
-    medium: 50,
-    hard: 100
-};
-const guessBot = new GuessBot(range.easy);
+let isLoading = false;
 let isPlayersTurn = true;
-const playerBot = new PlayerBot(range.easy);
+let isGameOver = false;
+let maxNum = Difficulty.Hard;
+let guessBot;
+let playerBot;
 const gameText = {
     welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
   The doorman asks the robot how many drinks he had, but even though his CPU works as hard as it can, 
@@ -143,10 +165,8 @@ function handleKeypress(e) {
                 break;
             case GamePage.PlayPage:
                 if (isPlayersTurn) {
-                    getPlayerInput();
+                    takeTurn();
                 }
-                removePlayerInput();
-                setTimeout(takeTurn, 3000);
                 break;
             case GamePage.EndPage:
                 showPage(GamePage.StartPage);
@@ -173,39 +193,51 @@ function showPage(gamePage) {
 function getPlayerInput() {
     inputFocus();
     removeGreetings();
-    const gameTextSelector = document.querySelector(".gameMessage");
     const playerInputField = document.querySelector(".playerInput");
+    if (playerInputField !== null) {
+        const input = Number(playerInputField.value);
+        playerInputField.value = "enter your guess";
+        return input;
+    }
+    return NaN;
+}
+function showEndOfTurnMessage() {
+    const gameTextSelector = document.querySelector(".gameMessage");
     const gameImage = document.querySelector(".images_game");
     gameTextSelector.classList.add("wobble");
     setTimeout(function () {
         gameTextSelector.classList.remove("wobble");
     }, 2000);
-    if (playerInputField !== null) {
-        guess = playerInputField.value || "invalid";
-        localStorage.setItem("score", nGuesses.toString());
-        if (!isNaN(guess)) {
+    if (!isNaN(guess)) {
+        if (isPlayersTurn) {
             nGuesses++;
-            const sign = guessBot.checkGuess(guess);
-            switch (sign) {
-                case -1:
-                    gameImage.src = getImageSource("lower.png");
-                    gameTextSelector.innerHTML = gameText.lower;
-                    break;
-                case 1:
-                    gameImage.src = getImageSource("higher.png");
-                    gameTextSelector.innerHTML = gameText.higher;
-                    break;
-                default:
-                    showPage(GamePage.EndPage);
-            }
         }
-        else if (isNaN(guess)) {
-            gameImage.src = getImageSource("invalid.png");
-            gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
+        else {
+            botGuesses++;
+        }
+        localStorage.setItem("score", nGuesses.toString());
+        sign = guessBot.checkGuess(guess);
+        switch (sign) {
+            case Sign.Lower:
+                gameImage.src = getImageSource("lower.png");
+                gameTextSelector.innerHTML = gameText.lower;
+                break;
+            case Sign.Higher:
+                gameImage.src = getImageSource("higher.png");
+                gameTextSelector.innerHTML = gameText.higher;
+                break;
+            default:
+                isGameOver = true;
+                if (multiplayerMode)
+                    setTimeout(() => showPage(GamePage.EndPage), 3000);
+                else
+                    showPage(GamePage.EndPage);
         }
     }
-    playerInputField.value = "enter your guess";
-    console.log("player guess: ", guess);
+    else if (isNaN(guess)) {
+        gameImage.src = getImageSource("invalid.png");
+        gameTextSelector.innerHTML = gameText.getGuessText(maxNum, false);
+    }
 }
 function startGameSaveInput() {
     const playerName = document.getElementById("playerName");
@@ -213,35 +245,53 @@ function startGameSaveInput() {
         localStorage.setItem("playerName", playerName.value);
     }
     showPage(GamePage.PlayPage);
+    isGameOver = false;
     inputFocus();
-    createPlayerInput();
+    playersTurn();
 }
 function takeTurn() {
     const inputWrapperElement = document.querySelector(".player_input");
     if (isPlayersTurn) {
-        createPlayerInput();
+        guess = getPlayerInput();
+        sign = guessBot.checkGuess(guess);
+        showEndOfTurnMessage();
+        if (multiplayerMode && !isGameOver) {
+            isPlayersTurn = false;
+            removePlayerInput();
+            setTimeout(botsTurn, 2000);
+        }
     }
     else {
-        const guess1 = playerBot.retardedGuess();
-        const sign = guessBot.checkGuess(guess);
-        console.log("sign: ", sign);
-        if (sign === 0) {
-            showPage(GamePage.EndPage);
-            return;
+        if (guess) {
+            guess = playerBot.guess(sign, guess);
         }
-        inputWrapperElement.innerHTML = `
-      <p>The bot guesses for: ${guess1}</p>
-
-    `;
-        setTimeout(takeTurn, 3000);
+        else {
+            guess = playerBot.guess();
+        }
+        sign = guessBot.checkGuess(guess);
+        showEndOfTurnMessage();
+        if (!isGameOver) {
+            inputWrapperElement.innerHTML = `
+          <p>The bot guesses for: ${guess}</p>
+        `;
+            setTimeout(playersTurn, 4000);
+        }
     }
-    isPlayersTurn = !isPlayersTurn;
+}
+function playersTurn() {
+    createPlayerInput();
+    isPlayersTurn = true;
+}
+function botsTurn() {
+    removePlayerInput();
+    isPlayersTurn = false;
+    setTimeout(takeTurn, 1000);
 }
 function createPlayerInput() {
     const inputWrapperElement = document.querySelector(".player_input");
     inputWrapperElement.innerHTML = `
   <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
-  <button onclick="getPlayerInput();" class="button-round background-5 playGame">
+  <button onclick="takeTurn();" class="button-round background-5 playGame">
     Submit
   </button>
 `;
@@ -304,13 +354,14 @@ function createStartPage() {
     }
 }
 function createPlayPage() {
-    guessBot.pickANumber();
     gamePage = GamePage.PlayPage;
+    guessBot = new GuessBot(maxNum);
+    playerBot = new PlayerBot(maxNum);
     const mainWrapper = clearMainWrapper();
     const playerName = localStorage.getItem("playerName");
     const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
-    <div class="gameMessage">${gameText.getGuessText(guessBot.getMaxNum(), true)}</div>
+    <div class="gameMessage">${gameText.getGuessText(maxNum, true)}</div>
 
     <div class="bot_choice">
       <div class="robotImages">
@@ -332,9 +383,9 @@ function createEndPage() {
     let totalGuesses = localStorage.getItem("score");
     const markup = `
     <div class="title_ender">
-    <h2>YOU WON!</h2><br>
+    <h2>${isPlayersTurn ? "You " : "Bot "} WON!</h2><br>
     </div>
-    <p>You took ${totalGuesses} guesses.</p>
+    <p>${isPlayersTurn ? "You " : "Bot "} took ${totalGuesses} guesses.</p>
     <img src=${getImageSource("win.gif")} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
@@ -348,7 +399,8 @@ function createEndPage() {
     <button onclick="showPage(GamePage.StartPage);" id="player_input" class=" background-2">Restart</button>
 
   `;
-    nGuesses = 1;
+    nGuesses = 0;
+    botGuesses = 0;
     mainWrapper.innerHTML = markup;
     const highscoreDiv = document.querySelector(".user_and_score");
     const ulHighScores = document.querySelector(".ul_highscores");
@@ -397,23 +449,22 @@ function removeGreetings() {
 function botSelection() {
     let botSelected = document.querySelector(".bot_choice");
     let imageList = document.querySelectorAll(".images");
-    console.log(imageList);
     botSelected.onclick = function (e) {
         switch (e.toElement.id) {
             case "imgEasy":
-                guessBot.setMaxNum(range.easy);
+                maxNum = Difficulty.Easy;
                 imageList[0].style.background = "#f6d535";
                 imageList[1].style.background = "unset";
                 imageList[2].style.background = "unset";
                 break;
             case "imgMedium":
-                guessBot.setMaxNum(range.medium);
+                maxNum = Difficulty.Medium;
                 imageList[0].style.background = "unset";
                 imageList[1].style.background = "#f6d535";
                 imageList[2].style.background = "unset";
                 break;
             case "imgHard":
-                guessBot.setMaxNum(range.hard);
+                maxNum = Difficulty.Hard;
                 imageList[0].style.background = "unset";
                 imageList[1].style.background = "unset";
                 imageList[2].style.background = "#f6d535";
@@ -423,10 +474,10 @@ function botSelection() {
 }
 function getImageSource(imageName) {
     let path = `./assets/images/easy_${imageName}`;
-    if (guessBot.getMaxNum() === range.medium) {
+    if (guessBot.getMaxNum() === Difficulty.Medium) {
         path = `./assets/images/medium_${imageName}`;
     }
-    else if (guessBot.getMaxNum() === range.hard) {
+    else if (guessBot.getMaxNum() === Difficulty.Hard) {
         path = `./assets/images/hard_${imageName}`;
     }
     return path;
