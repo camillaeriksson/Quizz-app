@@ -92,11 +92,6 @@ class PlayerBot {
         };
         this.retardedGuess = () => {
             let guess = this.lastGuess;
-            const chance = Math.random();
-            if (chance >= 0.8) {
-                guess = -2;
-                return guess;
-            }
             while (guess === this.lastGuess) {
                 guess = Math.floor(Math.random() * this.maxNumber) + 1;
             }
@@ -273,7 +268,6 @@ function startGameSaveInput() {
     }
     showPage(GamePage.PlayPage);
     isGameOver = false;
-    inputFocus();
     playersTurn();
 }
 function takeTurn() {
@@ -324,6 +318,7 @@ function createPlayerInput() {
     Submit
   </button>
 `;
+    inputFocus();
 }
 function removePlayerInput() {
     const inputWrapperElement = document.querySelector(".player_input");

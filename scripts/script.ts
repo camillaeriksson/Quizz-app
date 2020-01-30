@@ -155,7 +155,6 @@ function startGameSaveInput() {
   }
   showPage(GamePage.PlayPage);
   isGameOver = false;
-  inputFocus();
 
   playersTurn();
 }
@@ -219,6 +218,8 @@ function createPlayerInput() {
     Submit
   </button>
 `;
+
+  inputFocus();
 }
 
 function removePlayerInput() {

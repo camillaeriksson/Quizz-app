@@ -125,12 +125,12 @@ class PlayerBot {
 
   retardedGuess = (): number => {
     let guess: number = this.lastGuess;
-    const chance = Math.random();
+    // const chance = Math.random();
 
-    if (chance >= 0.8) {
-      guess = -2;
-      return guess;
-    }
+    // if (chance >= 0.8) {
+    //   guess = -2;
+    //   return guess;
+    // }
 
     while (guess === this.lastGuess) {
       guess = Math.floor(Math.random() * this.maxNumber) + 1;
