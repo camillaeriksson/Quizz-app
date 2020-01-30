@@ -246,7 +246,12 @@ button:active {
     flex-direction: column;
     align-items: center;
 }
-
+.user_and_score{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
 .wobble {
     animation: wobble 1.5s both;
 }
