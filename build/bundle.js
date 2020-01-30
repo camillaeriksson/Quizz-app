@@ -146,9 +146,9 @@ const gameText = {
     lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
     correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
     getGuessText: function (range, isValid) {
-        let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
+        let text = `errr....**!!!..error.., enter a number between 0 and ${range}.`;
         if (isValid) {
-            text = `The robot had between 1 to ${range} drinks. What's your guess?`;
+            text = `The robot had between 0 to ${range} drinks. What's your guess?`;
         }
         return text;
     }
@@ -302,9 +302,15 @@ function removePlayerInput() {
 }
 function changeModeToBot() {
     multiplayerMode = true;
+    const modeButtons = document.querySelectorAll('.modeButtons button');
+    modeButtons[1].style.outline = 'solid';
+    modeButtons[0].style.outline = 'unset';
 }
 function changeModeToSingle() {
     multiplayerMode = false;
+    const modeButtons = document.querySelectorAll('.modeButtons button');
+    modeButtons[0].style.outline = 'solid';
+    modeButtons[1].style.outline = 'unset';
 }
 function createStartPage() {
     const oldPlayerName = localStorage.getItem("playerName");
@@ -316,35 +322,35 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" 
-        title = "Im Tipsy, I drank between 1 to 10 drinks"
+        title = "Im Tipsy, I drank between 0 to 10 drinks"
         class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" 
-        title = "Im Hammered, I drank between 1 to 50 drinks"
+        title = "Im Hammered, I drank between 0 to 50 drinks"
         class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
-        title = "Im Sloshed, I drank between 1 to 100 drinks"
+        title = "Im Sloshed, I drank between 0 to 100 drinks"
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
     </div>
 
     <div class="rules">
-      <div class="robotInstructions">${gameText.welcome}</div>
-    </div>
-
+    <div class="robotInstructions">${gameText.welcome}</div>
+  </div>
+  <div class="player_input">
+    <input id="playerName" type="text" placeholder="enter your name" autofocus/>
+    <div class="modeButtons">
     <button onclick="changeModeToSingle()" class="background-1">Single player</button><button onclick="changeModeToBot()" class="background-1">Against bot</button>
-    <div class="player_input">
-      <input id="playerName" type="text" placeholder="enter your name" autofocus/>
-
-      <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
-
     </div>
+    <button onclick="startGameSaveInput(); inputFocus(); " id="player_input" class="background-2">start</button>
+
+  </div>
   `;
     mainWrapper.innerHTML = markup;
     botSelection();
