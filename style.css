@@ -58,10 +58,10 @@ body {
 }
 
 .title_ender {
-    height: 10vh;
+    font-size: 2rem;
+   height: 5rem;
     text-align: center;
     font-style: italic;
-    text-transform: uppercase;
 }
 
 .images:hover {
@@ -72,7 +72,7 @@ body {
 }
 
 .images_game {
-    height: 30vh;
+    height: 25vh;
 }
 
 h3 {
@@ -97,6 +97,7 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: none;
 }
 
 
@@ -408,18 +409,29 @@ ul {
     }
 
     .images_game {
-        width: 50vw;
+        height: 20vh;
     }
+.gameEndMessage{
+    display: flex;
+        font-size: smaller;
+        width: 80vw;
+        min-width: 0em;
+        text-align: justify;
+        text-align-last: left;
 
+}
     .robotEndMessage {
         font-size: 1.5em;
     }
 
     .title_ender {
-        font-size: 1.5em;
+        font-size: 1.3rem;
+        padding-top: 0.1rem;
+        padding-bottom: 0.1rem;
     }
 
     .high_score {
+        font-size: 1em;
         text-align: center;
         margin: 0rem 0 2rem 0;
     }
