@@ -183,15 +183,19 @@ function takeTurn() {
     }
     sign = guessBot.checkGuess(guess);
 
+    const gameMessage = document.querySelector(".gameMessage") as HTMLElement;
+    gameMessage.innerHTML = "";
+
     inputWrapperElement.innerHTML = `
       <p>The bot guessed ${guess}</p>
     `;
 
-    showEndOfTurnMessage();
+    setTimeout(showEndOfTurnMessage, 2000);
+
     playerBot.updateAlgorithm(sign, guess);
 
     if (!isGameOver) {
-      setTimeout(playersTurn, 4000);
+      setTimeout(playersTurn, 6000);
     }
   }
 }
@@ -212,12 +216,14 @@ function createPlayerInput() {
     ".player_input"
   ) as HTMLElement;
 
-  inputWrapperElement.innerHTML = `
-  <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
-  <button onclick="takeTurn();" class="button-round background-5 playGame">
-    Submit
-  </button>
-`;
+  if (inputWrapperElement) {
+    inputWrapperElement.innerHTML = `
+    <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
+    <button onclick="takeTurn();" class="button-round background-5 playGame">
+      Submit
+    </button>
+  `;
+  }
 
   inputFocus();
 }
