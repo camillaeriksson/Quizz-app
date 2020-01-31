@@ -370,7 +370,6 @@ ul {
     .bot_choice {
         display: flex;
         flex-direction: row;
-        /* align-items: ; */
         width: 80vw;
     }
 
