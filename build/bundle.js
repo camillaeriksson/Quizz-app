@@ -225,6 +225,7 @@ function showEndOfTurnMessage() {
     const gameTextSelector = document.querySelector(".gameMessage");
     const gameImage = document.querySelector(".images_game");
     gameTextSelector.classList.add("wobble");
+    gameTextSelector.style.display = "block";
     setTimeout(function () {
         gameTextSelector.classList.remove("wobble");
     }, 2000);
@@ -292,9 +293,9 @@ function takeTurn() {
         }
         sign = guessBot.checkGuess(guess);
         const gameMessage = document.querySelector(".gameMessage");
-        gameMessage.innerHTML = "";
+        gameMessage.style.display = "none";
         inputWrapperElement.innerHTML = `
-      <p>The bot guessed ${guess}</p>
+      <p style="font-size: 1.1rem; font-weight: bold; margin-top: 2rem">The bot guessed ${guess}.</p>
     `;
         setTimeout(showEndOfTurnMessage, 2000);
         playerBot.updateAlgorithm(sign, guess);
@@ -420,7 +421,7 @@ function createEndPage() {
     <div class="title_ender">
     <h2>${isPlayersTurn ? "You " : "Bot "} WON!</h2><br>
     </div>
-    <p>${isPlayersTurn ? "You " : "Bot "} took ${totalGuesses} guesses.</p>
+    <p>${isPlayersTurn ? "You " : "Bot "} guessed ${totalGuesses} times.</p>
     <img src=${getImageSource("win.gif")} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
