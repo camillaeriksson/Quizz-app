@@ -12,86 +12,142 @@
 
 class PlayerBot {
   private maxNumber: number;
+  private difficulty: Difficulty;
   private low: number;
   private high: number;
   private lastGuess: number = -1;
 
-  constructor(maxNumber: number) {
-    this.maxNumber = maxNumber;
+  constructor(difficulty: Difficulty) {
+    this.maxNumber = difficulty;
+    this.difficulty = difficulty;
     this.low = 1;
-    this.high = maxNumber;
+    this.high = this.maxNumber;
   }
 
-  smartGuess = (sign: -1 | 0 | 1, lastGuess?: number): number => {
+  guess(sign?: Sign, lastGuess?: number): number {
+    switch (this.difficulty) {
+      case Difficulty.Easy:
+        return this.retardedGuess();
+      case Difficulty.Medium:
+        return this.stupidGuess(sign, lastGuess);
+      case Difficulty.Hard:
+        return this.smartGuess(sign, lastGuess);
+      default:
+        return this.retardedGuess();
+    }
+  }
+
+  smartGuess = (sign?: Sign, lastGuess?: number): number => {
     let guess: number;
 
-    if (sign === 0) {
-      this.low = 1;
-      this.high = this.maxNumber;
-      guess = Math.floor((this.high - this.low) / 2) + 1;
-      this.lastGuess = guess;
-      return guess;
-    }
+    // if (this.lastGuess === -1) {
+    //   this.low = 1;
+    //   this.high = this.maxNumber;
+    //   guess = Math.floor((this.high - this.low) / 2) + 1;
+    //   this.lastGuess = guess;
+    //   console.log("h: ", this.lastGuess);
+
+    //   return guess;
+    // }
 
     lastGuess ? (this.lastGuess = lastGuess) : null;
 
-    if (sign === 1) {
-      this.low = this.lastGuess;
-      const diff = this.high - this.lastGuess;
+    if (sign === Sign.Higher) {
+      this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
+      const diff = this.high - this.low;
       const x = Math.floor(diff / 2);
-      guess = this.lastGuess + (diff <= 1 ? diff : x);
+      guess = this.low + (diff <= 1 ? diff : x);
       this.lastGuess = guess;
+
+      console.log({
+        low: this.low,
+        high: this.high,
+        lastGuess: this.lastGuess
+      });
+
       return guess;
     } else {
-      this.high = this.lastGuess;
+      this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
+      const diff = this.high - this.low;
       const x = Math.floor((this.high - this.low) / 2);
-      guess = this.lastGuess - x;
+      guess = this.low + diff - x;
       this.lastGuess = guess;
+
+      console.log({
+        low: this.low,
+        high: this.high,
+        lastGuess: this.lastGuess
+      });
       return guess;
     }
   };
 
-  stupidGuess = (sign: -1 | 0 | 1, lastGuess?: number): number => {
+  stupidGuess = (sign?: Sign, lastGuess?: number): number => {
     let guess: number;
 
-    if (sign === 0) {
-      this.low = 1;
-      this.high = this.maxNumber;
-      guess = Math.floor(Math.random() * this.high) + 1;
-      this.lastGuess = guess;
-      return guess;
-    }
+    // if (lastGuess === -1) {
+    //   this.low = 1;
+    //   this.high = this.maxNumber;
+    //   guess = Math.floor(Math.random() * this.high) + 1;
+    //   this.lastGuess = guess;
+    //   return guess;
+    // }
 
     lastGuess ? (this.lastGuess = lastGuess) : null;
 
-    if (sign === 1) {
-      this.low = this.lastGuess;
+    if (sign === Sign.Higher) {
+      this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
       guess =
-        this.lastGuess +
-        Math.floor(Math.random() * (this.high - this.lastGuess) + 1);
-      this.lastGuess = guess;
-      return guess > this.high ? this.high : guess;
-    } else {
-      this.high = this.lastGuess;
-      guess =
-        this.lastGuess -
+        this.low +
         Math.floor(Math.random() * (this.high - this.low) + 1);
       this.lastGuess = guess;
-      return guess < this.low ? this.low : guess;
+      guess = guess > this.high ? this.high : guess;
+      console.log({
+        low: this.low,
+        high: this.high,
+        guess: this.lastGuess
+      });
+      return guess;
+    } else {
+      this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
+      guess =
+        this.high - Math.floor(Math.random() * (this.high - this.low) + 1);
+      this.lastGuess = guess;
+      guess = guess < this.low ? this.low : guess;
+      console.log({
+        low: this.low,
+        high: this.high,
+        guess: this.lastGuess
+      });
+      return guess;
     }
   };
 
-  retardedGuess = (): number | string => {
-    let guess: number | string;
-    const chance = Math.random();
+  retardedGuess = (): number => {
+    let guess: number = this.lastGuess;
+    // const chance = Math.random();
 
-    if (chance > 0.6) {
-      guess = "bip bop";
-      return guess;
+    // if (chance >= 0.8) {
+    //   guess = -2;
+    //   return guess;
+    // }
+
+    while (guess === this.lastGuess) {
+      guess = Math.floor(Math.random() * this.maxNumber) + 1;
     }
-
-    guess = Math.floor(Math.random() * this.maxNumber) + 1;
-
+    this.lastGuess = guess;
+    console.log({ low: this.low, hiigh: this.high, guess: this.lastGuess });
     return guess;
+  };
+
+  updateAlgorithm = (sign: Sign, guess: number) => {
+    switch (sign) {
+      case Sign.Higher:
+        this.low = this.low > guess ? this.low : guess;
+        break;
+      case Sign.Lower:
+        this.high = this.high < guess ? this.high : guess;
+        break;
+    }
   };
 }
