@@ -155,7 +155,7 @@ let multiplayerMode = false;
 let isLoading = false;
 let isPlayersTurn = true;
 let isGameOver = false;
-let maxNum = Difficulty.Hard;
+let maxNum = Difficulty.Easy;
 let guessBot;
 let playerBot;
 const gameText = {
@@ -225,6 +225,7 @@ function showEndOfTurnMessage() {
     const gameTextSelector = document.querySelector(".gameMessage");
     const gameImage = document.querySelector(".images_game");
     gameTextSelector.classList.add("wobble");
+    gameTextSelector.style.display = "block";
     setTimeout(function () {
         gameTextSelector.classList.remove("wobble");
     }, 2000);
@@ -291,13 +292,15 @@ function takeTurn() {
             guess = playerBot.guess();
         }
         sign = guessBot.checkGuess(guess);
+        const gameMessage = document.querySelector(".gameMessage");
+        gameMessage.style.display = "none";
         inputWrapperElement.innerHTML = `
-      <p>The bot guesses for: ${guess}</p>
+      <p style="font-size: 1.1rem; font-weight: bold; margin-top: 2rem">The bot guessed ${guess}.</p>
     `;
-        showEndOfTurnMessage();
+        setTimeout(showEndOfTurnMessage, 2000);
         playerBot.updateAlgorithm(sign, guess);
         if (!isGameOver) {
-            setTimeout(playersTurn, 4000);
+            setTimeout(playersTurn, 6000);
         }
     }
 }
@@ -312,12 +315,14 @@ function botsTurn() {
 }
 function createPlayerInput() {
     const inputWrapperElement = document.querySelector(".player_input");
-    inputWrapperElement.innerHTML = `
-  <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
-  <button onclick="takeTurn();" class="button-round background-5 playGame">
-    Submit
-  </button>
-`;
+    if (inputWrapperElement) {
+        inputWrapperElement.innerHTML = `
+    <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
+    <button onclick="takeTurn();" class="button-round background-5 playGame">
+      Submit
+    </button>
+  `;
+    }
     inputFocus();
 }
 function removePlayerInput() {
@@ -346,19 +351,25 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" 
+
         title = "Im Tipsy, I drank between 0 to 10 drinks, when it comes to multiplayer they are calling me easy bot."
+
         class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" 
+
         title = "Im Hammered, I drank between 0 to 50 drinks, when it comes to multiplayer they are calling me medium bot."
+
         class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
+
         title = "Im Sloshed, I drank between 0 to 100 drinks, when it comes to multiplayer they are calling me hard bot."
+
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
@@ -391,6 +402,7 @@ function createPlayPage() {
     const playerName = localStorage.getItem("playerName");
     const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
+    <div class="botGuess"></div>
     <div class="gameMessage">${gameText.getGuessText(maxNum, true)}</div>
 
     <div class="bot_choice">
@@ -415,13 +427,13 @@ function createEndPage() {
     <div class="title_ender">
     <h2>${isPlayersTurn ? "You " : "Bot "} WON!</h2><br>
     </div>
-    <p>${isPlayersTurn ? "You " : "Bot "} took ${totalGuesses} guesses.</p>
+    <p>${isPlayersTurn ? "You " : "Bot "} guessed ${totalGuesses} times.</p>
     <img src=${getImageSource("win.gif")} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
       <h2>HIGHEST SCORES</h2>
-       <span>Name  -  Score</span>
+       <span><b>Name  -  Score</b></span>
 
       <ul class="ul_highscores">
       </div>
