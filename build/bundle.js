@@ -329,7 +329,7 @@ function createStartPage() {
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" 
 
-        title = "Im Tipsy, I drank between 0 to 10 drinks, when it comes to multiplayer they are calling me easy bot."
+        title = "Im Tipsy, I drank between 1 to 10 drinks, when it comes to multiplayer they are calling me easy bot."
 
         
 
@@ -339,7 +339,7 @@ function createStartPage() {
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" 
 
-        title = "Im Hammered, I drank between 0 to 50 drinks, when it comes to multiplayer they are calling me medium bot."
+        title = "Im Hammered, I drank between 1 to 50 drinks, when it comes to multiplayer they are calling me medium bot."
 
         class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
@@ -347,7 +347,7 @@ function createStartPage() {
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
 
-        title = "Im Sloshed, I drank between 0 to 100 drinks, when it comes to multiplayer they are calling me hard bot."
+        title = "Im Sloshed, I drank between 1 to 100 drinks, when it comes to multiplayer they are calling me hard bot."
 
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
