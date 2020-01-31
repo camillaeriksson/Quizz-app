@@ -4,17 +4,33 @@ enum GamePage {
   EndPage
 }
 
+enum Difficulty {
+  Easy = 10,
+  Medium = 50,
+  Hard = 100
+}
+
+enum Sign {
+  Lower = -1,
+  Higher = 1,
+  Correct = 0
+}
+
 window.onload = init;
-let guess: any;
-let nGuesses: number = 1;
+let guess: number;
+let sign: Sign;
+let nGuesses: number = 0;
+let botGuesses: number = 0;
 let gamePage: GamePage;
+
 let multiplayerMode: boolean = false;
-const range = {
-  easy: 10,
-  medium: 50,
-  hard: 100,
-};
-const guessBot: GuessBot = new GuessBot(range.easy);
+let isLoading: boolean = false;
+let isPlayersTurn: boolean = true;
+let isGameOver: boolean = false;
+
+let maxNum: Difficulty = Difficulty.Hard;
+let guessBot: GuessBot;
+let playerBot: PlayerBot;
 
 const gameText = {
   welcome: `After a long night out the drunk robot and his friends are trying to get into one last bar. 
@@ -23,12 +39,12 @@ const gameText = {
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
-  getGuessText: function (range: number, isValid: boolean): string {
-    let text = `errr....**!!!..error.., enter a number between 0 and ${range}.`
+  getGuessText: function(range: number, isValid: boolean): string {
+    let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
     if (isValid) {
-      text = `The robot had between 0 to ${range} drinks. What's your guess?`
+      text = `The robot had between 1 to ${range} drinks. What's your guess?`;
     }
-    return text
+    return text;
   }
 };
 
@@ -44,7 +60,9 @@ function handleKeypress(e: KeyboardEvent) {
         startGameSaveInput();
         break;
       case GamePage.PlayPage:
-        getPlayerInput();
+        if (isPlayersTurn) {
+          takeTurn();
+        }
         break;
       case GamePage.EndPage:
         showPage(GamePage.StartPage);
@@ -70,51 +88,64 @@ function showPage(gamePage: GamePage) {
   }
 }
 
-function getPlayerInput() {
+function getPlayerInput(): number {
   inputFocus();
   removeGreetings();
-  const gameTextSelector = document.querySelector(
-    ".gameMessage"
-  ) as HTMLDivElement;
+
   const playerInputField = document.querySelector(
     ".playerInput"
   ) as HTMLInputElement;
-  const gameImage = document.querySelector(".images_game") as HTMLImageElement;
 
+  if (playerInputField !== null) {
+    const input = Number(playerInputField.value);
+    playerInputField.value = "enter your guess";
+    return input;
+  }
+
+  return NaN;
+}
+
+function showEndOfTurnMessage() {
+  const gameTextSelector = document.querySelector(
+    ".gameMessage"
+  ) as HTMLDivElement;
+  const gameImage = document.querySelector(".images_game") as HTMLImageElement;
   gameTextSelector.classList.add("wobble");
 
-  setTimeout(function () {
+  setTimeout(function() {
     gameTextSelector.classList.remove("wobble");
   }, 2000);
 
-  if (playerInputField !== null) {
-    guess = playerInputField.value || "invalid";
+  if (!isNaN(guess)) {
+    if (isPlayersTurn) {
+      nGuesses++;
+    } else {
+      botGuesses++;
+    }
+
     localStorage.setItem("score", nGuesses.toString());
 
-    if (!isNaN(guess)) {
-      nGuesses++;
-      const sign = guessBot.checkGuess(guess);
-
-      switch (sign) {
-
-        case -1:
-          gameImage.src = getImageSource('lower.png');
-          gameTextSelector.innerHTML = gameText.lower;
-          break;
-        case 1:
-          gameImage.src = getImageSource('higher.png');
-          gameTextSelector.innerHTML = gameText.higher;
-          break;
-        default:
-          showPage(GamePage.EndPage);
-      }
-    } else if (isNaN(guess)) {
-      gameImage.src = getImageSource('invalid.png');
-      gameTextSelector.innerHTML = gameText.getGuessText(guessBot.getMaxNum(), false);
+    sign = guessBot.checkGuess(guess);
+    switch (sign) {
+      case Sign.Lower:
+        gameImage.src = getImageSource("lower.png");
+        gameTextSelector.innerHTML = gameText.lower;
+        break;
+      case Sign.Higher:
+        gameImage.src = getImageSource("higher.png");
+        gameTextSelector.innerHTML = gameText.higher;
+        break;
+      default:
+        isGameOver = true;
+        if (multiplayerMode && !isPlayersTurn) {
+          gameTextSelector.innerHTML = "The bot guessed the correct number!";
+          setTimeout(() => showPage(GamePage.EndPage), 3000);
+        } else showPage(GamePage.EndPage);
     }
+  } else if (isNaN(guess)) {
+    gameImage.src = getImageSource("invalid.png");
+    gameTextSelector.innerHTML = gameText.getGuessText(maxNum, false);
   }
-  playerInputField.value = "enter your guess";
-  console.log(guess);
 }
 
 function startGameSaveInput() {
@@ -123,25 +154,97 @@ function startGameSaveInput() {
     localStorage.setItem("playerName", playerName.value);
   }
   showPage(GamePage.PlayPage);
+  isGameOver = false;
+
+  playersTurn();
+}
+
+function takeTurn() {
+  const inputWrapperElement = document.querySelector(
+    ".player_input"
+  ) as HTMLElement;
+
+  if (isPlayersTurn) {
+    guess = getPlayerInput();
+    sign = guessBot.checkGuess(guess);
+
+    showEndOfTurnMessage();
+    if (multiplayerMode && !isGameOver) {
+      isPlayersTurn = false;
+      removePlayerInput();
+      playerBot.updateAlgorithm(sign, guess);
+      setTimeout(botsTurn, 2000);
+    }
+  } else {
+    if (guess) {
+      guess = playerBot.guess(sign, guess);
+    } else {
+      guess = playerBot.guess();
+    }
+    sign = guessBot.checkGuess(guess);
+
+    inputWrapperElement.innerHTML = `
+      <p>The bot guesses for: ${guess}</p>
+    `;
+
+    showEndOfTurnMessage();
+    playerBot.updateAlgorithm(sign, guess);
+
+    if (!isGameOver) {
+      setTimeout(playersTurn, 4000);
+    }
+  }
+}
+
+function playersTurn() {
+  createPlayerInput();
+  isPlayersTurn = true;
+}
+
+function botsTurn() {
+  removePlayerInput();
+  isPlayersTurn = false;
+  setTimeout(takeTurn, 1000);
+}
+
+function createPlayerInput() {
+  const inputWrapperElement = document.querySelector(
+    ".player_input"
+  ) as HTMLElement;
+
+  inputWrapperElement.innerHTML = `
+  <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
+  <button onclick="takeTurn();" class="button-round background-5 playGame">
+    Submit
+  </button>
+`;
+
   inputFocus();
+}
+
+function removePlayerInput() {
+  const inputWrapperElement = document.querySelector(
+    ".player_input"
+  ) as HTMLElement;
+  inputWrapperElement.innerHTML = "";
 }
 
 function changeModeToBot() {
   multiplayerMode = true;
-  const modeButtons = document.querySelectorAll('.modeButtons button') as any
-  modeButtons[1].style.outline = 'solid';
-  modeButtons[0].style.outline = 'unset';
+  const modeButtons = document.querySelectorAll(".modeButtons button") as any;
+  modeButtons[1].style.outline = "solid";
+  modeButtons[0].style.outline = "unset";
 }
 
 function changeModeToSingle() {
   multiplayerMode = false;
-  const modeButtons = document.querySelectorAll('.modeButtons button') as any
-  modeButtons[0].style.outline = 'solid';
-  modeButtons[1].style.outline = 'unset';
+  const modeButtons = document.querySelectorAll(".modeButtons button") as any;
+  modeButtons[0].style.outline = "solid";
+  modeButtons[1].style.outline = "unset";
 }
 
 function createStartPage() {
-  const oldPlayerName = localStorage.getItem('playerName');
+  const oldPlayerName = localStorage.getItem("playerName");
 
   gamePage = GamePage.StartPage;
   const mainWrapper = clearMainWrapper();
@@ -192,27 +295,26 @@ function createStartPage() {
 }
 
 function createPlayPage() {
-  guessBot.pickANumber();
-
   gamePage = GamePage.PlayPage;
-  const mainWrapper = clearMainWrapper();
 
+  guessBot = new GuessBot(maxNum);
+  playerBot = new PlayerBot(maxNum);
+
+  const mainWrapper = clearMainWrapper();
   const playerName = localStorage.getItem("playerName");
 
   const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
-    <div class="gameMessage">${gameText.getGuessText(guessBot.getMaxNum(), true)}</div>
+    <div class="gameMessage">${gameText.getGuessText(maxNum, true)}</div>
 
     <div class="bot_choice">
       <div class="robotImages">
-        <img src=${getImageSource('begin.png')} alt="" class="images_game" />
+        <img src=${getImageSource("begin.png")} alt="" class="images_game" />
       </div>
     </div>
 
     <div class="player_input">
 
-    <input required class="playerInput" type="number" placeholder="enter your guess" autofocus/>
-      </button><button onclick="getPlayerInput();" class="button-round background-5 playGame">Submit</button>
 
     </div>
   `;
@@ -228,10 +330,10 @@ function createEndPage() {
 
   const markup = `
     <div class="title_ender">
-    <h2>YOU WON!</h2><br>
+    <h2>${isPlayersTurn ? "You " : "Bot "} WON!</h2><br>
     </div>
-    <p>You took ${totalGuesses} guesses.</p>
-    <img src=${getImageSource('win.gif')} alt="" class="images_game" />
+    <p>${isPlayersTurn ? "You " : "Bot "} took ${totalGuesses} guesses.</p>
+    <img src=${getImageSource("win.gif")} alt="" class="images_game" />
     <div class="high_score">
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
@@ -247,20 +349,23 @@ function createEndPage() {
 
   `;
 
-  nGuesses = 1;
+  nGuesses = 0;
+  botGuesses = 0;
   mainWrapper.innerHTML = markup;
 
   const highscoreDiv = document.querySelector(".user_and_score") as HTMLElement;
   const ulHighScores = document.querySelector(".ul_highscores") as HTMLElement;
   let listOfHighScores = JSON.parse(localStorage.getItem("highscore") || "");
-  listOfHighScores.forEach((element: { name: string; totalGuesses: string; }) => {
-    let node = document.createElement("LI");
-    let textnode = document.createTextNode(
-      element.name + " " + element.totalGuesses
-    );
-    node.appendChild(textnode);
-    ulHighScores.appendChild(node);
-  });
+  listOfHighScores.forEach(
+    (element: { name: string; totalGuesses: string }) => {
+      let node = document.createElement("LI");
+      let textnode = document.createTextNode(
+        element.name + " " + element.totalGuesses
+      );
+      node.appendChild(textnode);
+      ulHighScores.appendChild(node);
+    }
+  );
 
   if (multiplayerMode === true) {
     highscoreDiv.style.display = "none";
@@ -304,48 +409,47 @@ function connectUsernameWithGuesses() {
 }
 
 function removeGreetings() {
-  const greetings = document.querySelector('.robotGreetings')
-  greetings?.remove()
+  const greetings = document.querySelector(".robotGreetings");
+  greetings?.remove();
 }
 
 function botSelection() {
-  let botSelected = document.querySelector(".bot_choice") as HTMLDivElement
-  let imageList = document.querySelectorAll(".images") as any
-  console.log(imageList)
-  botSelected.onclick = function (e: any) {
+  let botSelected = document.querySelector(".bot_choice") as HTMLDivElement;
+  let imageList = document.querySelectorAll(".images") as any;
+
+  botSelected.onclick = function(e: any) {
     switch (e.toElement.id) {
-      case 'imgEasy':
-        guessBot.setMaxNum(range.easy);
-        imageList[0].style.background = "#f6d535"
-        imageList[1].style.background = "unset"
-        imageList[2].style.background = "unset"
+      case "imgEasy":
+        // guessBot.setMaxNum(range.easy);
+        maxNum = Difficulty.Easy;
+        imageList[0].style.background = "#f6d535";
+        imageList[1].style.background = "unset";
+        imageList[2].style.background = "unset";
         break;
-      case 'imgMedium':
-        guessBot.setMaxNum(range.medium)
-        imageList[0].style.background = "unset"
-        imageList[1].style.background = "#f6d535"
-        imageList[2].style.background = "unset"
+      case "imgMedium":
+        // guessBot.setMaxNum(range.medium);
+        maxNum = Difficulty.Medium;
+        imageList[0].style.background = "unset";
+        imageList[1].style.background = "#f6d535";
+        imageList[2].style.background = "unset";
         break;
-      case 'imgHard':
-        guessBot.setMaxNum(range.hard)
-        imageList[0].style.background = "unset"
-        imageList[1].style.background = "unset"
-        imageList[2].style.background = "#f6d535"
+      case "imgHard":
+        // guessBot.setMaxNum(range.hard);
+        maxNum = Difficulty.Hard;
+        imageList[0].style.background = "unset";
+        imageList[1].style.background = "unset";
+        imageList[2].style.background = "#f6d535";
         break;
     }
-  }
+  };
 }
 
 function getImageSource(imageName: string): string {
-  let path = `./assets/images/easy_${imageName}`
-  if (guessBot.getMaxNum() === range.medium) {
-    path = `./assets/images/medium_${imageName}`
+  let path = `./assets/images/easy_${imageName}`;
+  if (guessBot.getMaxNum() === Difficulty.Medium) {
+    path = `./assets/images/medium_${imageName}`;
+  } else if (guessBot.getMaxNum() === Difficulty.Hard) {
+    path = `./assets/images/hard_${imageName}`;
   }
-  else if (guessBot.getMaxNum() === range.hard) {
-    path = `./assets/images/hard_${imageName}`
-  }
-  return path
+  return path;
 }
-
-
-
