@@ -39,17 +39,6 @@ class PlayerBot {
 
   smartGuess = (sign?: Sign, lastGuess?: number): number => {
     let guess: number;
-
-    // if (this.lastGuess === -1) {
-    //   this.low = 1;
-    //   this.high = this.maxNumber;
-    //   guess = Math.floor((this.high - this.low) / 2) + 1;
-    //   this.lastGuess = guess;
-    //   console.log("h: ", this.lastGuess);
-
-    //   return guess;
-    // }
-
     lastGuess ? (this.lastGuess = lastGuess) : null;
 
     if (sign === Sign.Higher) {
@@ -59,12 +48,6 @@ class PlayerBot {
       guess = this.low + (diff <= 1 ? diff : x);
       this.lastGuess = guess;
 
-      console.log({
-        low: this.low,
-        high: this.high,
-        lastGuess: this.lastGuess
-      });
-
       return guess;
     } else {
       this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
@@ -73,40 +56,20 @@ class PlayerBot {
       guess = this.low + diff - x;
       this.lastGuess = guess;
 
-      console.log({
-        low: this.low,
-        high: this.high,
-        lastGuess: this.lastGuess
-      });
       return guess;
     }
   };
 
   stupidGuess = (sign?: Sign, lastGuess?: number): number => {
     let guess: number;
-
-    // if (lastGuess === -1) {
-    //   this.low = 1;
-    //   this.high = this.maxNumber;
-    //   guess = Math.floor(Math.random() * this.high) + 1;
-    //   this.lastGuess = guess;
-    //   return guess;
-    // }
-
     lastGuess ? (this.lastGuess = lastGuess) : null;
 
     if (sign === Sign.Higher) {
       this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
-      guess =
-        this.low +
-        Math.floor(Math.random() * (this.high - this.low) + 1);
+      guess = this.low + Math.floor(Math.random() * (this.high - this.low) + 1);
       this.lastGuess = guess;
       guess = guess > this.high ? this.high : guess;
-      console.log({
-        low: this.low,
-        high: this.high,
-        guess: this.lastGuess
-      });
+     
       return guess;
     } else {
       this.high = this.high < this.lastGuess ? this.high : this.lastGuess;
@@ -114,29 +77,18 @@ class PlayerBot {
         this.high - Math.floor(Math.random() * (this.high - this.low) + 1);
       this.lastGuess = guess;
       guess = guess < this.low ? this.low : guess;
-      console.log({
-        low: this.low,
-        high: this.high,
-        guess: this.lastGuess
-      });
+   
       return guess;
     }
   };
 
   retardedGuess = (): number => {
     let guess: number = this.lastGuess;
-    // const chance = Math.random();
-
-    // if (chance >= 0.8) {
-    //   guess = -2;
-    //   return guess;
-    // }
 
     while (guess === this.lastGuess) {
       guess = Math.floor(Math.random() * this.maxNumber) + 1;
     }
     this.lastGuess = guess;
-    console.log({ low: this.low, hiigh: this.high, guess: this.lastGuess });
     return guess;
   };
 

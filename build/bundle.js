@@ -3,14 +3,14 @@ class GuessBot {
     constructor(maxNumber) {
         this.pickANumber = () => {
             this.secretNumber = Math.floor(Math.random() * this.maxNumber) + 1;
-            console.log("secret number ", this.secretNumber);
-            console.log("maxNumber: ", this.maxNumber);
             return this.secretNumber;
         };
         this.setMaxNum = (range) => {
             this.maxNumber = range;
         };
-        this.getMaxNum = () => { return this.maxNumber; };
+        this.getMaxNum = () => {
+            return this.maxNumber;
+        };
         this.checkGuess = (guess) => {
             if (guess < this.secretNumber) {
                 return Sign.Higher;
@@ -38,11 +38,6 @@ class PlayerBot {
                 const x = Math.floor(diff / 2);
                 guess = this.low + (diff <= 1 ? diff : x);
                 this.lastGuess = guess;
-                console.log({
-                    low: this.low,
-                    high: this.high,
-                    lastGuess: this.lastGuess
-                });
                 return guess;
             }
             else {
@@ -51,11 +46,6 @@ class PlayerBot {
                 const x = Math.floor((this.high - this.low) / 2);
                 guess = this.low + diff - x;
                 this.lastGuess = guess;
-                console.log({
-                    low: this.low,
-                    high: this.high,
-                    lastGuess: this.lastGuess
-                });
                 return guess;
             }
         };
@@ -64,16 +54,9 @@ class PlayerBot {
             lastGuess ? (this.lastGuess = lastGuess) : null;
             if (sign === Sign.Higher) {
                 this.low = this.low > this.lastGuess ? this.low : this.lastGuess;
-                guess =
-                    this.low +
-                        Math.floor(Math.random() * (this.high - this.low) + 1);
+                guess = this.low + Math.floor(Math.random() * (this.high - this.low) + 1);
                 this.lastGuess = guess;
                 guess = guess > this.high ? this.high : guess;
-                console.log({
-                    low: this.low,
-                    high: this.high,
-                    guess: this.lastGuess
-                });
                 return guess;
             }
             else {
@@ -82,11 +65,6 @@ class PlayerBot {
                     this.high - Math.floor(Math.random() * (this.high - this.low) + 1);
                 this.lastGuess = guess;
                 guess = guess < this.low ? this.low : guess;
-                console.log({
-                    low: this.low,
-                    high: this.high,
-                    guess: this.lastGuess
-                });
                 return guess;
             }
         };
@@ -96,7 +74,6 @@ class PlayerBot {
                 guess = Math.floor(Math.random() * this.maxNumber) + 1;
             }
             this.lastGuess = guess;
-            console.log({ low: this.low, hiigh: this.high, guess: this.lastGuess });
             return guess;
         };
         this.updateAlgorithm = (sign, guess) => {
@@ -353,6 +330,8 @@ function createStartPage() {
         <img src="./assets/images/easy_begin.png" alt="" 
 
         title = "Im Tipsy, I drank between 0 to 10 drinks, when it comes to multiplayer they are calling me easy bot."
+
+        
 
         class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
