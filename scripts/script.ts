@@ -28,7 +28,7 @@ let isLoading: boolean = false;
 let isPlayersTurn: boolean = true;
 let isGameOver: boolean = false;
 
-let maxNum: Difficulty = Difficulty.Hard;
+let maxNum: Difficulty = Difficulty.Easy;
 let guessBot: GuessBot;
 let playerBot: PlayerBot;
 
@@ -39,7 +39,7 @@ const gameText = {
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
-  getGuessText: function(range: number, isValid: boolean): string {
+  getGuessText: function (range: number, isValid: boolean): string {
     let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
     if (isValid) {
       text = `The robot had between 1 to ${range} drinks. What's your guess?`;
@@ -112,7 +112,7 @@ function showEndOfTurnMessage() {
   const gameImage = document.querySelector(".images_game") as HTMLImageElement;
   gameTextSelector.classList.add("wobble");
 
-  setTimeout(function() {
+  setTimeout(function () {
     gameTextSelector.classList.remove("wobble");
   }, 2000);
 
@@ -184,7 +184,7 @@ function takeTurn() {
     sign = guessBot.checkGuess(guess);
 
     inputWrapperElement.innerHTML = `
-      <p>The bot guesses for: ${guess}</p>
+      <p>The bot guessed ${guess}</p>
     `;
 
     showEndOfTurnMessage();
@@ -255,19 +255,19 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" 
-        title = "Im Tipsy, I drank between 0 to 10 drinks"
+        title = "Im Tipsy, I drank between 1 to 10 drinks"
         class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" 
-        title = "Im Hammered, I drank between 0 to 50 drinks"
+        title = "Im Hammered, I drank between 1 to 50 drinks"
         class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
-        title = "Im Sloshed, I drank between 0 to 100 drinks"
+        title = "Im Sloshed, I drank between 1 to 100 drinks"
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
@@ -305,6 +305,7 @@ function createPlayPage() {
 
   const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
+    <div class="botGuess"></div>
     <div class="gameMessage">${gameText.getGuessText(maxNum, true)}</div>
 
     <div class="bot_choice">
@@ -338,7 +339,7 @@ function createEndPage() {
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
       <h2>HIGHEST SCORES</h2>
-       <span>Name  -  Score</span>
+       <span><b>Name  -  Score</b></span>
 
       <ul class="ul_highscores">
       </div>
@@ -417,7 +418,7 @@ function botSelection() {
   let botSelected = document.querySelector(".bot_choice") as HTMLDivElement;
   let imageList = document.querySelectorAll(".images") as any;
 
-  botSelected.onclick = function(e: any) {
+  botSelected.onclick = function (e: any) {
     switch (e.toElement.id) {
       case "imgEasy":
         // guessBot.setMaxNum(range.easy);

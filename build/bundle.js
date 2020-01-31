@@ -155,7 +155,7 @@ let multiplayerMode = false;
 let isLoading = false;
 let isPlayersTurn = true;
 let isGameOver = false;
-let maxNum = Difficulty.Hard;
+let maxNum = Difficulty.Easy;
 let guessBot;
 let playerBot;
 const gameText = {
@@ -292,7 +292,7 @@ function takeTurn() {
         }
         sign = guessBot.checkGuess(guess);
         inputWrapperElement.innerHTML = `
-      <p>The bot guesses for: ${guess}</p>
+      <p>The bot guessed ${guess}</p>
     `;
         showEndOfTurnMessage();
         playerBot.updateAlgorithm(sign, guess);
@@ -346,19 +346,19 @@ function createStartPage() {
     <div class="bot_choice">
       <div class="robotImages">
         <img src="./assets/images/easy_begin.png" alt="" 
-        title = "Im Tipsy, I drank between 0 to 10 drinks"
+        title = "Im Tipsy, I drank between 1 to 10 drinks"
         class="images" id="imgEasy" />
         <h3 class="difficulty">Tipsy</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/medium_begin.png" alt="" 
-        title = "Im Hammered, I drank between 0 to 50 drinks"
+        title = "Im Hammered, I drank between 1 to 50 drinks"
         class="images" id="imgMedium" />
         <h3 class="difficulty">Hammered</h3>
       </div>
       <div class="robotImages">
         <img src="./assets/images/hard_begin.png" alt="" 
-        title = "Im Sloshed, I drank between 0 to 100 drinks"
+        title = "Im Sloshed, I drank between 1 to 100 drinks"
         class="images" id="imgHard"/>
         <h3 class="difficulty">Sloshed</h3>
       </div>
@@ -391,6 +391,7 @@ function createPlayPage() {
     const playerName = localStorage.getItem("playerName");
     const markup = `
     <div class="robotGreetings">"Greetings ${playerName}!"</div>
+    <div class="botGuess"></div>
     <div class="gameMessage">${gameText.getGuessText(maxNum, true)}</div>
 
     <div class="bot_choice">
@@ -421,7 +422,7 @@ function createEndPage() {
       <div class="gameEndMessage"> "Only ${guess} ${gameText.correct}</div>
       <div class="user_and_score">
       <h2>HIGHEST SCORES</h2>
-       <span>Name  -  Score</span>
+       <span><b>Name  -  Score</b></span>
 
       <ul class="ul_highscores">
       </div>
