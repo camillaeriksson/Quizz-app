@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'SEGA LOGO FONT';
+    font-style: normal;
+    font-weight: normal;
+    src: local('SEGA LOGO FONT'), url('/assets/SEGA.woff') format('woff');
+}
+
 /*General Settings*/
 html {
     font-family: 'Raleway', sans-serif;
@@ -31,6 +38,10 @@ body {
     font-weight: bold;
     padding-bottom: 3rem;
     animation: bounce 2.5s 2 both;
+    font-family: 'SEGA LOGO FONT';
+    
+    text-shadow:2px 2px 4px #0ccac4;
+    font-weight: 200;
 }
 
 .bot_choice {
@@ -359,7 +370,6 @@ ul {
     .bot_choice {
         display: flex;
         flex-direction: row;
-        align-items: ;
         width: 80vw;
     }
 
