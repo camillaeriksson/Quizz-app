@@ -39,7 +39,7 @@ const gameText = {
   higher: `- *hick**blip blop* No, that can’t be right... It must be <b>more</b>!`,
   lower: `-*beep beep boop* No, that can’t be right... It must be <b>less</b>!`,
   correct: `drinks! That wasn’t many at all. Welcome inside to have some more!”, the doorman says.`,
-  getGuessText: function (range: number, isValid: boolean): string {
+  getGuessText: function(range: number, isValid: boolean): string {
     let text = `errr....**!!!..error.., enter a number between 1 and ${range}.`;
     if (isValid) {
       text = `The robot had between 1 to ${range} drinks. What's your guess?`;
@@ -112,7 +112,7 @@ function showEndOfTurnMessage() {
   const gameImage = document.querySelector(".images_game") as HTMLImageElement;
   gameTextSelector.classList.add("wobble");
   gameTextSelector.style.display = "block";
-  setTimeout(function () {
+  setTimeout(function() {
     gameTextSelector.classList.remove("wobble");
   }, 2000);
 
@@ -302,7 +302,6 @@ function createStartPage() {
 
 function createPlayPage() {
   gamePage = GamePage.PlayPage;
-
   guessBot = new GuessBot(maxNum);
   playerBot = new PlayerBot(maxNum);
 
@@ -424,24 +423,21 @@ function botSelection() {
   let botSelected = document.querySelector(".bot_choice") as HTMLDivElement;
   let imageList = document.querySelectorAll(".images") as any;
 
-  botSelected.onclick = function (e: any) {
+  botSelected.onclick = function(e: any) {
     switch (e.toElement.id) {
       case "imgEasy":
-        // guessBot.setMaxNum(range.easy);
         maxNum = Difficulty.Easy;
         imageList[0].style.background = "#f6d535";
         imageList[1].style.background = "unset";
         imageList[2].style.background = "unset";
         break;
       case "imgMedium":
-        // guessBot.setMaxNum(range.medium);
         maxNum = Difficulty.Medium;
         imageList[0].style.background = "unset";
         imageList[1].style.background = "#f6d535";
         imageList[2].style.background = "unset";
         break;
       case "imgHard":
-        // guessBot.setMaxNum(range.hard);
         maxNum = Difficulty.Hard;
         imageList[0].style.background = "unset";
         imageList[1].style.background = "unset";
